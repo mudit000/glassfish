@@ -49,7 +49,7 @@ else
     fi
   fi
 
-  sudo docker run ${NAME_ARG} --privileged=true ${NAME_ARG} ${GLOBAL_ENVS} ${JENKINS_VARS} ${ENV_PARAMS} -e PATH="$PATH:${JAVA_HOME}/bin:/scratch/mvn/apache-maven-3.5.2/bin"  -e MAVEN_OPTS="${MAVEN_OPTS}"  -e TEST_IDS="${TEST_IDS}" -e EXECUTE_SCRIPT="${EXECUTE_SCRIPT}" -v ${WORKSPACE}:/scratch/BUILD_AREA -v ~/gf-hudson-tools/:/scratch/gf-hudson-tools -v /tmp/auto_${BUILD_NUMBER}.log:/var/log/automount.log -h ${HOST} "${dn_opt}" ${IMAGE_NAME}
+  sudo docker run ${NAME_ARG} --privileged=true ${NAME_ARG} ${GLOBAL_ENVS} ${JENKINS_VARS} ${ENV_PARAMS} -e PATH="$PATH:${JAVA_HOME}/bin:/scratch/mvn/apache-maven-3.5.2/bin"  -e MAVEN_OPTS="${MAVEN_OPTS}"  -e TEST_IDS="${TEST_IDS}" -e EXECUTE_SCRIPT="${EXECUTE_SCRIPT}" -v ${WORKSPACE}:/scratch/BUILD_AREA -v /tmp/auto_${BUILD_NUMBER}.log:/var/log/automount.log -h ${HOST} "${dn_opt}" ${IMAGE_NAME}
   result=$?
   
   set -e

@@ -25,20 +25,20 @@ fi
 # Incremental fetch
 # I.e git clone the first time
 #     git pull otherwise
-if [ "$(ls -A ${LOCAL_GF_GIT_REPO})" ]; then
-  cd ${GF_ROOT}
-  git pull origin master
-else
-  pwd
-  id
-  ls -l
-  git clone ${GF_WORKSPACE_URL_SSH} /scratch/gf-code
- ls	 
- ls /scratch/gf-code
-  cd ${GF_ROOT}
-fi
+# if [ "$(ls -A ${LOCAL_GF_GIT_REPO})" ]; then
+#   cd ${GF_ROOT}
+#   git pull origin master
+# else
+#   pwd
+#   id
+#   ls -l
+#   git clone ${GF_WORKSPACE_URL_SSH} /scratch/gf-code
+#  ls	 
+#  ls /scratch/gf-code
+#   cd ${GF_ROOT}
+# fi
 
-/bin/bash -ex /scratch/gf-hudson-tools/hudson-tools/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1
+/bin/bash -ex /scratch/BUILD_AREA/glassfish/ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1
 cp /scratch/gf-hudson-tools/hudson-tools/build-tools/glassfish/retry_config $CONTAINER_WORKSPACE/retry_config
 #if [ -z "${JENKINS_HOME}" ] && [ -z "${JENKINS_URL}" ]; then
 # LINUX_LARGE_POOL="POOL-1-LINUX-LARGE"
