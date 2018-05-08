@@ -5,15 +5,8 @@ if [ $? -eq 0 ]; then
 else
    echo "Unable to create directory ${WORKSPACE}"
 fi
-whoami
-ls -l /scratch/
-ls -l /scratch/gf-hudson-tools/
-ls -l /scratch/gf-hudson-tools/hudson-tools/
-ls -l /scratch/gf-hudson-tools/hudson-tools/jobs/
-ls -l /scratch/gf-hudson-tools/hudson-tools/jobs/gf-generic-test-job
-ls -l /scratch/gf-hudson-tools/hudson-tools/jobs/gf-generic-test-job/bin/
 
-true | which java
+which java
 java -version | true
 shopt -s nocasematch
 if [[ ${REDIRECT_STD_ERR} == "true" ]]; then

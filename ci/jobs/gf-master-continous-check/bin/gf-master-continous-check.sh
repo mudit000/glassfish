@@ -39,7 +39,7 @@ fi
 # fi
 
 /bin/bash -ex /scratch/BUILD_AREA/glassfish/ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1
-cp /scratch/gf-hudson-tools/hudson-tools/build-tools/glassfish/retry_config $CONTAINER_WORKSPACE/retry_config
+cp /scratch/BUILD_AREA/glassfish/ci/build-tools/glassfish/retry_config $CONTAINER_WORKSPACE/retry_config
 #if [ -z "${JENKINS_HOME}" ] && [ -z "${JENKINS_URL}" ]; then
 # LINUX_LARGE_POOL="POOL-1-LINUX-LARGE"
 # SOLARIS_POOL="solaris-sparc"
@@ -51,6 +51,6 @@ cp /scratch/gf-hudson-tools/hudson-tools/build-tools/glassfish/retry_config $CON
 
 
 
-bash -ex /scratch/gf-hudson-tools/hudson-tools/build-tools/trigger_and_block.sh ql_gf_full_profile_all
+bash -ex /scratch/BUILD_AREA/glassfish/ci/build-tools/trigger_and_block.sh ql_gf_full_profile_all
 cp -r /scratch/free-folder/test-results ${CONTAINER_WORKSPACE}/
-bash -ex /scratch/gf-hudson-tools/hudson-tools/build-tools/glassfish/checkJobStatus.sh
+bash -ex /scratch/BUILD_AREA/glassfish/ci/build-tools/glassfish/checkJobStatus.sh
