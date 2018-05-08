@@ -1,0 +1,13 @@
+--- pom.xml	2017-09-08 16:10:02.567126859 +0530
++++ pom.xml.new	2017-09-08 16:14:17.027120545 +0530
+@@ -54,9 +54,7 @@
+   </developers>
+   <modules>
+     <module>guava</module>
+-    <module>guava-gwt</module>
+-    <module>guava-testlib</module>
+-    <module>guava-tests</module>
++    <module>guava-gwt</module>    
+   </modules>
+   <build>
+     <plugins>

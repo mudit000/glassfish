@@ -1,0 +1,48 @@
+diff -crB tyrus-1.13.1/ext/pom.xml tyrus-1.13.1-new/ext/pom.xml
+*** tyrus-1.13.1/ext/pom.xml	2017-01-20 04:52:07.000000000 +0530
+--- tyrus-1.13.1-new/ext/pom.xml	2017-08-22 16:44:41.905376577 +0530
+***************
+*** 70,78 ****
+          </profile>
+          <profile>
+              <id>jdk8</id>
+!             <activation>
+                  <jdk>[1.8,2)</jdk>
+!             </activation>
+              <modules>
+                  <module>client-java8</module>
+              </modules>
+--- 70,78 ----
+          </profile>
+          <profile>
+              <id>jdk8</id>
+! <!--            <activation>
+                  <jdk>[1.8,2)</jdk>
+!             </activation> -->
+              <modules>
+                  <module>client-java8</module>
+              </modules>
+diff -crB tyrus-1.13.1/tests/e2e/pom.xml tyrus-1.13.1-new/tests/e2e/pom.xml
+*** tyrus-1.13.1/tests/e2e/pom.xml	2017-01-20 04:52:07.000000000 +0530
+--- tyrus-1.13.1-new/tests/e2e/pom.xml	2017-08-22 16:44:09.121375644 +0530
+***************
+*** 63,71 ****
+      <profiles>
+          <profile>
+              <id>jdk8</id>
+!             <activation>
+                  <jdk>[1.8,2)</jdk>
+!             </activation>
+              <modules>
+                  <module>jdk8</module>
+              </modules>
+--- 63,71 ----
+      <profiles>
+          <profile>
+              <id>jdk8</id>
+! <!--            <activation>
+                  <jdk>[1.8,2)</jdk>
+!             </activation> -->
+              <modules>
+                  <module>jdk8</module>
+              </modules>

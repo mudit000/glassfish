@@ -1,0 +1,12 @@
+--- pom.xml	2017-07-23 15:08:08.000000000 +0530
++++ pom.xml.new	2017-09-08 15:15:24.857967790 +0530
+@@ -64,8 +64,7 @@
+         <module>csiv2-idl</module>
+         <module>exception-annotation-processor</module>
+         <module>orbmain</module>
+-        <module>internal-api</module>
+-        <module>functional-tests</module>
++        <module>internal-api</module>        
+     </modules>
+ 
+     <properties>

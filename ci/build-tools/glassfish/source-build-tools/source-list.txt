@@ -1,0 +1,195 @@
+antlr:antlr antlr svn+ssh://$jvnet_username@svn.java.net/glassfish~svn/trunk/external/modules/antlr/2.7.6/ NA closed svn
+com.fasterxml.jackson.core:jackson-annotations jackson-annotations https://github.com/FasterXML/jackson-annotations $NAME-$VERSION opensource github
+com.fasterxml.jackson.core:jackson-core jackson-core https://github.com/FasterXML/jackson-core $NAME-$VERSION opensource github
+com.fasterxml.jackson.core:jackson-databind jackson-databind https://github.com/FasterXML/jackson-databind $NAME-$VERSION opensource github
+com.fasterxml.jackson.jaxrs:jackson-jaxrs jackson-jaxrs-providers https://github.com/FasterXML/jackson-jaxrs-providers jackson-jaxrs-providers-$VERSION opensource github
+com.fasterxml.jackson.module:jackson-module-jaxb-annotations jackson-module-jaxb-annotations https://github.com/FasterXML/jackson-module-jaxb-annotations $NAME-$VERSION opensource github
+com.fasterxml:classmate java-classmate https://github.com/FasterXML/java-classmate classmate-$VERSION opensource github
+com.google.guava:guava guava https://github.com/google/guava v$VERSION opensource github
+com.ibm.jbatch:com.ibm.jbatch.container 
+com.ibm.jbatch:com.ibm.jbatch.spi standards.jsr352.jbatch https://github.com/WASdev/standards.jsr352.jbatch impl-$VERSION opensouce github
+com.sun.jsftemplating:jsftemplating
+com.sun.mail:javax.mail javax.mail https://github.com/javaee/javamail NA opensource github
+com.sun.pkg:pkg-client
+com.sun.xml.bind:jaxb-extra-osgi
+com.sun.xml.bind:jaxb-osgi jaxb-ri https://orahub.oraclecorp.com/fmw-infra-metro/jaxb-ri $VERSION closed git
+com.sun:ldapbp
+com.sun:tools-jar
+javadb:javadb javadb svn+ssh://$jvnet_username@svn.java.net/glassfish~svn/trunk/external/modules/javadb/10.10.2.0 NA closed svn
+javax.annotation:javax.annotation-api javax.annotation https://github.com/javaee/javax.annotation $VERSION opensource github
+javax.batch:javax.batch-api javax.batch-api https://github.com/WASdev/standards.jsr352.jbatch NA opensource github
+javax.ejb:javax.ejb-api javax.ejb https://github.com/javaee/javax.ejb NA opensource github
+javax.enterprise.concurrent:javax.enterprise.concurrent-api concurrency-ee-spec https://github.com/javaee/concurrency-ee-spec javax.enterprise.concurrent-api-$VERSION opensource github
+javax.enterprise.deploy:javax.enterprise.deploy-api javax.enterprise.deploy https://github.com/javaee/javax.enterprise.deploy $VERSION opensource github
+javax.enterprise:cdi-api cdi https://github.com/cdi-spec/cdi $VERSION opensource github
+javax.help:javahelp
+javax.interceptor:javax.interceptor-api javax.interceptor https://github.com/javaee/javax.interceptor $VERSION opensource github
+javax.jms:javax.jms-api javax.jms https://github.com/javaee/javax.jms opensource github
+javax.json.bind:javax.json.bind-api
+javax.management.j2ee:javax.management.j2ee-api javax.management.j2ee https://github.com/javaee/javax.management.j2ee $VERSION opensource github
+javax.resource:javax.resource-api javax.resource https://github.com/javaee/javax.resource $VERSION opensource github
+javax.security.auth.message:javax.security.auth.message-api jaspic-spec https://github.com/javaee/jaspic-spec javax.security.auth.message-api-$VERSION opensource github
+javax.security.enterprise:javax.security.enterprise-api security-api https://github.com/javaee-security-spec/security-api $VERSION opensource github
+javax.security.jacc:javax.security.jacc-api javax.security.jacc-api https://github.com/javaee/jacc-spec javax.security.jacc-api-$VERSION opensource github
+javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api jstl-api https://github.com/javaee/jstl-api javax.servlet.jsp.jstl-api-$VERSION opensource github
+javax.servlet.jsp:javax.servlet.jsp-api javaee-jsp-api https://github.com/javaee/javaee-jsp-api javax.servlet.jsp-$VERSION opensource github
+javax.servlet:javax.servlet-api javax.servlet-api ssh://rohit.chaware%40oracle.com@alm.oraclecorp.com:2222/caf_javaee_4881/servlet-spec.git NA closed git
+javax.transaction:javax.transaction-api javax.transaction-api https://github.com/javaee/javax.transaction NA opensource github
+javax.validation:validation-api
+javax.websocket:javax.websocket-api websocket-spec https://github.com/javaee/websocket-spec $VERSION opensource github
+javax.ws.rs:javax.ws.rs-api jaxrs https://github.com/jax-rs/api $VERSION opensource github
+javax.xml.bind:jaxb-api jaxb-api https://github.com/javaee/jaxb-spec $VERSION opensource github
+javax.xml.registry:javax.xml.registry-api javax.xml.registry-api https://github.com/javaee/javax.xml.registry $VERSION opensource github
+javax.xml.rpc:javax.xml.rpc-api javax.xml.rpc https://github.com/javaee/javax.xml.rpc $VERSION opensource github
+jaxr-ra:jaxr-ra
+junit:junit
+org.apache.ant:ant apache-ant http://archive.apache.org/dist/ant/source/apache-ant-1.8.2-src.zip NA opensource curl
+org.apache.ant:ant-launcher
+org.apache.felix:org.apache.felix.configadmin org.apache.felix.framework http://archive.apache.org/dist/felix/org.apache.felix.framework-4.2.1-source-release.zip NA opensource curl
+org.apache.felix:org.apache.felix.eventadmin
+org.apache.felix:org.apache.felix.fileinstall
+org.apache.felix:org.apache.felix.gogo.command
+org.apache.felix:org.apache.felix.gogo.runtime
+org.apache.felix:org.apache.felix.gogo.shell
+org.apache.felix:org.apache.felix.scr
+org.apache.felix:org.apache.felix.webconsole
+org.codehaus.jettison:jettison jettison https://github.com/codehaus/jettison $NAME-$VERSION opensource github
+org.codehaus.woodstox:stax2-api
+org.codehaus.woodstox:woodstox-core-asl
+org.eclipse.persistence:javax.persistence javax.persistence https://github.com/eclipse/javax.persistence $VERSION opensource github
+org.eclipse.persistence:org.eclipse.persistence.antlr
+org.eclipse.persistence:org.eclipse.persistence.asm
+org.eclipse.persistence:org.eclipse.persistence.core
+org.eclipse.persistence:org.eclipse.persistence.dbws
+org.eclipse.persistence:org.eclipse.persistence.jpa
+org.eclipse.persistence:org.eclipse.persistence.jpa.jpql
+org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor
+org.eclipse.persistence:org.eclipse.persistence.moxy
+org.eclipse.persistence:org.eclipse.persistence.oracle
+org.eclipse:yasson yasson https://github.com/eclipse/yasson $VERSION opensource github
+org.glassfish.corba:glassfish-corba-csiv2-idl glassfish-corba https://github.com/javaee/glassfish-corba glassfish-corba-$VERSION opensource github
+org.glassfish.corba:glassfish-corba-internal-api
+org.glassfish.corba:glassfish-corba-omgapi
+org.glassfish.corba:glassfish-corba-orb
+org.glassfish.docs:basedocs
+org.glassfish.external:asm-all asm-all svn+ssh://$jvnet_username@svn.java.net/glassfish~svn/trunk/external/modules/asm/5.0.3/ NA closed svn
+org.glassfish.external:dbschema-repackaged
+org.glassfish.external:management-api gmbal-management-api https://github.com/javaee/gmbal-commons management-api-$VERSION opensource github
+org.glassfish.external:opendmk_jmxremote_optional_jar
+org.glassfish.external:schema2beans-repackaged
+org.glassfish.fighterfish:osgi-cdi
+org.glassfish.fighterfish:osgi-ee-resources
+org.glassfish.fighterfish:osgi-ejb-container
+org.glassfish.fighterfish:osgi-http
+org.glassfish.fighterfish:osgi-javaee-base
+org.glassfish.fighterfish:osgi-jdbc
+org.glassfish.fighterfish:osgi-jpa
+org.glassfish.fighterfish:osgi-jpa-extension
+org.glassfish.fighterfish:osgi-jta
+org.glassfish.fighterfish:osgi-web-container
+org.glassfish.gmbal:gmbal gmbal https://github.com/javaee/gmbal gmbal-$VERSION opensource github
+org.glassfish.grizzly:grizzly-framework grizzly https://github.com/javaee/grizzly NA opensource github
+org.glassfish.grizzly:grizzly-npn-bootstrap grizzly-npn https://github.com/javaee/grizzly-npn NA opensource github
+org.glassfish.grizzly:grizzly-npn-osgi
+org.glassfish.ha:ha-api
+org.glassfish.hk2.external:aopalliance-repackaged hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2.external:asm-all-repackaged hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2.external:bean-validator-cdi hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2.external:javax.inject hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2:class-model hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2:config-types hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2:hk2 hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2:hk2-api hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2:hk2-config hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2:hk2-core hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2:hk2-locator hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2:hk2-runlevel hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2:hk2-utils hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2:osgi-adapter hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.hk2:osgi-resource-locator hk2 https://github.com/javaee/hk2 $VERSION opensource github
+org.glassfish.jersey.containers.glassfish:jersey-gf-ejb
+org.glassfish.jersey.containers:jersey-container-grizzly2-http
+org.glassfish.jersey.containers:jersey-container-servlet
+org.glassfish.jersey.containers:jersey-container-servlet-core
+org.glassfish.jersey.core:jersey-client
+org.glassfish.jersey.core:jersey-common
+org.glassfish.jersey.core:jersey-server jersey https://github.com/jersey/jersey $VERSION opensource github
+org.glassfish.jersey.ext.cdi:jersey-cdi1x
+org.glassfish.jersey.ext.cdi:jersey-cdi1x-servlet
+org.glassfish.jersey.ext.cdi:jersey-cdi1x-transaction
+org.glassfish.jersey.ext:jersey-bean-validation
+org.glassfish.jersey.ext:jersey-entity-filtering
+org.glassfish.jersey.ext:jersey-mvc
+org.glassfish.jersey.ext:jersey-mvc-jsp
+org.glassfish.jersey.inject:jersey-hk2
+org.glassfish.jersey.media:jersey-media-jaxb
+org.glassfish.jersey.media:jersey-media-json-binding
+org.glassfish.jersey.media:jersey-media-json-jackson
+org.glassfish.jersey.media:jersey-media-json-jettison
+org.glassfish.jersey.media:jersey-media-json-processing
+org.glassfish.jersey.media:jersey-media-moxy
+org.glassfish.jersey.media:jersey-media-multipart
+org.glassfish.jersey.media:jersey-media-sse
+org.glassfish.metro:webservices-api-osgi metro https://github.com/javaee/metro-wsit $VERSION opensource github
+org.glassfish.metro:webservices-extra-jdk-packages
+org.glassfish.metro:webservices-osgi
+org.glassfish.mq:mq-distribution mq https://github.com/javaee/openmq NA opensource github
+org.glassfish.pfl:pfl-asm
+org.glassfish.pfl:pfl-basic gmbal-pfl https://github.com/javaee/gmbal-pfl pfl-$VERSION opensource github
+org.glassfish.pfl:pfl-basic-tools
+org.glassfish.pfl:pfl-dynamic
+org.glassfish.pfl:pfl-tf
+org.glassfish.pfl:pfl-tf-tools
+org.glassfish.soteria:javax.security.enterprise security-soteria https://github.com/javaee/security-soteria $VERSION opensource github
+org.glassfish.tyrus:tyrus-client tyrus https://github.com/tyrus-project/tyrus $VERSION opensource github
+org.glassfish.tyrus:tyrus-container-glassfish-cdi tyrus https://github.com/tyrus-project/tyrus $VERSION opensource github
+org.glassfish.tyrus:tyrus-container-glassfish-ejb tyrus https://github.com/tyrus-project/tyrus $VERSION opensource github
+org.glassfish.tyrus:tyrus-container-grizzly-client tyrus https://github.com/tyrus-project/tyrus $VERSION opensource github
+org.glassfish.tyrus:tyrus-container-servlet tyrus https://github.com/tyrus-project/tyrus $VERSION opensource github
+org.glassfish.tyrus:tyrus-core tyrus https://github.com/tyrus-project/tyrus $VERSION opensource github
+org.glassfish.tyrus:tyrus-server tyrus https://github.com/tyrus-project/tyrus $VERSION opensource github
+org.glassfish.tyrus:tyrus-spi tyrus https://github.com/tyrus-project/tyrus $VERSION opensource github
+org.glassfish.web:javax.servlet.jsp javaee-jsp-api https://github.com/javaee/javaee-jsp-api $NAME-$VERSION opensource github
+org.glassfish.web:javax.servlet.jsp.jstl javax.servlet.jsp.jstl https://github.com/javaee/jstl-api $VERSION opensource github
+org.glassfish:javax.el
+org.glassfish:javax.enterprise.concurrent javax.enterprise.concurrent https://github.com/javaee/cu-ri $NAME-$VERSION opensource github
+org.glassfish:javax.faces mojarra https://github.com/javaserverfaces/mojarra $VERSION opensource github
+org.glassfish:javax.json json https://github.com/javaee/jsonp jsonp-$VERSION opensource github
+org.glassfish:jsonp-jaxrs
+org.hibernate.validator:hibernate-validator bean-validator https://github.com/hibernate/hibernate-validator $VERSION opensource github
+org.hibernate.validator:hibernate-validator-cdi
+org.javassist:javassist
+org.jboss.classfilewriter:jboss-classfilewriter
+org.jboss.logging:jboss-logging
+org.jboss.logging:jboss-logging-annotations
+org.jboss.weld.se:weld-se-shaded
+org.jboss.weld:weld-osgi-bundle weld https://github.com/weld/core $VERSION opensource github
+org.jinterop:j-interop
+org.jinterop:j-interopdeps
+org.jvnet.hudson:trilead-ssh2
+org.jvnet.libpam4j:libpam4j libpam4j https://github.com/kohsuke/libpam4j $NAME-$VERSION opensource github
+org.jvnet.mimepull:mimepull mimepull https://github.com/javaee/metro-mimepull $NAME-$VERSION opensource github
+org.samba.jcifs:jcifs
+org.shoal:shoal-cache shoal https://github.com/javaee/shoal $NAME-$VERSION opensource github
+org.shoal:shoal-gms-api shoal https://github.com/javaee/shoal $NAME-$VERSION opensource github
+org.shoal:shoal-gms-impl shoal https://github.com/javaee/shoal $NAME-$VERSION opensource github
+org.virtualbox:vboxjws
+org.hibernate:hibernate-validator bean-validator https://github.com/hibernate/hibernate-validator $VERSION opensource github
+com.sun.xml.ws:jaxws-ri jaxws-ri https://github.com/javaee/metro-jax-ws NA opensource github
+com.sun.xsom:xsom xsom ssh://rohit.chaware%40oracle.com@alm.oraclecorp.com:2222/caf_javaee_4881/jaxb-xsom 20130531 closed git
+org.jvnet.staxex:stax-ex stax-ex https://github.com/javaee/metro-stax-ex stax-ex-1.7.7 opensource github
+javax.xml.ws:jaxws-api jaxws-api https://github.com/javaee/jax-ws-spec $VERSION opensource github
+com.sun.xml.ws:policy ws-policy https://github.com/javaee/metro-policy policy-2.5 opensource github
+javax.el:javax.el-api javax.el https://github.com/javaee/uel-ri javax.el-api-$VERSION opensource github
+javax.xml.soap:javax.xml.soap-api javax.xml.soap https://github.com/javaee/javax.xml.soap $VERSION opensource github
+org.glassfish.main glassfish https://github.com/javaee/glassfish $VERSION opensource github
+javaee-ri javaee-ri $svn_closed/glassfish/branches/4.1.2_all/javaee-ri NA closed svn
+db-derby db-derby $svn_java_net/glassfish~svn/trunk/external/modules/derby/10.10.2.0 NA closed svn
+commons-fileupload:commons-fileupload commons-fileupload http://archive.apache.org/dist/commons/fileupload/source/commons-fileupload-1.3.3-src.zip commons-fileupload-$VERSION opensource curl
+commons-codec:commons-codec commons-codec http://archive.apache.org/dist/commons/codec/commons-codec-current-src.zip NA opensource curl
+jline:jline jline https://github.com/jline/jline2.git jline-$VERSION opensource github
+com.googlecode.jtype:jtype jtype https://github.com/markhobson/jtype 0.1.0 opensource github
+jna jna https://github.com/java-native-access/jna 3.2.2 opensource github
+ch.qos.cal10n cal10n https://github.com/qos-ch/cal10n v_0.7.7 opensource github
+org.slf4j slf4j https://github.com/qos-ch/slf4j v_1.7.2 opensource github
+org.glassfish.external:derby-distribution javadb https://github.com/javaee/javadb $VERSION opensource github
