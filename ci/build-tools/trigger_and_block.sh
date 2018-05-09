@@ -496,7 +496,7 @@ curl_debug(){
 
 get_trigger(){
   local test_id_inp=$1                                                                                                                                                                               
-  local parent_job_id="${JOB_NAME}_${BUILD_NUMBER}"
+  local parent_job_id="${BUILD_TAG}"
   local url="${TEST_JOB_URL}/api/xml"
   curl_debug "${url}" 
   for build_number in `get_xpath_value "//build/number" | ${SED} -e s@'<number>'@'\n<number>'@g -e s@'<list>'@@g -e s@'</list>'@@g -e s@'<number>'@@g -e s@'</number>'@@g | ${SED} '1d'`
