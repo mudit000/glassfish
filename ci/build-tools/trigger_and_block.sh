@@ -632,7 +632,7 @@ wait_for_test_jobs_completion(){
       if [ ${error_code} -eq 0 ] ; then
         if ! ${is_building} ; then
           # job is complete          
-          isIntermittent=`cat ${CONTAINER_WORKSPACE}/retry_config | ${GREP} ${test_id}` || true
+          isIntermittent=`cat ${WORKSPACE}/retry_config | ${GREP} ${test_id}` || true
           if [ "${isIntermittent}" != "" ];then
             trigger_retry_buildNumber=`trigger_again_if_unstable ${test_id} ${job_build_number} ${trigger_retry_count[${i}]}`
           else

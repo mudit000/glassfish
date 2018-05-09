@@ -266,7 +266,7 @@ promote_nightly(){
     promote_bundle ${NIGHTLY_PROMOTED_BUNDLES}/glassfish.zip ${PRODUCT_GF}-${PRODUCT_VERSION_GF}-${BUILD_ID}-${MDATE}.zip
     promote_bundle ${NIGHTLY_PROMOTED_BUNDLES}/nucleus-new.zip nucleus-${PRODUCT_VERSION_GF}-${BUILD_ID}-${MDATE}.zip
     promote_bundle ${NIGHTLY_PROMOTED_BUNDLES}/version-info.txt version-info-${PRODUCT_VERSION_GF}-${BUILD_ID}-${MDATE}.txt
-    cp ${WORKSPACE_BUNDLES}/version-info-${PRODUCT_VERSION_GF}-${BUILD_ID}-${MDATE}.txt ${CONTAINER_WORKSPACE}/version-info.txt
+    cp ${WORKSPACE_BUNDLES}/version-info-${PRODUCT_VERSION_GF}-${BUILD_ID}-${MDATE}.txt ${WORKSPACE}/version-info.txt
     promote_bundle ${NIGHTLY_PROMOTED_BUNDLES}/changes.txt changes-${PRODUCT_VERSION_GF}-${BUILD_ID}-${MDATE}.txt
     VERSION_INFO="${WORKSPACE_BUNDLES}/version-info-${PRODUCT_VERSION_GF}-${BUILD_ID}-${MDATE}.txt"
     SCM_REVISION=`head -1 ${VERSION_INFO} | cut -d ":" -f2 | tr -d ' '`
@@ -325,7 +325,7 @@ init_common(){
     -Dhttps.noProxyHosts='127.0.0.1|localhost|*.oracle.com'"
     fi
 
-    if [ -z $CONTAINER_WORKSPACE ]
+    if [ -z $WORKSPACE ]
     then
         WORKSPACE=$PWD
     fi
@@ -439,7 +439,7 @@ print_env_info(){
 
 dev_build(){
     printf "\n%s \n\n" "===== DO THE BUILD! ====="
-    mvn -X ${MAVEN_ARGS} -f pom.xml clean install \
+    mvn ${MAVEN_ARGS} -f pom.xml clean install \
         -Dmaven.test.failure.ignore=true -Dmaven.repo.local=${CONTAINER_WORKSPACE}/repository
 }
 
