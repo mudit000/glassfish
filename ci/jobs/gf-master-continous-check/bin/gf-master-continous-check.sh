@@ -37,7 +37,10 @@ fi
 #  ls /scratch/gf-code
 #   cd ${GF_ROOT}
 # fi
-
+ls -l ${WORKSPACE}
+ls -l ${WORKSPACE}/ci
+ls -l ${WORKSPACE}/ci/build-tools
+ls -l ${WORKSPACE}/ci/build-tools/glassfish
 /bin/bash -ex ${WORKSPACE}/ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1
 cp ${WORKSPACE}/ci/build-tools/glassfish/retry_config $CONTAINER_WORKSPACE/retry_config
 #if [ -z "${JENKINS_HOME}" ] && [ -z "${JENKINS_URL}" ]; then
