@@ -301,7 +301,7 @@ init_common(){
     #PROMOTED_BUNDLES=${PROMOTED_JOB_URL}/artifact/bundles/
 
     #IPS_REPO_URL=http://localhost
-    #IPS_REPO_DIR=${CONTAINER_WORKSPACE}/promorepo
+    #IPS_REPO_DIR=${WORKSPACE}/promorepo
     #IPS_REPO_PORT=16500
     #IPS_REPO_TYPE=sunos-sparc
     #UC2_VERSION=2.3
@@ -311,7 +311,7 @@ init_common(){
     MDATE=$(date +%m_%d_%Y)
     DATE=$(date)
 
-    MAVEN_REPO="-Dmaven.repo.local=${CONTAINER_WORKSPACE}/repository"
+    MAVEN_REPO="-Dmaven.repo.local=${WORKSPACE}/repository"
     MAVEN_ARGS="${MAVEN_REPO} -C -nsu -B"
     MAVEN_OPTS="${MAVEN_OPTS} -Xmx1024M -Xms256m -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit"
     if [ ! -z ${PROXY_HOST} ] && [ ! -z ${PROXY_PORT} ]
@@ -358,7 +358,7 @@ init_version(){
 	    # to resolve value of RELEASE_VERSION
 	    if [ "${BUILD_KIND}" = "weekly" ] &&  [ -z ${RELEASE_VERSION} ]
 	    then
-    		cp ${CONTAINER_WORKSPACE}/bundles/version-info.txt ${WORKSPACE_BUNDLES}/version-info.txt	
+    		cp ${WORKSPACE}/bundles/version-info.txt ${WORKSPACE_BUNDLES}/version-info.txt	
     		RELEASE_VERSION=`grep 'Maven-Version' ${WORKSPACE_BUNDLES}/version-info.txt | awk '{print $2}'`
     		INCREMENT_BUILD_ID=true
     		rm -f ${WORKSPACE_BUNDLES}/version-info.txt
@@ -400,7 +400,7 @@ init_version(){
 }
 
 init_bundles_dir(){
-    WORKSPACE_BUNDLES=${CONTAINER_WORKSPACE}/${BUILD_KIND}_bundles
+    WORKSPACE_BUNDLES=${WORKSPACE}/${BUILD_KIND}_bundles
     if [ ! -d "${WORKSPACE_BUNDLES}" ]
     then
         mkdir -p "${WORKSPACE_BUNDLES}"
@@ -440,14 +440,14 @@ print_env_info(){
 dev_build(){
     printf "\n%s \n\n" "===== DO THE BUILD! ====="
     mvn ${MAVEN_ARGS} -f pom.xml clean install \
-        -Dmaven.test.failure.ignore=true -Dmaven.repo.local=${CONTAINER_WORKSPACE}/repository
+        -Dmaven.test.failure.ignore=true -Dmaven.repo.local=${WORKSPACE}/repository
 }
 
 dev_external_build(){
     printf "\n%s \n\n" "===== DO THE BUILD! ====="
     mvn -s ${MAVEN_SETTINGS} ${MAVEN_ARGS} -f pom.xml clean install \
         -Dmaven.test.failure.ignore=true
-    rm -rf ${CONTAINER_WORKSPACE}/repository
+    rm -rf ${WORKSPACE}/repository
     export M2_HOME=/gf-hudson-tools/apache-maven-3.0.3
     export PATH=$M2_HOME/bin:$PATH
     mvn -version
@@ -458,10 +458,10 @@ dev_external_build(){
 merge_junits(){
   TEST_ID="build-unit-tests"
   whoami
-  ls -l ${CONTAINER_WORKSPACE}
-  rm -rf ${CONTAINER_WORKSPACE}/test-results
-  mkdir -p ${CONTAINER_WORKSPACE}/test-results/$TEST_ID/results/junitreports
-  JUD="${CONTAINER_WORKSPACE}/test-results/${TEST_ID}/results/junitreports/test_results_junit.xml"
+  ls -l ${WORKSPACE}
+  rm -rf ${WORKSPACE}/test-results
+  mkdir -p ${WORKSPACE}/test-results/$TEST_ID/results/junitreports
+  JUD="${WORKSPACE}/test-results/${TEST_ID}/results/junitreports/test_results_junit.xml"
   echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > ${JUD}
   echo "<testsuites>" >> ${JUD}
   for i in `find . -type d -name "surefire-reports"`
@@ -496,7 +496,7 @@ release_prepare(){
     egrep "Unknown lifecycle phase \"A_NON_EXISTENT_GOAL\"" mvn_rel.output
     if [ $? -ne 0 ]; then
 	echo "Unable to perform release using maven release plugin."
-        echo "Please see ${CONTAINER_WORKSPACE}/mvn_rel.output."
+        echo "Please see ${WORKSPACE}/mvn_rel.output."
 	exit 1;
     fi
 }
@@ -506,14 +506,14 @@ run_findbugs(){
     mvn ${MAVEN_ARGS} -f pom.xml install findbugs:findbugs
 
     printf "\n%s \n\n" "===== PROCESS FINDBUGS RESULTS ====="
-    FINDBUGS_RESULTS=${CONTAINER_WORKSPACE}/findbugs_results
+    FINDBUGS_RESULTS=${WORKSPACE}/findbugs_results
     mkdir ${FINDBUGS_RESULTS} | true
 
     # run findbugs-tool
     OLD_PWD=`pwd`
     cd ${HUDSON_HOME}/tools/findbugs-tool-latest
     set +e
-    ./findbugscheck ${CONTAINER_WORKSPACE}/main
+    ./findbugscheck ${WORKSPACE}/main
     EXIT_CODE=${?}
     set -e
     if [ ${EXIT_CODE} -ne 0 ]
@@ -525,9 +525,9 @@ run_findbugs(){
     cd ${OLD_PWD}
 
     # copy all results
-    for i in `find ${CONTAINER_WORKSPACE}/main -name findbugsXml.xml`
+    for i in `find ${WORKSPACE}/main -name findbugsXml.xml`
     do
-       target=`sed s@"${CONTAINER_WORKSPACE}"@@g | sed s@"/"@"_"@g <<< ${i}`
+       target=`sed s@"${WORKSPACE}"@@g | sed s@"/"@"_"@g <<< ${i}`
        cp ${i} ${FINDBUGS_RESULTS}/${target}
     done
 }
@@ -535,9 +535,9 @@ run_findbugs(){
 create_version_info(){
     printf "\n%s\n\n" "==== VERSION INFO ===="
     CURRENT_COMMIT=`git rev-parse --short HEAD`
-    echo Git Revision:  ${CURRENT_COMMIT} > ${CONTAINER_WORKSPACE}/version-info.txt
-    echo Git Branch: `git branch | grep ^\* | cut -d ' ' -f 2` >> ${CONTAINER_WORKSPACE}/version-info.txt
-    echo Build Date: `date` >> ${CONTAINER_WORKSPACE}/version-info.txt
+    echo Git Revision:  ${CURRENT_COMMIT} > ${WORKSPACE}/version-info.txt
+    echo Git Branch: `git branch | grep ^\* | cut -d ' ' -f 2` >> ${WORKSPACE}/version-info.txt
+    echo Build Date: `date` >> ${WORKSPACE}/version-info.txt
     if [ "${BUILD_KIND}" = "weekly" ] && [ ${#RELEASE_VERSION} -eq 0 ]
     then
         RELEASE_VERSION="${PRODUCT_VERSION_GF}-${BUILD_ID}"
@@ -545,44 +545,44 @@ create_version_info(){
 
     if [ ! -z ${RELEASE_VERSION} ]
     then
-       echo "Maven-Version: ${RELEASE_VERSION}" >> ${CONTAINER_WORKSPACE}/version-info.txt
+       echo "Maven-Version: ${RELEASE_VERSION}" >> ${WORKSPACE}/version-info.txt
     fi
     export CURRENT_COMMIT
 }
 
 create_version_info_for_binary(){
     printf "\n%s\n\n" "==== VERSION INFO FOR BINARY: NA ===="
-    echo NA > ${CONTAINER_WORKSPACE}/version-info.txt
+    echo NA > ${WORKSPACE}/version-info.txt
 }
 
 archive_bundles(){
     printf "\n%s \n\n" "===== ARCHIVE BUNDLES ====="
-    rm -rf ${CONTAINER_WORKSPACE}/bundles ; mkdir ${CONTAINER_WORKSPACE}/bundles
-    cp ${CONTAINER_WORKSPACE}/version-info.txt $CONTAINER_WORKSPACE/bundles
-    cp $GF_ROOT/appserver/distributions/glassfish/target/*.zip ${CONTAINER_WORKSPACE}/bundles
-    cp $GF_ROOT/appserver/distributions/web/target/*.zip ${CONTAINER_WORKSPACE}/bundles
-    cp $GF_ROOT/nucleus/distributions/nucleus/target/*.zip ${CONTAINER_WORKSPACE}/bundles
+    rm -rf ${WORKSPACE}/bundles ; mkdir ${WORKSPACE}/bundles
+    cp ${WORKSPACE}/version-info.txt $WORKSPACE/bundles
+    cp $GF_ROOT/appserver/distributions/glassfish/target/*.zip ${WORKSPACE}/bundles
+    cp $GF_ROOT/appserver/distributions/web/target/*.zip ${WORKSPACE}/bundles
+    cp $GF_ROOT/nucleus/distributions/nucleus/target/*.zip ${WORKSPACE}/bundles
 }
 
 archive_binaries(){
     printf "\n%s \n\n" "===== ARCHIVE BINARIES ====="
-    rm -rf ${CONTAINER_WORKSPACE}/bundles ; mkdir ${CONTAINER_WORKSPACE}/bundles
-    cp ${CONTAINER_WORKSPACE}/version-info.txt $CONTAINER_WORKSPACE/bundles
+    rm -rf ${WORKSPACE}/bundles ; mkdir ${WORKSPACE}/bundles
+    cp ${WORKSPACE}/version-info.txt $WORKSPACE/bundles
     URL=$1
-    wget -nd --directory-prefix=${CONTAINER_WORKSPACE}/bundles ${URL}/glassfish.zip
-    wget -nd --directory-prefix=${CONTAINER_WORKSPACE}/bundles ${URL}/nucleus-new.zip
-    wget -nd --directory-prefix=${CONTAINER_WORKSPACE}/bundles ${URL}/web.zip
+    wget -nd --directory-prefix=${WORKSPACE}/bundles ${URL}/glassfish.zip
+    wget -nd --directory-prefix=${WORKSPACE}/bundles ${URL}/nucleus-new.zip
+    wget -nd --directory-prefix=${WORKSPACE}/bundles ${URL}/web.zip
 }
 
 clean_and_zip_workspace(){
     printf "\n%s \n\n" "===== CLEAN AND ZIP THE WORKSPACE ====="
-    zip ${CONTAINER_WORKSPACE}/bundles/workspace.zip -r ../glassfish > /dev/null
+    zip ${WORKSPACE}/bundles/workspace.zip -r ../glassfish > /dev/null
 
 }
 
 zip_tests_workspace(){
     printf "\n%s \n\n" "===== ZIP THE TESTS WORKSPACE ====="
-    zip -r ${CONTAINER_WORKSPACE}/bundles/tests-workspace.zip \
+    zip -r ${WORKSPACE}/bundles/tests-workspace.zip \
         nucleus/pom.xml \
         nucleus/tests/ \
         appserver/pom.xml \
@@ -590,12 +590,12 @@ zip_tests_workspace(){
 	appserver/admingui/devtests/ \
 	appserver/admingui/pom.xml \
         -x *.git/* > /dev/null
-    cp -p  $GF_ROOT/appserver/tests/gftest.sh ${CONTAINER_WORKSPACE}/bundles
+    cp -p  $GF_ROOT/appserver/tests/gftest.sh ${WORKSPACE}/bundles
 }
 
 zip_gf_source(){
     printf "\n%s \n\n" "===== ZIP THE SOURCE CODE ====="
-    zip -r ${CONTAINER_WORKSPACE}/bundles/main.zip ./ -x **/target\* > /dev/null
+    zip -r ${WORKSPACE}/bundles/main.zip ./ -x **/target\* > /dev/null
 }
 
 git_checkout(){
@@ -606,11 +606,11 @@ git_checkout(){
 
 zip_tests_maven_repo(){
     printf "\n%s \n\n" "===== ZIP PART OF THE MAVEN REPO REQUIRED FOR TESTING ====="
-    pushd ${CONTAINER_WORKSPACE}/repository
+    pushd ${WORKSPACE}/repository
 
     # ideally this should be done
     # from a maven plugin...
-    zip -r ${CONTAINER_WORKSPACE}/bundles/tests-maven-repo.zip \
+    zip -r ${WORKSPACE}/bundles/tests-maven-repo.zip \
         org/glassfish/main/* \
         org/glassfish/hk2/hk2-config/* \
         org/glassfish/hk2/config-types/* \
@@ -664,9 +664,9 @@ create_git_tag(){
     printf "\n%s \n\n" "===== CREATE GIT TAG ====="
 
     # download and unzip the workspace
-    cp ${CONTAINER_WORKSPACE}/bundles/workspace.zip ${WORKSPACE_BUNDLES}/
-    rm -rf ${CONTAINER_WORKSPACE}/tag | true ; unzip -qd ${CONTAINER_WORKSPACE}/tag ${WORKSPACE_BUNDLES}/workspace.zip
-    cd ${CONTAINER_WORKSPACE}/tag/glassfish
+    cp ${WORKSPACE}/bundles/workspace.zip ${WORKSPACE_BUNDLES}/
+    rm -rf ${WORKSPACE}/tag | true ; unzip -qd ${WORKSPACE}/tag ${WORKSPACE_BUNDLES}/workspace.zip
+    cd ${WORKSPACE}/tag/glassfish
     git commit -am "commit tag ${RELEASE_VERSION}"
     git tag ${RELEASE_VERSION}
     git push -f origin ${RELEASE_VERSION}
@@ -802,7 +802,7 @@ scp_jnet(){
 create_promotion_changs(){
     rm ${WORKSPACE_BUNDLES}/${1} | true
     if [[ "nightly" == "${BUILD_KIND}" ]]; then
-        LAST_STABLE_PROM_SCM_VERSION_FILE="${CONTAINER_WORKSPACE}/last-version-info.txt"
+        LAST_STABLE_PROM_SCM_VERSION_FILE="${WORKSPACE}/last-version-info.txt"
         if [ ! -f ${LAST_STABLE_PROM_SCM_VERSION_FILE} ]; then
             LAST_STABLE_PROM_SCM_VERSION_URL="${HUDSON_URL}/job/${JOB_NAME}/lastStableBuild/artifact/version-info.txt"
             curl ${LAST_STABLE_PROM_SCM_VERSION_URL} > ${LAST_STABLE_PROM_SCM_VERSION_FILE}
@@ -815,7 +815,7 @@ create_promotion_changs(){
     fi
     CURRENT_COMMIT=`head -1 ${WORKSPACE_BUNDLES}/version-info-${PRODUCT_VERSION_GF}-${BUILD_ID}-${MDATE}.txt | cut -d ":" -f2 | tr -d ' '`
     #if [ "${CURRENT_COMMIT}" != "${PREVIOUS_COMMIT}" ] ; then
-    cd ${CONTAINER_WORKSPACE}/glassfish    
+    cd ${WORKSPACE}/glassfish    
     git log --abbrev-commit --pretty=oneline ${PREVIOUS_COMMIT}..${CURRENT_COMMIT} > ${WORKSPACE_BUNDLES}/${1}
     #fi
 }
@@ -828,7 +828,7 @@ promote_bundle(){
         if [[ "nightly" == "${BUILD_KIND}" ]]; then
             curl ${1} > ${WORKSPACE_BUNDLES}/${2}
         else
-            cp $CONTAINER_WORKSPACE/bundles/${1} ${WORKSPACE_BUNDLES}/${2}
+            cp $WORKSPACE/bundles/${1} ${WORKSPACE_BUNDLES}/${2}
         fi
     fi
     scp -o "StrictHostKeyChecking no" ${WORKSPACE_BUNDLES}/${2} ${SCP}
