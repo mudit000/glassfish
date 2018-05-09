@@ -302,8 +302,8 @@ find_test_job(){
     do
       local params
       params[1]="PARENT_NODE=${HOSTNAME}"
-      params[0]="PARENT_ID=${JOB_NAME}_${BUILD_NUMBER}"
-      params[1]="PARENT_WS_PATH=${CONTAINER_WORKSPACE}"
+      params[0]="PARENT_ID=${BUILD_TAG}"
+      params[1]="PARENT_WS_PATH=${WORKSPACE}"
       params[2]="TEST_ID=${1}"
       if `is_test_job_match ${i} "${params[*]}"` ; then
         # the triggered run is already completed
@@ -330,10 +330,10 @@ trigger_test_job(){
   CRUMB=$(echo ${CRUMB/\"/})
   local params
   if [[ ${#} -eq 3 ]]; then
-    params="PARENT_ID=${JOB_NAME}_${BUILD_NUMBER}&PARENT_NODE=${1}&PARENT_WS_PATH=${2}&TEST_ID=${3}"
+    params="PARENT_ID=${BUILD_TAG}&PARENT_NODE=${1}&PARENT_WS_PATH=${2}&TEST_ID=${3}"
     log_msg "[INFO] trigger_test_job(): triggering ${3}"
   elif [[ ${#} -eq 4 ]]; then
-    params="PARENT_ID=${JOB_NAME}_${BUILD_NUMBER}&PARENT_NODE=${1}&PARENT_WS_PATH=${2}&TEST_ID=${3}&LABEL=${4}"
+    params="PARENT_ID=${BUILD_TAG}&PARENT_NODE=${1}&PARENT_WS_PATH=${2}&TEST_ID=${3}&LABEL=${4}"
     log_msg "[INFO] trigger_test_job(): triggering ${3} on label ${4}"
   fi
   curl -H ${CRUMB} -X POST \
@@ -341,13 +341,13 @@ trigger_test_job(){
 }
 
 #
-# Adds status regarding a given test job to ${CONTAINER_WORKSPACE}/test-results/status.txt
+# Adds status regarding a given test job to ${WORKSPACE}/test-results/status.txt
 # If a exist already exist for TEST_ID, it will be replaced.
 #
 # Args: TEST_ID JOB_URL TEST_STATUS [MESSAGE]
 #
 add_to_test_status(){
-  local status_file=${CONTAINER_WORKSPACE}/test-results/test-status.txt
+  local status_file=${WORKSPACE}/test-results/test-status.txt
   if [ -f ${status_file} ] ; then
     cat ${status_file} | ${GREP} -v "~ ${1} ~" > ${status_file}.tmp
     mv ${status_file}.tmp ${status_file}
@@ -388,16 +388,16 @@ run_test_jobs(){
     do
       set +e
       if [[ ${testid_key} = ${testid_value} ]]; then
-        trigger_test_job "${HOSTNAME}" "${CONTAINER_WORKSPACE}" "${test_id}"
+        trigger_test_job "${HOSTNAME}" "${WORKSPACE}" "${test_id}"
       else
-        trigger_test_job "${HOSTNAME}" "${CONTAINER_WORKSPACE}" "${testid_key}" "${testid_value}"
+        trigger_test_job "${HOSTNAME}" "${WORKSPACE}" "${testid_key}" "${testid_value}"
         test_id=${testid_key}
       fi
       local error_code=${?}
       set -e
       if [ ${error_code} -eq 0 ] ; then
         triggered_test_ids="${triggered_test_ids} ${test_id}"
-        mkdir -p ${CONTAINER_WORKSPACE}/test-results/${test_id}
+        mkdir -p ${WORKSPACE}/test-results/${test_id}
         break
       fi
     done
@@ -532,16 +532,16 @@ is_job_stable(){
   local is_success
   case ${test_id_inp} in                                                                                                                                                                            
     findbugs_all)
-      result_file="${CONTAINER_WORKSPACE}/test-results/${test_id_inp}/results/findbugs_results/findbugscheck.log"
+      result_file="${WORKSPACE}/test-results/${test_id_inp}/results/findbugs_results/findbugscheck.log"
       is_success=`cat "${result_file}" | ${GREP} "SUCCESS" || true`;;
     findbugs_lp)
-      result_file="${CONTAINER_WORKSPACE}/test-results/${test_id_inp}/results/findbugs_lp_results/findbugscheck.log"
+      result_file="${WORKSPACE}/test-results/${test_id_inp}/results/findbugs_lp_results/findbugscheck.log"
       is_success=`cat "${result_file}" | ${GREP} "SUCCESS" || true`;;                                                                                                                              
     copyright)
-      result_file="${CONTAINER_WORKSPACE}/test-results/${test_id_inp}/results/copyright_results/copyrightcheck.log"
+      result_file="${WORKSPACE}/test-results/${test_id_inp}/results/copyright_results/copyrightcheck.log"
       is_success=`cat "${result_file}" | ${GREP} "SUCCESS" || true`;;                                                                                            
     *)                                                   
-      JUD="${CONTAINER_WORKSPACE}/test-results/${test_id_inp}/results/junitreports/test_results_junit.xml"
+      JUD="${WORKSPACE}/test-results/${test_id_inp}/results/junitreports/test_results_junit.xml"
       is_failure=`cat ${JUD} | ${GREP} -aE "<failure ((type)*|(message)*)" || true `
       is_error=`cat ${JUD} | ${GREP} -aE "<error ((type)*|(message)*)" || true`
       if [ "${is_failure}" != "" -o "${is_error}" != "" ];then
@@ -564,7 +564,7 @@ trigger_again_if_unstable(){
   if [ "${is_success}" = ""  ];then
     #job is unstable trigger again
     if [ "${trigger_count}" -le "2" ];then
-      trigger_test_job "${HOSTNAME}" "${CONTAINER_WORKSPACE}" "${test_id_inp}" > /dev/null
+      trigger_test_job "${HOSTNAME}" "${WORKSPACE}" "${test_id_inp}" > /dev/null
       new_trigger=`get_trigger ${test_id_inp}`
     fi
   fi 

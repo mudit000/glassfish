@@ -290,7 +290,7 @@ find_test_job(){
     do
       local params
       params[1]="PARENT_NODE=${HOSTNAME}"
-      params[0]="PARENT_ID=${JOB_NAME}_${BUILD_NUMBER}"
+      params[0]="PARENT_ID=${BUILD_TAG}"
       params[1]="PARENT_WS_PATH=${WORKSPACE}"
       params[2]="TEST_ID=${1}"
       if `is_test_job_match ${i} "${params[*]}"` ; then
@@ -314,10 +314,10 @@ find_test_job(){
 trigger_test_job(){
   local params
   if [[ ${#} -eq 3 ]]; then
-    params="PARENT_ID=${JOB_NAME}_${BUILD_NUMBER}&PARENT_NODE=${1}&PARENT_WS_PATH=${2}&TEST_ID=${3}"
+    params="PARENT_ID=${BUILD_TAG}&PARENT_NODE=${1}&PARENT_WS_PATH=${2}&TEST_ID=${3}"
     log_msg "[INFO] trigger_test_job(): triggering ${3}"
   elif [[ ${#} -eq 4 ]]; then
-    params="PARENT_ID=${JOB_NAME}_${BUILD_NUMBER}&PARENT_NODE=${1}&PARENT_WS_PATH=${2}&TEST_ID=${3}&LABEL=${4}"
+    params="PARENT_ID=${BUILD_TAG}&PARENT_NODE=${1}&PARENT_WS_PATH=${2}&TEST_ID=${3}&LABEL=${4}"
     log_msg "[INFO] trigger_test_job(): triggering ${3} on label ${4}"
   fi
   curl -X POST \

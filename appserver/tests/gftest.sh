@@ -48,7 +48,7 @@ delete_test_sources(){
 } 
 download_test_zip(){
 	mkdir bundles
-	scp -o "StrictHostKeyChecking no" ${PARENT_NODE}:${PARENT_WS_PATH}/bundles/tests-workspace.zip bundles
+	cp -rf ${NFS_PATH}/${PARENT_ID}/bundles/tests-workspace.zip bundles
 }
 	
 ###########################
@@ -80,10 +80,10 @@ run_test(){
 
 }
 
-generate_platform(){
-	uname -nsp > /tmp/platform
-	scp -o "StrictHostKeyChecking no" -r /tmp/platform ${PARENT_NODE}:${PARENT_WS_PATH}/test-results/$TEST_ID
-}
+# generate_platform(){
+# 	uname -nsp > /tmp/platform
+# 	scp -o "StrictHostKeyChecking no" -r /tmp/platform ${PARENT_NODE}:${PARENT_WS_PATH}/test-results/$TEST_ID
+# }
 
 list_test_ids(){
 	for runtest in `find . -name run_test\.sh`; do

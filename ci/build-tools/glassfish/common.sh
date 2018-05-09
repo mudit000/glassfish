@@ -655,8 +655,8 @@ align_column(){
 }
 copy_bundle_to_nfs(){
 #need to update in order to support multiple bundles.
-mkdir -p ${NFS_PATH}/bundles/
-cp -rf ${WORKSPACE}/bundles/* ${NFS_PATH}/bundles 
+mkdir -p ${NFS_PATH}/${BUILD_TAG}/bundles/
+cp -rf ${WORKSPACE}/bundles/* ${NFS_PATH}/${BUILD_TAG}/bundles/
 
 }
 
