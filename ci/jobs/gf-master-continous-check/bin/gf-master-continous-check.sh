@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 LOCAL_GF_GIT_REPO="${GF_ROOT}/.git"
 export PATH=/gf-hudson-tools/bin:${PATH}
@@ -6,21 +6,21 @@ export PATH=/gf-hudson-tools/bin:${PATH}
 # Incremental workspace cleanup
 # Keep GlassFish (Git repository)
 # Keep repository (Maven local repository)
-for file in `ls ${WORKSPACE}`
-do
-  if [ "${file}" != "." ] && [ "${file}" != ".." ] \
-    && [ "${file}" != "GlassFish" ] && [ "${file}" != "repository" ] \
-    && [ "${file}" != "debug.log" ]; then
-    rm -rf ${file}
-  fi
-done
+# for file in `ls ${WORKSPACE}`
+# do
+#   if [ "${file}" != "." ] && [ "${file}" != ".." ] \
+#     && [ "${file}" != "GlassFish" ] && [ "${file}" != "repository" ] \
+#     && [ "${file}" != "debug.log" ]; then
+#     rm -rf ${file}
+#   fi
+# done
 
 # Prune the local repository of the in-house groupIds
 # To ensure local dependencies are built
-if [ -d "${WORKSPACE}/repository" ] ; then
-  rm -rf "${WORKSPACE}/repository/org/glassfish"
-  rm -rf "${WORKSPACE}/repository/com/sun"
-fi
+# if [ -d "${WORKSPACE}/repository" ] ; then
+#   rm -rf "${WORKSPACE}/repository/org/glassfish"
+#   rm -rf "${WORKSPACE}/repository/com/sun"
+# fi
 
 # Incremental fetch
 # I.e git clone the first time
