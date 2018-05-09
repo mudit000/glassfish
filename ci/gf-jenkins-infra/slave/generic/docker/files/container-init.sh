@@ -55,6 +55,6 @@ log_msg "starting sendmail..." >> /var/log/init.log
 log_msg "starting sshd..." >> /var/log/init.log
 (/usr/sbin/sshd  -D -e  1> >(prepend) 2> >(prepend 1>&2)) >> /var/log/sshd.log 2>&1 &
 log_msg "Wait for mount to complete"
-/bin/bash /etc/wait.sh $JAVA_HOME
+/bin/bash -x /etc/wait.sh $JAVA_HOME
 #Run the wrapper script which calls glassfish build script 
 /bin/bash -xe /etc/gfbuildwrapper.sh
