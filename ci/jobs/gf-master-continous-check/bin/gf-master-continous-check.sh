@@ -37,10 +37,6 @@ export PATH=/gf-hudson-tools/bin:${PATH}
 #  ls /scratch/gf-code
 #   cd ${GF_ROOT}
 # fi
-ls -l ${WORKSPACE}
-ls -l ${WORKSPACE}/ci
-ls -l ${WORKSPACE}/ci/build-tools
-ls -l ${WORKSPACE}/ci/build-tools/glassfish
 /bin/bash -ex ${WORKSPACE}/ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1
 cp ${WORKSPACE}/ci/build-tools/glassfish/retry_config $WORKSPACE/retry_config
 #if [ -z "${JENKINS_HOME}" ] && [ -z "${JENKINS_URL}" ]; then
@@ -54,6 +50,5 @@ cp ${WORKSPACE}/ci/build-tools/glassfish/retry_config $WORKSPACE/retry_config
 
 
 
-bash -ex /scratch/BUILD_AREA/glassfish/ci/build-tools/trigger_and_block.sh ql_gf_full_profile_all
-cp -r /scratch/free-folder/test-results ${WORKSPACE}/
-bash -ex /scratch/BUILD_AREA/glassfish/ci/build-tools/glassfish/checkJobStatus.sh
+bash -ex ${WORKSPACE}/ci/build-tools/trigger_and_block.sh ql_gf_full_profile_all
+bash -ex ${WORKSPACE}/ci/build-tools/glassfish/checkJobStatus.sh
