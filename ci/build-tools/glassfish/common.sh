@@ -457,8 +457,6 @@ dev_external_build(){
 
 merge_junits(){
   TEST_ID="build-unit-tests"
-  whoami
-  ls -l ${WORKSPACE}
   rm -rf ${WORKSPACE}/test-results
   mkdir -p ${WORKSPACE}/test-results/$TEST_ID/results/junitreports
   JUD="${WORKSPACE}/test-results/${TEST_ID}/results/junitreports/test_results_junit.xml"
@@ -591,6 +589,7 @@ zip_tests_workspace(){
 	appserver/admingui/pom.xml \
         -x *.git/* > /dev/null
     cp -p  $GF_ROOT/appserver/tests/gftest.sh ${WORKSPACE}/bundles
+    cp -p  $GF_ROOT/ci/gf-jenkins-infra/slave/generic/start_docker_slave.sh ${WORKSPACE}/bundles
 }
 
 zip_gf_source(){
