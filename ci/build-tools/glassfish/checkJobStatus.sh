@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # OS-specific section
 if [ `uname | grep -i "sunos" | wc -l | awk '{print $1}'` -eq 1 ] ; then
@@ -38,6 +38,7 @@ checkStatus(){
 }
 
 add_to_test_status(){
+  cp -r ${NFS_PATH}/${BUILD_TAG}/test-results ${WORKSPACE}
   status_file=${WORKSPACE}/test-results/test-status.txt
   rm ${status_file}.tmp > /dev/null || true  
   AGG_JUD="${WORKSPACE}/test-results/test_results_junit.xml"

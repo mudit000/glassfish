@@ -433,8 +433,8 @@ run_test_jobs(){
       fi
 
       set +e
-      local job_url=${TEST_JOB_URL}/${job_build_number}
       local job_build_number=`get_trigger ${test_id} ${last_build}`
+      local job_url=${TEST_JOB_URL}/${job_build_number}
       local error_code=${?}
       set -e
 
