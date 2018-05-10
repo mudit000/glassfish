@@ -589,7 +589,7 @@ zip_tests_workspace(){
 	appserver/admingui/pom.xml \
         -x *.git/* > /dev/null
     cp -p  $GF_ROOT/appserver/tests/gftest.sh ${WORKSPACE}/bundles
-    cp -p  $GF_ROOT/ci/gf-jenkins-infra/slave/generic/start_docker_slave.sh ${WORKSPACE}/bundles
+    cp -prf  $GF_ROOT/ci/ ${WORKSPACE}/bundles
 }
 
 zip_gf_source(){
