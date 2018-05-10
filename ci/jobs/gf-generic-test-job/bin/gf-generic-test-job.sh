@@ -5,9 +5,7 @@ ls ~/.ssh
 #cat ~/.ssh/ssh_host_rsa_key.pub >> /scratch/host_ssh/authorized_keys
 #rm -rf ${WORKSPACE}/* || true
 jps -mv
-ls -l ${PARENT_WS_PATH_CONTAINER}/
-ls -l ${PARENT_WS_PATH_CONTAINER}/bundles/
-scp -o "StrictHostKeyChecking no" ${NFS_PATH}/bundles/gftest.sh .
+cp ${NFS_PATH}/${PARENT_ID}/bundles/gftest.sh .
 bash -ex gftest.sh run_test ${TEST_ID}
 
 #chmod 777 ${PARENT_WS_PATH_CONTAINER}/bundles/gftest.sh
