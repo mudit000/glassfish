@@ -80,10 +80,10 @@ run_test(){
 
 }
 
-# generate_platform(){
-# 	uname -nsp > /tmp/platform
-# 	scp -o "StrictHostKeyChecking no" -r /tmp/platform ${PARENT_NODE}:${PARENT_WS_PATH}/test-results/$TEST_ID
-# }
+generate_platform(){
+	uname -nsp > /tmp/platform
+	cp /tmp/platform  ${NFS_PATH}/${PARENT_ID}/test-results/${TEST_ID}
+}
 
 list_test_ids(){
 	for runtest in `find . -name run_test\.sh`; do
@@ -109,7 +109,7 @@ case $OPT in
 		fi;;
 		
 	run_test )
-		#trap generate_platform EXIT
+		trap generate_platform EXIT
 		run_test $TEST_ID ;;
 esac
  

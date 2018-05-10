@@ -121,10 +121,13 @@ isnumber() {
 #
 # Gets job attribute value using xpath.
 # 
-# Args: XPATH
+# Args: url
+# Args: xpath
 #
 get_xpath_value(){
-  xmllint --xpath $1 temp-result.xml 
+  curl ${1} --globoff > temp-result.xml
+  xmllint --xpath ${2} temp-result.xml
+  rm temp-result.xml
 }
 
 #
@@ -132,9 +135,9 @@ get_xpath_value(){
 # This will include the currently on-going runs.
 #
 get_test_job_last_build_number(){
-  local url="${TEST_JOB_URL}/lastBuild/buildNumber/text()"
+  local url="${TEST_JOB_URL}/api/xml"
   log_debug "get_test_job_last_build_number(${url}): invoking curl"
-  curl "${url}"
+  get_xpath_value $url '//lastBuild/number/text()'
   local error_code=${?}
   if [ ${error_code} -ne 0 ] ; then
     log_debug "get_test_job_last_build_number(${url}): error_code=${error_code}"
@@ -150,8 +153,7 @@ get_test_job_last_build_number(){
 get_test_job_status(){
   local url="${TEST_JOB_URL}/${1}/api/xml"
   log_debug "get_test_job_status(${url}): invoking curl"
-  curl "${url}" > temp-result.xml
-  get_xpath_value '//result/text()'
+  get_xpath_value $url '//result/text()'
   local error_code=${?}
   if [ ${error_code} -ne 0 ] ; then
     log_debug "get_test_job_status(${url}): error_code=${error_code}"
@@ -166,8 +168,7 @@ get_test_job_status(){
 is_test_job_building(){
   local url="${TEST_JOB_URL}/${1}/api/xml"
   log_debug "is_test_job_building(${url}): invoking curl"
-  curl "${url}" > temp-result.xml
-  get_xpath_value '(//building)[1]/text()'
+  get_xpath_value "${url}" '(//building)\[1\]/text()'
   local error_code=${?}
   if [ ${error_code} -ne 0 ] ; then
     log_debug "is_test_job_building(${url}): error_code=${error_code}"
@@ -182,8 +183,7 @@ is_test_job_building(){
 is_test_job_inqueue(){
   local url="${TEST_JOB_URL}/${1}/api/xml"
   log_debug "is_test_job_inqueue(${url}): invoking curl"
-  curl "${url}" > temp-result.xml
-  get_xpath_value '//inQueue/text()'
+  get_xpath_value "${url}" '//inQueue/text()'
   local error_code=${?}
   if [ ${error_code} -ne 0 ] ; then
     log_debug "is_test_job_inqueue(${url}): error_code=${error_code}"
@@ -199,8 +199,7 @@ is_test_job_inqueue(){
 get_test_job_params(){
   local url="${TEST_JOB_URL}/${1}/api/xml"
   log_debug "get_test_job_params(${url}): invoking curl"
-  curl "${url}" > temp-result.xml
-  get_xpath_value '//parameter' | \
+  get_xpath_value "${url}" '//parameter' | \
     ${SED} \
       -e s@'<parameter _class="hudson.model.StringParameterValue">'@@g  \
       -e s@'<parameter>'@@g -e s@'</parameter>'@@g \
@@ -498,21 +497,17 @@ get_trigger(){
   local test_id_inp=$1                                                                                                                                                                               
   local parent_job_id="${BUILD_TAG}"
   local url="${TEST_JOB_URL}/api/xml"
-  curl_debug "${url}" 
-  for build_number in `get_xpath_value "//build/number" | ${SED} -e s@'<number>'@'\n<number>'@g -e s@'<list>'@@g -e s@'</list>'@@g -e s@'<number>'@@g -e s@'</number>'@@g | ${SED} '1d'`
+  for build_number in `get_xpath_value "${url}" "//build/number" | ${SED} -e s@'<number>'@'\n<number>'@g -e s@'<list>'@@g -e s@'</list>'@@g -e s@'<number>'@@g -e s@'</number>'@@g | ${SED} '1d'`
   do
      job_url="$TEST_JOB_URL/$build_number"
      curl_url="${job_url}/api/xml"
-     curl_debug ${curl_url} --globoff
-     parent=`get_xpath_value '//parameter[name="PARENT_ID"]/value/text()'`  
+     parent=`get_xpath_value ${curl_url} '//parameter[name="PARENT_ID"]/value/text()'`  
    
      curl_url="${job_url}/api/xml"
-     curl_debug ${curl_url} --globoff 
-     test_id=`get_xpath_value '//parameter[name="TEST_ID"]/value/text()'`
+     test_id=`get_xpath_value ${curl_url} '//parameter[name="TEST_ID"]/value/text()'`
 
      curl_url="${job_url}/api/xml"
-     curl_debug ${curl_url} --globoff 
-     trigger_number=`get_xpath_value '//number/text()'`
+     trigger_number=`get_xpath_value ${curl_url} '//number/text()'`
      
 
      if [ "$parent" = "${parent_job_id}" -a "$test_id" = "${test_id_inp}" ];then

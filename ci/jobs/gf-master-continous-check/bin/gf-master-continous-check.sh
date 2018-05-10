@@ -52,3 +52,4 @@ cp ${WORKSPACE}/ci/build-tools/glassfish/retry_config $WORKSPACE/retry_config
 
 bash -ex ${WORKSPACE}/ci/build-tools/trigger_and_block.sh ql_gf_full_profile_all
 bash -ex ${WORKSPACE}/ci/build-tools/glassfish/checkJobStatus.sh
+rm -rf ${NFS_PATH}/*
