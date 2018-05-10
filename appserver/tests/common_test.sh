@@ -114,6 +114,7 @@ zip_test_results(){
 
 upload_test_results(){
 	printf "\n%s \n\n" "===== UPLOADING THE TESTS RESULTS ====="
+	mkdir -p ${NFS_PATH}/${PARENT_ID}/test-results/$TEST_ID
 	cp -r $WORKSPACE/results/ ${NFS_PATH}/${PARENT_ID}/test-results/$TEST_ID/
 }
 
