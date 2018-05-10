@@ -109,7 +109,7 @@ case $OPT in
 		fi;;
 		
 	run_test )
-		trap generate_platform EXIT
+		#trap generate_platform EXIT
 		run_test $TEST_ID ;;
 esac
  
