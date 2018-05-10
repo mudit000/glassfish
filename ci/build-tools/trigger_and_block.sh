@@ -168,7 +168,7 @@ get_test_job_status(){
 is_test_job_building(){
   local url="${TEST_JOB_URL}/${1}/api/xml"
   log_debug "is_test_job_building(${url}): invoking curl"
-  get_xpath_value "${url}" '(//building)\[1\]/text()'
+  get_xpath_value "${url}" '(//building)[1]/text()'
   local error_code=${?}
   if [ ${error_code} -ne 0 ] ; then
     log_debug "is_test_job_building(${url}): error_code=${error_code}"
@@ -476,21 +476,6 @@ run_test_jobs(){
   fi
 
   wait_for_test_jobs_completion ${triggers[@]}
-}
-
-curl_debug(){
-  local url=$1
-  local opts=$2
-  set +e
-  result=`curl -f ${opts} ${url} > temp-result.xml`
-  local error_code=${?}
-  set -e
-  if [ ${error_code} -ne 0 ]; then
-    log_msg "[ERROR] curl_debug(): curl to ${url} with ${opts} failed."
-    echo ""
-  else
-    echo $result
-  fi
 }
 
 get_trigger(){
