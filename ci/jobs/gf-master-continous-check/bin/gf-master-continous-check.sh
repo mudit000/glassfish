@@ -39,6 +39,7 @@ export PATH=/gf-hudson-tools/bin:${PATH}
 # fi
 /bin/bash -ex ${WORKSPACE}/ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1
 cp ${WORKSPACE}/ci/build-tools/glassfish/retry_config $WORKSPACE/retry_config
+test_ids=`/bin/bash -ex ${WORKSPACE}/appserver/tests/gftest.sh list_test_ids ${1}`
 #if [ -z "${JENKINS_HOME}" ] && [ -z "${JENKINS_URL}" ]; then
 # LINUX_LARGE_POOL="POOL-1-LINUX-LARGE"
 # SOLARIS_POOL="solaris-sparc"
@@ -50,6 +51,6 @@ cp ${WORKSPACE}/ci/build-tools/glassfish/retry_config $WORKSPACE/retry_config
 
 
 
-bash -ex ${WORKSPACE}/ci/build-tools/trigger_and_block.sh ql_gf_full_profile_all
+bash -ex ${WORKSPACE}/ci/build-tools/trigger_and_block.sh ${test_ids}
 bash -ex ${WORKSPACE}/ci/build-tools/glassfish/checkJobStatus.sh
-rm -rf ${NFS_PATH}/*
+rm -rf ${NFS_PATH}/${BUILD_TAG}/
