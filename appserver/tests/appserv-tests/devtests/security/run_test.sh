@@ -40,15 +40,7 @@
 #
 
 test_run(){
-	rm -rf opends-image
-	mkdir opends-image
-	pushd opends-image
-	
-	unzip -q /net/gf-hudson/scratch/java_re_node/OpenDS-2.2.1.zip
-
-	export OPENDS_HOME=$PWD/OpenDS-2.2.1
-	popd
-
+	export OPENDS_HOME=$OPENDS_HOME
 	# Workaround for JDK7 and OpenDS
 	cp $APS_HOME/devtests/security/ldap/opends/X500Signer.jar $OPENDS_HOME/lib
 	rm -rf $OPENDS_HOME/lib/set-java-home
