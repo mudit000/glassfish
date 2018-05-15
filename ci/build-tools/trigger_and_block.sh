@@ -443,7 +443,7 @@ run_test_jobs(){
         log_msg "[ERROR] run_test_jobs(): unable to find job for ${test_id} (ERROR_COUNT=${error_count[${test_id_index}]})"
 
         # allow up to 6 errors per test_id
-        if [ ${error_count[${test_id_index}]} -gt 6 ] ; then
+        if [ ${error_count[${test_id_index}]} -gt 60000000 ] ; then
           add_to_test_status "${test_id}" "-" "ABORTED" "0" "(unable to find job)" 
           # record the test_id as ABORTED (-1)
           triggers[${test_id_index}]="${test_id}=-1"
@@ -702,7 +702,7 @@ wait_for_test_jobs_completion(){
     fi
 
     # timeout
-    if [ ${count} -gt 420 ] ; then
+    if [ ${count} -gt 60000000 ] ; then
       for ((i=0;i<${#triggers[@]};i++))
       {
         local trigger_entry=(`key_val_as_list ${triggers[${i}]}`)
