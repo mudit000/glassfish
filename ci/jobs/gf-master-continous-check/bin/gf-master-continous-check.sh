@@ -1,7 +1,6 @@
 #!/bin/bash -x
 
 LOCAL_GF_GIT_REPO="${GF_ROOT}/.git"
-export PATH=/gf-hudson-tools/bin:${PATH}
 
 # Incremental workspace cleanup
 # Keep GlassFish (Git repository)

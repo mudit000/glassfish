@@ -6,7 +6,6 @@ if [ `uname | grep -i "sunos" | wc -l | awk '{print $1}'` -eq 1 ] ; then
   AWK="gawk"
   SED="gsed"
   BC="gbc"
-  export PATH=/gf-hudson-tools/bin:${PATH}
 else
   GREP="grep"
   AWK="awk"

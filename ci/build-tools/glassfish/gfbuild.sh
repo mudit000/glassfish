@@ -81,7 +81,6 @@ fi
 is_scenario(){
     case "$1" in
         "build_re_dev" | \
-        "build_re_external_dev" | \
         "binary_dev" | \
         "build_re_nightly" | \
         "build_re_weekly" | \

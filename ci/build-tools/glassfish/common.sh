@@ -59,7 +59,6 @@ if [ `uname | grep -i "sunos" | wc -l | awk '{print $1}'` -eq 1 ] ; then
   AWK="gawk"
   SED="gsed"
   BC="gbc"
-  export PATH=/gf-hudson-tools/bin:${PATH}
 else
   GREP="grep"
   AWK="awk"
@@ -441,18 +440,6 @@ dev_build(){
     printf "\n%s \n\n" "===== DO THE BUILD! ====="
     mvn ${MAVEN_ARGS} -f pom.xml clean install \
         -Dmaven.test.failure.ignore=true -Dmaven.repo.local=${WORKSPACE}/repository
-}
-
-dev_external_build(){
-    printf "\n%s \n\n" "===== DO THE BUILD! ====="
-    mvn -s ${MAVEN_SETTINGS} ${MAVEN_ARGS} -f pom.xml clean install \
-        -Dmaven.test.failure.ignore=true
-    rm -rf ${WORKSPACE}/repository
-    export M2_HOME=/gf-hudson-tools/apache-maven-3.0.3
-    export PATH=$M2_HOME/bin:$PATH
-    mvn -version
-    mvn ${MAVEN_ARGS} -f pom.xml clean install -Prelease-phase2,embedded,javaee-api \
-     -Dgpg.passphrase=GlassFish -Dgpg.executable=gpg2 -Dmaven.test.failure.ignore=true
 }
 
 merge_junits(){
