@@ -63,7 +63,7 @@ add_to_test_status(){
             aggregate_downstream_junit_xml ${test_id};;
         esac
       else
-        platform=`cat ${WORKSPACE}/test-results/${test_id}/platform`
+        platform=`cat ${WORKSPACE}/test-results/${test_id}/platform` | true
         echo "${i} ~ Failures:NA,Errors:NA ~ ${platform} ~" | ${AWK} -F '~' '{print "~",$2,"~",$3,"~",$4,"~",$5,"~",$7,"~",$8,"~"}'  >> ${status_file}.tmp
       fi
     done
