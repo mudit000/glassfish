@@ -37,7 +37,7 @@ checkStatus(){
 }
 
 add_to_test_status(){
-  cp -r ${NFS_PATH}/${BUILD_TAG}/test-results ${WORKSPACE}
+  cp -r ${NFS_PATH}/${BUILD_TAG}/test-results ${WORKSPACE} | true
   status_file=${WORKSPACE}/test-results/test-status.txt
   rm ${status_file}.tmp > /dev/null || true  
   AGG_JUD="${WORKSPACE}/test-results/test_results_junit.xml"
