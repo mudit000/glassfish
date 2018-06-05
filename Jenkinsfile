@@ -11,8 +11,8 @@ metadata:
     mypod: "ok"
 spec:
   containers:
-  - name: busybox
-    image: busybox
+  - name: maven
+    image: maven
     command:
     - cat
     tty: true
