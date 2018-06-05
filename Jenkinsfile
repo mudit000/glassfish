@@ -23,7 +23,7 @@ spec:
     stage('build') {
       steps {
         echo 'from build'
-        sh 'pwd && ls -al
+        sh 'pwd && ls -al'
       }
     }
     stage('stage 1') {
