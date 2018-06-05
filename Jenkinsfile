@@ -23,7 +23,7 @@ spec:
     stage('glassfish-build') {
       steps {
         container('maven') {
-          sh 'mvn --version && mvn clean install'
+          sh 'mvn --version && mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 clean install'
         }
       }
     }
