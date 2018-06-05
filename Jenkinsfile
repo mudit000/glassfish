@@ -20,6 +20,12 @@ spec:
     }
   }
   stages {
+    stage('build') {
+      steps {
+        echo 'from build'
+        sh 'pwd && ls -al
+      }
+    }
     stage('stage 1') {
       parallel {
         stage('stage1.1') {
@@ -47,20 +53,6 @@ spec:
             }
           }
         }
-      }
-    }
-    stage('stage3') {
-      steps {
-        echo 'from stage3'
-        dir('from-stage-1.1') {
-          unstash 'stash-stage1.1'
-          sh 'pwd && ls -al . && ls -al ../ && cat output.txt'
-        }
-        dir('from-stage-1.2') {
-          unstash 'stash-stage1.2'
-          sh 'pwd && ls -al . && ls -al ../ && cat output.txt'
-        }
-        archiveArtifacts artifacts: 'from-stage-*/**/*'
       }
     }
   }
