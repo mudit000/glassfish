@@ -59,7 +59,7 @@ spec:
               dir("bundles") {
                 unstash 'build-bundles'
               }
-              sh 'mvn --version && appserver/tests/quicklook/run_test.sh ql_gf_full_profile_all'
+              sh 'mvn --version && ls -l bundles && appserver/tests/quicklook/run_test.sh ql_gf_full_profile_all'
               archiveArtifacts artifacts: 'results/'
             }
           }
