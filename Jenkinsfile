@@ -1,14 +1,27 @@
 pipeline {
   agent {
     kubernetes {
-      //cloud 'kubernetes'
       label 'mypod'
-      containerTemplate {
-        name 'maven'
-        image 'maven:3.3.9-jdk-8-alpine'
-        ttyEnabled true
-        command 'cat'
-      }
+      defaultContainer 'jnlp'
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    some-label: some-label-value
+spec:
+  containers:
+  - name: maven
+    image: maven
+    command:
+    - cat
+    tty: true
+  - name: busybox
+    image: busybox
+    command:
+    - cat
+    tty: true
+"""
     }
   }
   stages {
@@ -18,12 +31,6 @@ pipeline {
           agent {
             kubernetes {
               label 'mypod-A'
-              containerTemplate {
-                name 'busybox'
-                image 'busybox:latest'
-                ttyEnabled true
-                command 'cat'
-              }
             }
           }
           steps {
@@ -38,12 +45,6 @@ pipeline {
           agent {
             kubernetes {
               label 'mypod-B'
-              containerTemplate {
-                name 'busybox'
-                image 'busybox:latest'
-                ttyEnabled true
-                command 'cat'
-              }
             }
           }
           steps {
@@ -58,12 +59,6 @@ pipeline {
           agent {
             kubernetes {
               label 'mypod-C'
-              containerTemplate {
-                name 'busybox'
-                image 'busybox:latest'
-                ttyEnabled true
-                command 'cat'
-              }
             }
           }
           steps {
