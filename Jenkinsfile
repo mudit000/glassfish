@@ -68,13 +68,6 @@ spec:
             }
           }
         }
-        stage('stage 1.3') {
-          steps {
-            container('busybox') {
-              echo "from stage 1.3" 
-            }
-          }
-        }
       }
     }
   }
