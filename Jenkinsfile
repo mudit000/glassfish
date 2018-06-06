@@ -33,7 +33,7 @@ spec:
       }
       steps {
         container('maven') {
-          sh 'ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1'
+          sh 'ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1 && ls -l && ls -l bundles'
           stash includes: 'bundles/*.zip', name: 'build-bundles'
         }
       }
@@ -63,7 +63,7 @@ spec:
           steps {
             container('maven') {
               unstash 'build-bundles'
-              sh 'mvn --version && ls -l bundles && appserver/tests/quicklook/run_test.sh ql_gf_full_profile_all'
+              sh 'mvn --version && ls -l bundles && appserver/tests/quicklook/run_test.sh ql_gf_web_profile_all'
               archiveArtifacts artifacts: 'results/'
             }
           }
