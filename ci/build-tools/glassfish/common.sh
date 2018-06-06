@@ -84,16 +84,16 @@ binary_init(){
 
 build_re_finalize(){
     archive_bundles
-    zip_tests_workspace
+    #zip_tests_workspace
     zip_tests_maven_repo
-    zip_gf_source
-    copy_bundle_to_nfs
+    #zip_gf_source
+    #copy_bundle_to_nfs
 }
 
 build_re_dev(){
-    build_init
+    #build_init
     dev_build
-    merge_junits
+    #merge_junits
     build_re_finalize
 }
 
@@ -106,9 +106,9 @@ build_re_external_dev(){
 
 binary_re_finalize(){
     archive_binaries $1
-    zip_tests_workspace
+    #zip_tests_workspace
     zip_tests_maven_repo
-    zip_gf_source
+    #zip_gf_source
 }
 
 build_re_weekly(){
@@ -310,7 +310,7 @@ init_common(){
     MDATE=$(date +%m_%d_%Y)
     DATE=$(date)
 
-    MAVEN_REPO="-Dmaven.repo.local=${WORKSPACE}/repository"
+    MAVEN_REPO="-Dmaven.repo.local=repository"
     MAVEN_ARGS="${MAVEN_REPO} -C -nsu -B"
     MAVEN_OPTS="${MAVEN_OPTS} -Xmx1024M -Xms256m -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit"
     if [ ! -z ${PROXY_HOST} ] && [ ! -z ${PROXY_PORT} ]
@@ -438,8 +438,11 @@ print_env_info(){
 
 dev_build(){
     printf "\n%s \n\n" "===== DO THE BUILD! ====="
-    mvn ${MAVEN_ARGS} -f pom.xml clean install \
-        -Dmaven.test.failure.ignore=true -Dmaven.repo.local=${WORKSPACE}/repository
+
+    MAVEN_REPO="-Dmaven.repo.local=repository"
+    MAVEN_ARGS="${MAVEN_REPO} -C -nsu -B"
+    mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 ${MAVEN_ARGS} -f pom.xml clean install \
+        -Dmaven.test.failure.ignore=true -Dmaven.repo.local=repository
 }
 
 merge_junits(){
@@ -542,11 +545,9 @@ create_version_info_for_binary(){
 
 archive_bundles(){
     printf "\n%s \n\n" "===== ARCHIVE BUNDLES ====="
-    rm -rf ${WORKSPACE}/bundles ; mkdir ${WORKSPACE}/bundles
-    cp ${WORKSPACE}/version-info.txt $WORKSPACE/bundles
-    cp $GF_ROOT/appserver/distributions/glassfish/target/*.zip ${WORKSPACE}/bundles
-    cp $GF_ROOT/appserver/distributions/web/target/*.zip ${WORKSPACE}/bundles
-    cp $GF_ROOT/nucleus/distributions/nucleus/target/*.zip ${WORKSPACE}/bundles
+    cp appserver/distributions/glassfish/target/*.zip bundles
+    cp appserver/distributions/web/target/*.zip bundles
+    cp nucleus/distributions/nucleus/target/*.zip bundles
 }
 
 archive_binaries(){

@@ -33,32 +33,22 @@ spec:
       }
       steps {
         container('maven') {
-          sh 'mvn --version && mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 clean install'
-          dir("appserver/distributions/glassfish/target"){
-            stash includes: '*.zip', name: 'build-bundles'
-          }
-          dir("appserver/distributions/web/target"){
-            stash includes: '*.zip', name: 'build-bundles'
-          }
-          dir("nucleus/distributions/nucleus/target"){
-            stash includes: '*.zip', name: 'build-bundles'
-          }
+          sh 'ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1'
+          stash includes: 'bundles/*.zip', name: 'build-bundles'
         }
       }
     }
     stage('glassfish-functional-tests') {
       parallel {
         stage('quicklook') {
-            agent {
-              kubernetes {
-                label 'mypod-A'
-              }
+          agent {
+            kubernetes {
+              label 'mypod-A'
             }
+          }
           steps {
             container('maven') {
-              dir("bundles") {
-                unstash 'build-bundles'
-              }
+              unstash 'build-bundles'
               sh 'mvn --version && ls -l bundles && appserver/tests/quicklook/run_test.sh ql_gf_full_profile_all'
               archiveArtifacts artifacts: 'results/'
             }
