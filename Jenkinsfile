@@ -48,8 +48,10 @@ spec:
             }
           steps {
             container('maven') {
-              unstash 'build-bundles'
-              sh 'mvn --version && ls -al'
+              dir("build-bundles") {
+                unstash 'build-bundles'
+              }
+              sh 'mvn --version && ls -al build-bundles'
             }
           }
         }
