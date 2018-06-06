@@ -441,6 +441,10 @@ dev_build(){
 
     MAVEN_REPO="-Dmaven.repo.local=repository"
     MAVEN_ARGS="${MAVEN_REPO} -C -nsu -B"
+    #delete me 
+    #wget http://slc09cap.us.oracle.com/occs/repository.tar
+    #tar -xvf repository.tar
+    #end delete me 
     mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 ${MAVEN_ARGS} -f pom.xml clean install \
         -Dmaven.test.failure.ignore=true -Dmaven.repo.local=repository
 }
@@ -545,9 +549,10 @@ create_version_info_for_binary(){
 
 archive_bundles(){
     printf "\n%s \n\n" "===== ARCHIVE BUNDLES ====="
-    cp appserver/distributions/glassfish/target/*.zip bundles
-    cp appserver/distributions/web/target/*.zip bundles
-    cp nucleus/distributions/nucleus/target/*.zip bundles
+    mkdir bundles
+    cp appserver/distributions/glassfish/target/*.zip bundles/
+    cp appserver/distributions/web/target/*.zip bundles/
+    cp nucleus/distributions/nucleus/target/*.zip bundles/
 }
 
 archive_binaries(){
