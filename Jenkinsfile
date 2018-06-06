@@ -1,44 +1,51 @@
 pipeline {
- agent {
+  agent {
     kubernetes {
+      //cloud 'kubernetes'
       label 'mypod'
-      defaultContainer 'jnlp'
-      yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    mypod: "ok"
-spec:
-  containers:
-  - name: maven
-    image: maven
-    command:
-    - cat
-    tty: true
-"""
+      containerTemplate {
+        name 'maven'
+        image 'maven:3.3.9-jdk-8-alpine'
+        ttyEnabled true
+        command 'cat'
+      }
     }
   }
   stages {
-    stage('glassfish-build') {
-      steps {
-        container('maven') {
-          sh 'mvn --version && mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 clean install'
-          stash includes: 'appserver/distributions/glassfish/target/*.zip,appserver/distributions/web/target/*.zip,nucleus/distributions/nucleus/target/*.zip', name: 'build-bundles'
-        }
-      }
-    }
-    stage('glassfish-functional-tests') {
+    stage('stage 1') {
       parallel {
-        stage('quicklook') {
+        stage('stage1.1') {
+          agent {
+            kubernetes {
+              label 'mypod-A'
+              containerTemplate {
+                name 'busybox'
+                image 'busybox:latest'
+                ttyEnabled true
+                command 'cat'
+              }
+            }
+          }
           steps {
-            container('maven') {
-              unstash 'build-bundles'
-              sh 'mvn --version && ls -al'
+            container('busybox') {
+              echo 'from Stage1.1'
+              sh 'echo "stage1.1" > output.txt'
+              stash includes: 'output.txt', name: 'stash-stage1.1'
             }
           }
         }
         stage('stage 1.2') {
+          agent {
+            kubernetes {
+              label 'mypod-B'
+              containerTemplate {
+                name 'busybox'
+                image 'busybox:latest'
+                ttyEnabled true
+                command 'cat'
+              }
+            }
+          }
           steps {
             container('busybox') {
               echo 'from Stage 1.2'
@@ -48,12 +55,37 @@ spec:
           }
         }
         stage('stage 1.3') {
+          agent {
+            kubernetes {
+              label 'mypod-C'
+              containerTemplate {
+                name 'busybox'
+                image 'busybox:latest'
+                ttyEnabled true
+                command 'cat'
+              }
+            }
+          }
           steps {
             container('busybox') {
               echo "from stage 1.3" 
             }
           }
         }
+      }
+    }
+    stage('stage3') {
+      steps {
+        echo 'from stage3'
+        dir('from-stage-1.1') {
+          unstash 'stash-stage1.1'
+          sh 'pwd && ls -al . && ls -al ../ && cat output.txt'
+        }
+        dir('from-stage-1.2') {
+          unstash 'stash-stage1.2'
+          sh 'pwd && ls -al . && ls -al ../ && cat output.txt'
+        }
+        archiveArtifacts artifacts: 'from-stage-*/**/*'
       }
     }
   }
