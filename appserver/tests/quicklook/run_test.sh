@@ -40,24 +40,21 @@
 #
 
 copy_ql_results(){
-	cp $WORKSPACE/glassfish5/glassfish/domains/domain1/logs/server.log* $WORKSPACE/results/ || true
-	cp $TEST_RUN_LOG $WORKSPACE/results/
-	cp $WORKSPACE/bundles/version-info.txt $WORKSPACE/results/
-	cp -r test-output/* $WORKSPACE/results/
-	cp test-output/TESTS-TestSuites.xml $WORKSPACE/results/junitreports/test_results_junit.xml
-	cp quicklook_summary.txt $WORKSPACE/results || true
+	mkdir -p results/${1}
+	cp glassfish5/glassfish/domains/domain1/logs/server.log* results/${1} || true
+	cp $TEST_RUN_LOG results/${1}
+	cp -r test-output/* results/${1}
+	cp test-output/TESTS-TestSuites.xml results/${1}/junitreports/test_results_junit.xml
+	cp quicklook_summary.txt results/${1} || true
 }
 
 run_test_id(){
 	source `dirname $0`/../common_test.sh
-	kill_process
-	delete_gf
-	ql_init	
+	TEST_RUN_LOG=tests-run.log; export TEST_RUN_LOG
 	if [[ $1 = "ql_gf_full_profile_all" ]]; then
-	    download_test_resources glassfish.zip tests-maven-repo.zip version-info.txt
-		unzip_test_resources $WORKSPACE/bundles/glassfish.zip "$WORKSPACE/bundles/tests-maven-repo.zip -d $WORKSPACE/repository"	    	
-		cd $WORKSPACE/main/appserver/tests/quicklook/
-		mvn -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_gd_security,report test | tee $TEST_RUN_LOG
+		unzip_test_resources bundles/glassfish.zip	    	
+		cd appserver/tests/quicklook/
+		mvn -Dglassfish.home=glassfish5/glassfish -Dmaven.repo.local=repository -Ptest_gd_security,report test | tee $TEST_RUN_LOG
 		copy_ql_results
 	elif [[ $1 = "ql_gf_nucleus_all" || $1 = "nucleus_admin_all" ]]; then
 		download_test_resources nucleus-new.zip tests-maven-repo.zip version-info.txt
@@ -123,13 +120,4 @@ list_test_ids(){
 	echo ql_gf_full_profile_all ql_gf_nucleus_all ql_gf_web_profile_all ql_gf_embedded_profile_all nucleus_admin_all
 }
 
-OPT=$1
-TEST_ID=$2
-
-case $OPT in
-	list_test_ids )
-		list_test_ids;;
-	run_test_id )
-        trap post_test_run EXIT
-		run_test_id $TEST_ID ;;
-esac
+run_test_id ${1}

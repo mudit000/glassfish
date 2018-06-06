@@ -33,8 +33,16 @@ spec:
       }
       steps {
         container('maven') {
-          sh 'mvn --version && mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 clean install && ls -l appserver/distributions/glassfish/target/*.zip && ls -l appserver/distributions/web/target/*.zip && ls -l nucleus/distributions/nucleus/target/*.zip'
-          stash includes: 'appserver/distributions/glassfish/target/*.zip,appserver/distributions/web/target/*.zip,nucleus/distributions/nucleus/target/*.zip', name: 'build-bundles'
+          sh 'mvn --version && mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 clean install'
+          dir("appserver/distributions/glassfish/target"){
+            stash includes: '*.zip', name: 'build-bundles'
+          }
+          dir("appserver/distributions/web/target"){
+            stash includes: '*.zip', name: 'build-bundles'
+          }
+          dir("nucleus/distributions/nucleus/target"){
+            stash includes: '*.zip', name: 'build-bundles'
+          }
         }
       }
     }
@@ -48,10 +56,11 @@ spec:
             }
           steps {
             container('maven') {
-              dir("build-bundles") {
+              dir("bundles") {
                 unstash 'build-bundles'
               }
-              sh 'mvn --version && ls -al build-bundles'
+              sh 'mvn --version && appserver/tests/quicklook/run_test.sh ql_gf_full_profile_all'
+              archiveArtifacts artifacts: 'results/'
             }
           }
         }
