@@ -25,28 +25,35 @@ spec:
     }
   }
   stages {
-    stage('stage 1') {
+    stage('glassfish-build') {
+      agent {
+        kubernetes {
+          label 'mypod-A'
+        }
+      }
+      steps {
+        container('maven') {
+          sh 'mvn --version && mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 clean install && ls -l appserver/distributions/glassfish/target/*.zip && ls -l appserver/distributions/web/target/*.zip && ls -l nucleus/distributions/nucleus/target/*.zip'
+          stash includes: 'appserver/distributions/glassfish/target/*.zip,appserver/distributions/web/target/*.zip,nucleus/distributions/nucleus/target/*.zip', name: 'build-bundles'
+        }
+      }
+    }
+    stage('glassfish-functional-tests') {
       parallel {
-        stage('stage1.1') {
-          agent {
-            kubernetes {
-              label 'mypod-A'
+        stage('quicklook') {
+            agent {
+              kubernetes {
+                label 'mypod-A'
+              }
             }
-          }
           steps {
-            container('busybox') {
-              echo 'from Stage1.1'
-              sh 'echo "stage1.1" > output.txt'
-              stash includes: 'output.txt', name: 'stash-stage1.1'
+            container('maven') {
+              unstash 'build-bundles'
+              sh 'mvn --version && ls -al'
             }
           }
         }
         stage('stage 1.2') {
-          agent {
-            kubernetes {
-              label 'mypod-B'
-            }
-          }
           steps {
             container('busybox') {
               echo 'from Stage 1.2'
@@ -56,31 +63,12 @@ spec:
           }
         }
         stage('stage 1.3') {
-          agent {
-            kubernetes {
-              label 'mypod-C'
-            }
-          }
           steps {
             container('busybox') {
               echo "from stage 1.3" 
             }
           }
         }
-      }
-    }
-    stage('stage3') {
-      steps {
-        echo 'from stage3'
-        dir('from-stage-1.1') {
-          unstash 'stash-stage1.1'
-          sh 'pwd && ls -al . && ls -al ../ && cat output.txt'
-        }
-        dir('from-stage-1.2') {
-          unstash 'stash-stage1.2'
-          sh 'pwd && ls -al . && ls -al ../ && cat output.txt'
-        }
-        archiveArtifacts artifacts: 'from-stage-*/**/*'
       }
     }
   }
