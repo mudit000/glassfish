@@ -54,12 +54,17 @@ spec:
             }
           }
         }
-        stage('stage 1.2') {
+        stage('quicklook-web') {
+          agent {
+            kubernetes {
+              label 'mypod-A'
+            }
+          }
           steps {
-            container('busybox') {
-              echo 'from Stage 1.2'
-              sh 'echo "stage1.2" > output.txt'
-              stash includes: 'output.txt', name: 'stash-stage1.2'
+            container('maven') {
+              unstash 'build-bundles'
+              sh 'mvn --version && ls -l bundles && appserver/tests/quicklook/run_test.sh ql_gf_full_profile_all'
+              archiveArtifacts artifacts: 'results/'
             }
           }
         }

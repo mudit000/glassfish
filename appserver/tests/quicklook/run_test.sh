@@ -74,11 +74,10 @@ run_test_id(){
 		cp $WORKSPACE/nucleus/domains/domain1/logs/server.log* $WORKSPACE/results
 		cp $TEST_RUN_LOG $WORKSPACE/results/
 	elif [[ $1 = "ql_gf_web_profile_all" || $1 = "ql_gf_embedded_profile_all" ]]; then
-		download_test_resources web.zip tests-maven-repo.zip version-info.txt
-		unzip_test_resources $WORKSPACE/bundles/web.zip "$WORKSPACE/bundles/tests-maven-repo.zip -d $WORKSPACE/repository"
-		cd $WORKSPACE/main/appserver/tests/quicklook/
+		unzip_test_resources bundles/web.zip
+		cd appserver/tests/quicklook/
 		if [[ $1 = "ql_gf_web_profile_all" ]]; then
-			mvn -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_wd_security,report test | tee $TEST_RUN_LOG
+			mvn -Dglassfish.home=glassfish5/glassfish -Dmaven.repo.local=repository -Ptest_wd_security,report test | tee $TEST_RUN_LOG
 		elif [[ $1 = "ql_gf_embedded_profile_all" ]]; then
 			mvn -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_em,report test | tee $TEST_RUN_LOG
 		fi
