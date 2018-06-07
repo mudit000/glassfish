@@ -33,7 +33,7 @@ spec:
       }
       steps {
         container('maven') {
-          sh 'ls -l $WORKSPACE && ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1 && ls -l && ls -l bundles'
+          sh 'ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1'
           stash includes: 'bundles/*.zip', name: 'build-bundles'
         }
       }

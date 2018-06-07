@@ -51,7 +51,7 @@ run_test_id(){
 	source `dirname $0`/../common_test.sh
 	if [[ $1 = "ql_gf_full_profile_all" ]]; then
 		unzip_test_resources $WORKSPACE/bundles/glassfish.zip
-		cd $WORKSPACE/glassfish/appserver/tests/quicklook/
+		cd $WORKSPACE/appserver/tests/quicklook/
 		mvn -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_gd_security,report test | tee $TEST_RUN_LOG
 		copy_ql_results
 	elif [[ $1 = "ql_gf_nucleus_all" || $1 = "nucleus_admin_all" ]]; then
