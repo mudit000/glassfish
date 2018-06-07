@@ -46,6 +46,7 @@ copy_ql_results(){
 	cp -r test-output/* $WORKSPACE/results/
 	cp test-output/TESTS-TestSuites.xml $WORKSPACE/results/junitreports/test_results_junit.xml
 	cp quicklook_summary.txt $WORKSPACE/results || true
+	tar -cvf $WORKSPACE/${1}-results.tar.gz $WORKSPACE/results
 }
 
 run_test_id(){
@@ -55,7 +56,7 @@ run_test_id(){
 		unzip_test_resources $WORKSPACE/bundles/glassfish.zip
 		cd $WORKSPACE/appserver/tests/quicklook/
 		mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_gd_security,report test | tee $TEST_RUN_LOG
-		copy_ql_results
+		copy_ql_results ${1}
 	elif [[ $1 = "ql_gf_nucleus_all" || $1 = "nucleus_admin_all" ]]; then
 		download_test_resources nucleus-new.zip tests-maven-repo.zip version-info.txt
 		unzip_test_resources $WORKSPACE/bundles/nucleus-new.zip "$WORKSPACE/bundles/tests-maven-repo.zip -d $WORKSPACE/repository"
@@ -75,13 +76,13 @@ run_test_id(){
 		cp $TEST_RUN_LOG $WORKSPACE/results/
 	elif [[ $1 = "ql_gf_web_profile_all" || $1 = "ql_gf_embedded_profile_all" ]]; then
 		unzip_test_resources $WORKSPACE/bundles/web.zip
-		cd $WORKSPACE/glassfish/appserver/tests/quicklook/
+		cd $WORKSPACE/appserver/tests/quicklook/
 		if [[ $1 = "ql_gf_web_profile_all" ]]; then
 			mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_wd_security,report test | tee $TEST_RUN_LOG
 		elif [[ $1 = "ql_gf_embedded_profile_all" ]]; then
 			mvn -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_em,report test | tee $TEST_RUN_LOG
 		fi
-		copy_ql_results
+		copy_ql_results ${1}
 	else
 		echo "Invalid Test Id"
 		exit 1

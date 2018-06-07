@@ -50,7 +50,8 @@ spec:
             container('maven') {
               unstash 'build-bundles'
               sh 'mvn --version && ls -l bundles && appserver/tests/quicklook/run_test.sh ql_gf_full_profile_all'
-              archiveArtifacts artifacts: 'results/'
+              archiveArtifacts artifacts: 'ql_gf_full_profile_all-results.tar.gz'
+              junit 'results/junitreports/*.xml'
             }
           }
         }
@@ -64,7 +65,8 @@ spec:
             container('maven') {
               unstash 'build-bundles'
               sh 'mvn --version && ls -l bundles && appserver/tests/quicklook/run_test.sh ql_gf_web_profile_all'
-              archiveArtifacts artifacts: 'results/'
+              archiveArtifacts artifacts: 'ql_gf_web_profile_all-results.tar.gz'
+              junit 'results/junitreports/*.xml'
             }
           }
         }
