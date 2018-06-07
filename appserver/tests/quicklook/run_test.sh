@@ -40,6 +40,7 @@
 #
 
 copy_ql_results(){
+	mkdir -p $WORKSPACE/results/junitreports
 	cp $WORKSPACE/glassfish5/glassfish/domains/domain1/logs/server.log* $WORKSPACE/results/ || true
 	cp $TEST_RUN_LOG $WORKSPACE/results/
 	cp -r test-output/* $WORKSPACE/results/
