@@ -446,7 +446,7 @@ dev_build(){
     tar -xvf repository.tar.gz
     #end delete me 
     mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 ${MAVEN_ARGS} -f pom.xml clean install \
-        -Dmaven.test.failure.ignore=true -Dmaven.repo.local=repository
+        -Dmaven.test.failure.ignore=true
 }
 
 merge_junits(){

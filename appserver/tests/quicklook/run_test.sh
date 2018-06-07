@@ -40,12 +40,12 @@
 #
 
 copy_ql_results(){
-	mkdir -p results/${1}
-	cp glassfish5/glassfish/domains/domain1/logs/server.log* results/${1} || true
-	cp $TEST_RUN_LOG results/${1}
-	cp -r test-output/* results/${1}
-	cp test-output/TESTS-TestSuites.xml results/${1}/junitreports/test_results_junit.xml
-	cp quicklook_summary.txt results/${1} || true
+	mkdir -p results/
+	cp glassfish5/glassfish/domains/domain1/logs/server.log* results/ || true
+	cp $TEST_RUN_LOG results/
+	cp -r test-output/* results/
+	cp test-output/TESTS-TestSuites.xml results/junitreports/test_results_junit.xml
+	cp quicklook_summary.txt results/ || true
 }
 
 run_test_id(){
