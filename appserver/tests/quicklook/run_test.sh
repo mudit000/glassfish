@@ -49,6 +49,7 @@ copy_ql_results(){
 }
 
 run_test_id(){
+	TEST_RUN_LOG=tests-run.log; export TEST_RUN_LOG
 	source `dirname $0`/../common_test.sh
 	if [[ $1 = "ql_gf_full_profile_all" ]]; then
 		unzip_test_resources $WORKSPACE/bundles/glassfish.zip
