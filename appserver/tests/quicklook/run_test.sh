@@ -52,7 +52,7 @@ run_test_id(){
 	if [[ $1 = "ql_gf_full_profile_all" ]]; then
 		unzip_test_resources $WORKSPACE/bundles/glassfish.zip
 		cd $WORKSPACE/appserver/tests/quicklook/
-		mvn -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_gd_security,report test | tee $TEST_RUN_LOG
+		mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_gd_security,report test | tee $TEST_RUN_LOG
 		copy_ql_results
 	elif [[ $1 = "ql_gf_nucleus_all" || $1 = "nucleus_admin_all" ]]; then
 		download_test_resources nucleus-new.zip tests-maven-repo.zip version-info.txt
@@ -75,7 +75,7 @@ run_test_id(){
 		unzip_test_resources $WORKSPACE/bundles/web.zip
 		cd $WORKSPACE/glassfish/appserver/tests/quicklook/
 		if [[ $1 = "ql_gf_web_profile_all" ]]; then
-			mvn -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_wd_security,report test | tee $TEST_RUN_LOG
+			mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_wd_security,report test | tee $TEST_RUN_LOG
 		elif [[ $1 = "ql_gf_embedded_profile_all" ]]; then
 			mvn -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_em,report test | tee $TEST_RUN_LOG
 		fi
