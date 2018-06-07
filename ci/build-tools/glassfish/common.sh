@@ -442,8 +442,8 @@ dev_build(){
     MAVEN_REPO="-Dmaven.repo.local=repository"
     MAVEN_ARGS="${MAVEN_REPO} -C -nsu -B"
     #delete me 
-    #wget http://slc09cap.us.oracle.com/occs/repository.tar
-    #tar -xvf repository.tar
+    wget http://slc09cap.us.oracle.com/occs/repository.tar.gz
+    tar -xvf repository.tar.gz
     #end delete me 
     mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 ${MAVEN_ARGS} -f pom.xml clean install \
         -Dmaven.test.failure.ignore=true -Dmaven.repo.local=repository

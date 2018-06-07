@@ -16,8 +16,8 @@ spec:
     command:
     - cat
     tty: true
-  - name: busybox
-    image: busybox
+  - name: ant
+    image: frekele/ant:1.9.9-jdk8
     command:
     - cat
     tty: true
