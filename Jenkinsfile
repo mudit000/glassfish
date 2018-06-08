@@ -24,6 +24,12 @@ spec:
 """
     }
   }
+  environment {
+    S1AS_HOME=$WORKSPACE/glassfish5/glassfish
+    APS_HOME=$WORKSPACE/appserver/tests/appserv-tests
+    TEST_RUN_LOG=tests-run.log
+    MAVEN_REPO_LOCAL=$WORKSPACE/repository
+  }
   stages {
     stage('glassfish-build') {
       agent {

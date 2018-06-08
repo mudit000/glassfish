@@ -70,9 +70,6 @@ kill_process(){
 }
 test_init(){
 	printf "\n%s \n\n" "===== V2 DEV TESTS INIT ====="
-	S1AS_HOME=$WORKSPACE/glassfish5/glassfish; export S1AS_HOME
-	APS_HOME=$WORKSPACE/main/appserver/tests/appserv-tests; export APS_HOME
-	TEST_RUN_LOG=tests-run.log; export TEST_RUN_LOG
     #workaround for OSGI timestamp issue
     find $S1AS_HOME -type f | xargs touch > /dev/null
 	echo S1AS_HOME is $S1AS_HOME

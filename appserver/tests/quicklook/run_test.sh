@@ -50,12 +50,11 @@ copy_ql_results(){
 }
 
 run_test_id(){
-	TEST_RUN_LOG=tests-run.log; export TEST_RUN_LOG
 	source `dirname $0`/../common_test.sh
 	if [[ $1 = "ql_gf_full_profile_all" ]]; then
 		unzip_test_resources $WORKSPACE/bundles/glassfish.zip
 		cd $WORKSPACE/appserver/tests/quicklook/
-		mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_gd_security,report test | tee $TEST_RUN_LOG
+		mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 -Dglassfish.home=${S1AS_HOME} -Dmaven.repo.local=${MAVEN_REPO_LOCAL} -Ptest_gd_security,report test | tee $TEST_RUN_LOG
 		copy_ql_results ${1}
 	elif [[ $1 = "ql_gf_nucleus_all" || $1 = "nucleus_admin_all" ]]; then
 		download_test_resources nucleus-new.zip tests-maven-repo.zip version-info.txt
