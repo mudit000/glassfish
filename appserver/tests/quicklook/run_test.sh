@@ -87,7 +87,7 @@ run_test_id(){
 		echo "Invalid Test Id"
 		exit 1
 	fi
-    change_junit_report_class_names
+    #change_junit_report_class_names
 }
 
 post_test_run(){
@@ -119,5 +119,4 @@ merge_junit_xmls(){
 list_test_ids(){
 	echo ql_gf_full_profile_all ql_gf_nucleus_all ql_gf_web_profile_all ql_gf_embedded_profile_all nucleus_admin_all
 }
-
-run_test_id ${1}
+"$@"

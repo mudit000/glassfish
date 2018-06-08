@@ -71,20 +71,15 @@ kill_process(){
 test_init(){
 	printf "\n%s \n\n" "===== V2 DEV TESTS INIT ====="
 	S1AS_HOME=$WORKSPACE/glassfish5/glassfish; export S1AS_HOME
-	ANT_HOME=$ANT_1_7_1; export ANT_HOME
 	APS_HOME=$WORKSPACE/main/appserver/tests/appserv-tests; export APS_HOME
 	TEST_RUN_LOG=tests-run.log; export TEST_RUN_LOG
-  export M2_HOME=$MAVEN_3_0_3
-        #workaround for OSGI timestamp issue
-        find $S1AS_HOME -type f | xargs touch > /dev/null
+    #workaround for OSGI timestamp issue
+    find $S1AS_HOME -type f | xargs touch > /dev/null
 	echo S1AS_HOME is $S1AS_HOME
 	echo ANT_HOME is $ANT_HOME
-  echo M2_HOME is $M2_HOME
 	echo APS_HOME is $APS_HOME
-	PATH=$M2_HOME/bin:$ANT_HOME/bin:$PATH; export PATH
 	java -version
 	ant -version
-	rm -rf $WORKSPACE/results
 	mkdir -p $WORKSPACE/results/junitreports
 }
 
@@ -128,13 +123,15 @@ unzip_test_resources(){
 
 copy_test_artifects(){
 	printf "\n%s \n\n" "===== COPY TEST ARTIFECTs ====="
-        zip -r $WORKSPACE/results/domainArchive.zip $S1AS_HOME/domains
+	mkdir -p $WORKSPACE/results/junitreports
+	tar -cvf $WORKSPACE/results/domainArchive.tar.gz $S1AS_HOME/domains
 	cp $S1AS_HOME/domains/domain1/logs/server.log* $WORKSPACE/results/ || true
 	cp $TEST_RUN_LOG $WORKSPACE/results/
 	cp $WORKSPACE/bundles/version-info.txt $WORKSPACE/results/
 	cp $APS_HOME/test_results*.* $WORKSPACE/results/ || true
 	cp `pwd`/*/*logs.zip $WORKSPACE/results/ || true
 	cp `pwd`/*/*/*logs.zip $WORKSPACE/results/ || true
+	tar -cvf $WORKSPACE/${1}-results.tar.gz $WORKSPACE/results
 }
 
 
