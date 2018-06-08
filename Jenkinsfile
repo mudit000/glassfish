@@ -3,26 +3,25 @@ pipeline {
     kubernetes {
       label 'mypod'
       defaultContainer 'jnlp'
-      yaml ""
-      "
-      apiVersion: v1
-      kind: Pod
-      metadata:
-        labels:
-        some - label: some - label - value
-      spec:
-        containers:
-        -name: maven
-      image: maven
-      command:
-        -cat
-      tty: true -
-        name: ant
-      image: frekele / ant: 1.9 .9 - jdk8
-      command:
-        -cat
-      tty: true ""
-      "
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    some-label: some-label-value
+spec:
+  containers:
+  - name: maven
+    image: maven
+    command:
+    - cat
+    tty: true
+  - name: ant
+    image: frekele/ant:1.9.9-jdk8
+    command:
+    - cat
+    tty: true
+"""
     }
   }
   stages {
