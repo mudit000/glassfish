@@ -41,11 +41,11 @@
 
 copy_ql_results(){
 	mkdir -p $WORKSPACE/results/junitreports
-	cp $WORKSPACE/glassfish5/glassfish/domains/domain1/logs/server.log* $WORKSPACE/results/ || true
+	cp $WORKSPACE/glassfish5/glassfish/domains/domain1/logs/server.log* $WORKSPACE/results/
 	cp $TEST_RUN_LOG $WORKSPACE/results/
-	cp -r test-output/* $WORKSPACE/results/
-	cp test-output/TESTS-TestSuites.xml $WORKSPACE/results/junitreports/test_results_junit.xml
-	cp quicklook_summary.txt $WORKSPACE/results || true
+	cp -r $WORKSPACE/appserver/tests/quicklook/test-output/* $WORKSPACE/results/
+	cp $WORKSPACE/appserver/tests/quicklook/test-output/TESTS-TestSuites.xml $WORKSPACE/results/junitreports/test_results_junit.xml
+	cp $WORKSPACE/appserver/tests/quicklook/quicklook_summary.txt $WORKSPACE/results
 	tar -cvf $WORKSPACE/${1}-results.tar.gz $WORKSPACE/results
 }
 

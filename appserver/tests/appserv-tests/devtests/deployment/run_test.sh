@@ -139,7 +139,6 @@ generate_junit_report_deployment(){
 }
 
 run_test_id(){
-  source `dirname $0`/../../../common_test.sh
   unzip_test_resources $WORKSPACE/bundles/glassfish.zip
   cd `dirname $0`
   test_init
@@ -148,6 +147,6 @@ run_test_id(){
   generate_junit_report_deployment $1
   #change_junit_report_class_names
   }
-
+source `dirname $0`/../../../common_test.sh
 "$@"
 

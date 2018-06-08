@@ -90,7 +90,7 @@ spec:
             container('ant') {
               unstash 'build-bundles'
               sh 'appserver/tests/appserv-tests/devtests/deployment/run_test.sh run_test_id deployment_all'
-              sh 'appserver/tests/quicklook/run_test.sh copy_test_artifects deployment_all'
+              sh 'appserver/tests/appserv-tests/devtests/deployment/run_test.sh copy_test_artifects deployment_all'
               archiveArtifacts artifacts: 'deployment_all-results.tar.gz'
               junit 'results/junitreports/*.xml'
             }
