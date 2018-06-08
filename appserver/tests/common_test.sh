@@ -124,7 +124,6 @@ copy_test_artifects(){
 	tar -cvf $WORKSPACE/results/domainArchive.tar.gz $S1AS_HOME/domains
 	cp $S1AS_HOME/domains/domain1/logs/server.log* $WORKSPACE/results/ || true
 	cp $TEST_RUN_LOG $WORKSPACE/results/
-	cp $WORKSPACE/bundles/version-info.txt $WORKSPACE/results/
 	cp $APS_HOME/test_results*.* $WORKSPACE/results/ || true
 	cp `pwd`/*/*logs.zip $WORKSPACE/results/ || true
 	cp `pwd`/*/*/*logs.zip $WORKSPACE/results/ || true
