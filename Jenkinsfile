@@ -68,8 +68,10 @@ spec:
       }
     }
     stage('glassfish-functional-tests') {
-      script {
-        parallel parallelStagesMap
+      steps {
+        script {
+          parallel parallelStagesMap
+        }
       }
     }
   }
