@@ -38,18 +38,6 @@
 # only if the new code is made subject to such option by the copyright
 # holder.
 #
-
-unzip_test_sources(){
-	unzip -d main/  $WORKSPACE/bundles/tests-workspace.zip > /dev/null
-}
-delete_test_sources(){
-	rm -rf $WORKSPACE/main
-	rm -rf $WORKSPACE/bundles
-} 
-download_test_zip(){
-	mkdir bundles
-	cp -rf ${NFS_PATH}/${PARENT_ID}/bundles/tests-workspace.zip bundles
-}
 	
 ###########################
 #Start Script
@@ -77,36 +65,5 @@ run_test(){
 
 }
 
-generate_platform(){
-	uname -nsp > /tmp/platform
-	cp /tmp/platform  ${NFS_PATH}/${PARENT_ID}/test-results/${TEST_ID}
-}
-
-list_test_ids(){
-	for runtest in `find . -name run_test\.sh`; do
-		echo `$runtest list_test_ids`
-	done
-}
-
-list_group_test_ids(){
-	test_groups=`find . -type d -name test_groups` 
-	test_id_arr+=(`cat  $test_groups/$1 |tr "\n" " "`)
-	echo ${test_id_arr[*]}
-}
-
-OPT=$1
-TEST_ID=$2
-
-case $OPT in
-	list_test_ids )
-		if [[ -z $2 ]]; then
-			list_test_ids
-		else
-			list_group_test_ids $2
-		fi;;
-		
-	run_test )
-		trap generate_platform EXIT
-		run_test $TEST_ID ;;
-esac
+"$@"
  
