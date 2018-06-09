@@ -6,6 +6,11 @@ def parallelStagesMap = jobs.collectEntries {
 
 def generateStage(job) {
     return {
+                agent {
+            kubernetes {
+              label 'mypod-A'
+            }
+          }
         stage("stage: ${job}") {
                 echo "This is ${job}."
                 sh script: "sleep 500"
@@ -43,11 +48,6 @@ spec:
         }
 
         stage('parallel stage') {
-            agent {
-            kubernetes {
-              label 'mypod-A'
-            }
-          }
             steps {
                 script {
                     parallel parallelStagesMap
