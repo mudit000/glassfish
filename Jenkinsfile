@@ -1,3 +1,29 @@
+def jobs = ["ql_gf_full_profile_all", "ql_gf_web_profile_all", "deployment_all"]
+
+def parallelStagesMap = jobs.collectEntries {
+  ["${it}": generateStage(it)]
+}
+
+def generateStage(job) {
+  return {
+    stage("${job}") {
+      agent {
+        kubernetes {
+          label 'mypod-A'
+        }
+      }
+      steps {
+        container('glassfish-ci') {
+          unstash 'build-bundles'
+          sh 'appserver/tests/gftest.sh run_test ${job}'
+          archiveArtifacts artifacts: '${job}-results.tar.gz'
+          junit 'results/junitreports/*.xml'
+        }
+      }
+    }
+  }
+}
+
 pipeline {
   agent {
     kubernetes {
@@ -42,52 +68,8 @@ spec:
       }
     }
     stage('glassfish-functional-tests') {
-      parallel {
-        stage('quicklook') {
-          agent {
-            kubernetes {
-              label 'mypod-A'
-            }
-          }
-          steps {
-            container('glassfish-ci') {
-              unstash 'build-bundles'
-              sh 'appserver/tests/gftest.sh run_test ql_gf_full_profile_all'
-              archiveArtifacts artifacts: 'ql_gf_full_profile_all-results.tar.gz'
-              junit 'results/junitreports/*.xml'
-            }
-          }
-        }
-        stage('quicklook-web') {
-          agent {
-            kubernetes {
-              label 'mypod-A'
-            }
-          }
-          steps {
-            container('glassfish-ci') {
-              unstash 'build-bundles'
-              sh 'appserver/tests/gftest.sh run_test ql_gf_web_profile_all'
-              archiveArtifacts artifacts: 'ql_gf_web_profile_all-results.tar.gz'
-              junit 'results/junitreports/*.xml'
-            }
-          }
-        }
-        stage('deployment') {
-          agent {
-            kubernetes {
-              label 'mypod-A'
-            }
-          }
-          steps {
-            container('glassfish-ci') {
-              unstash 'build-bundles'
-              sh 'appserver/tests/gftest.sh run_test deployment_all'
-              archiveArtifacts artifacts: 'deployment_all-results.tar.gz'
-              junit 'results/junitreports/*.xml'
-            }
-          }
-        }
+      script {
+        parallel parallelStagesMap
       }
     }
   }

@@ -160,7 +160,7 @@ case $OPT in
   list_test_ids )
     list_test_ids;;
   run_test_id )
-    trap copy_test_artifects EXIT
+    trap copy_test_artifects $TEST_ID EXIT
     run_test_id $TEST_ID ;;
 esac
 
