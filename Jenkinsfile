@@ -7,14 +7,12 @@ def parallelStagesMap = jobs.collectEntries {
 def generateStage(job) {
   return {
     stage("${job}") {
-      steps {
         container('glassfish-ci') {
           unstash 'build-bundles'
           sh 'appserver/tests/gftest.sh run_test ${job}'
           archiveArtifacts artifacts: '${job}-results.tar.gz'
           junit 'results/junitreports/*.xml'
         }
-      }
     }
   }
 }
