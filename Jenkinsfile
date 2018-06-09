@@ -6,14 +6,14 @@ def parallelStagesMap = jobs.collectEntries {
 
 def generateStage(job) {
     return {
-                agent {
-            kubernetes {
-              label 'mypod-A'
-            }
-          }
+        agent {
+        kubernetes {
+          label 'mypod-A'
+        }
+      }
         stage("stage: ${job}") {
-                echo "This is ${job}."
-                sh script: "sleep 500"
+            echo "This is ${job}"
+            sh "sleep 500"
         }
     }
 }
