@@ -11,13 +11,8 @@ metadata:
     some-label: some-label-value
 spec:
   containers:
-  - name: maven
-    image: maven
-    command:
-    - cat
-    tty: true
-  - name: ant
-    image: frekele/ant:1.9.9-jdk8
+  - name: glassfish-ci
+    image: arindamb/glassfish-ci
     command:
     - cat
     tty: true
@@ -38,7 +33,7 @@ spec:
         }
       }
       steps {
-        container('maven') {
+        container('glassfish-ci') {
           sh 'ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1'
           archiveArtifacts artifacts: 'bundles/*.zip'
           junit '**/surefire-reports/*.xml'
@@ -55,10 +50,9 @@ spec:
             }
           }
           steps {
-            container('maven') {
+            container('glassfish-ci') {
               unstash 'build-bundles'
-              sh 'appserver/tests/quicklook/run_test.sh run_test_id ql_gf_full_profile_all'
-              sh 'appserver/tests/quicklook/run_test.sh copy_ql_results ql_gf_full_profile_all'
+              sh 'appserver/tests/gftest.sh run_test ql_gf_full_profile_all'
               archiveArtifacts artifacts: 'ql_gf_full_profile_all-results.tar.gz'
               junit 'results/junitreports/*.xml'
             }
@@ -71,10 +65,9 @@ spec:
             }
           }
           steps {
-            container('maven') {
+            container('glassfish-ci') {
               unstash 'build-bundles'
-              sh 'appserver/tests/quicklook/run_test.sh run_test_id ql_gf_web_profile_all'
-              sh 'appserver/tests/quicklook/run_test.sh copy_ql_results ql_gf_web_profile_all'
+              sh 'appserver/tests/gftest.sh run_test ql_gf_web_profile_all'
               archiveArtifacts artifacts: 'ql_gf_web_profile_all-results.tar.gz'
               junit 'results/junitreports/*.xml'
             }
@@ -87,10 +80,9 @@ spec:
             }
           }
           steps {
-            container('ant') {
+            container('glassfish-ci') {
               unstash 'build-bundles'
-              sh 'appserver/tests/appserv-tests/devtests/deployment/run_test.sh run_test_id deployment_all'
-              sh 'appserver/tests/appserv-tests/devtests/deployment/run_test.sh copy_test_artifects deployment_all'
+              sh 'appserver/tests/gftest.sh run_test deployment_all'
               archiveArtifacts artifacts: 'deployment_all-results.tar.gz'
               junit 'results/junitreports/*.xml'
             }

@@ -42,6 +42,7 @@
 copy_ql_results(){
 	mkdir -p $WORKSPACE/results/junitreports
 	cp $WORKSPACE/glassfish5/glassfish/domains/domain1/logs/server.log* $WORKSPACE/results/
+	cp $WORKSPACE/nucleus/domains/domain1/logs/server.log* $WORKSPACE/results || true
 	cp $TEST_RUN_LOG $WORKSPACE/results/
 	cp -r $WORKSPACE/appserver/tests/quicklook/test-output/* $WORKSPACE/results/
 	cp $WORKSPACE/appserver/tests/quicklook/test-output/TESTS-TestSuites.xml $WORKSPACE/results/junitreports/test_results_junit.xml
@@ -89,22 +90,6 @@ run_test_id(){
     #change_junit_report_class_names
 }
 
-post_test_run(){
-    if [[ $? -ne 0 ]]; then
-    	if [[ $TEST_ID = "ql_gf_full_profile_all" || $TEST_ID = "ql_gf_web_profile_all" || $TEST_ID = "ql_gf_embedded_profile_all" ]]; then
-	  		copy_ql_results || true
-	  	fi
-	  	if [[ $TEST_ID = "ql_gf_nucleus_all" || $TEST_ID = "nucleus_admin_all" ]]; then
-	  		cp $WORKSPACE/bundles/version-info.txt $WORKSPACE/results/ || true
-	  		cp $WORKSPACE/nucleus/domains/domain1/logs/server.log* $WORKSPACE/results || true
-		    cp $TEST_RUN_LOG $WORKSPACE/results/ || true
-	  	fi
-	fi
-    upload_test_results
-    delete_bundle
-    cd -
-}
-
 merge_junit_xmls(){
   JUD_DIR=$1
   JUD=$WORKSPACE/results/junitreports/test_results_junit.xml
@@ -118,4 +103,14 @@ merge_junit_xmls(){
 list_test_ids(){
 	echo ql_gf_full_profile_all ql_gf_nucleus_all ql_gf_web_profile_all ql_gf_embedded_profile_all nucleus_admin_all
 }
-"$@"
+
+OPT=$1
+TEST_ID=$2
+
+case $OPT in
+	list_test_ids )
+		list_test_ids;;
+	run_test_id )
+        trap copy_ql_results EXIT
+		run_test_id $TEST_ID ;;
+esac

@@ -139,6 +139,7 @@ generate_junit_report_deployment(){
 }
 
 run_test_id(){
+  source `dirname $0`/../../../common_test.sh
   unzip_test_resources $WORKSPACE/bundles/glassfish.zip
   cd `dirname $0`
   test_init
@@ -146,7 +147,20 @@ run_test_id(){
   check_successful_run
   generate_junit_report_deployment $1
   #change_junit_report_class_names
-  }
-source `dirname $0`/../../../common_test.sh
-"$@"
+}
+
+list_test_ids(){
+  echo deployment_all deployment_cluster_all
+}
+
+OPT=$1
+TEST_ID=$2
+
+case $OPT in
+  list_test_ids )
+    list_test_ids;;
+  run_test_id )
+    trap copy_test_artifects EXIT
+    run_test_id $TEST_ID ;;
+esac
 

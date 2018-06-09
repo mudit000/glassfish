@@ -57,9 +57,6 @@ download_test_zip(){
 
 run_test(){
 	TEST_ID=$1
-	delete_test_sources
-	download_test_zip
-	unzip_test_sources
 	found=false
 	for runtest in `find . -name run_test\.sh`; do
 		for testid in `$runtest list_test_ids`; do
