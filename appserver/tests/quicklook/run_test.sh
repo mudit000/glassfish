@@ -109,6 +109,6 @@ case $OPT in
 	list_test_ids )
 		list_test_ids;;
 	run_test_id )
-        trap copy_ql_results ${TEST_ID} EXIT
+        trap "copy_ql_results ${TEST_ID}" EXIT
 		run_test_id ${TEST_ID} ;;
 esac
