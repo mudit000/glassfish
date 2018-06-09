@@ -7,11 +7,6 @@ def parallelStagesMap = jobs.collectEntries {
 def generateStage(job) {
   return {
     stage("${job}") {
-      agent {
-        kubernetes {
-          label 'mypod-A'
-        }
-      }
       steps {
         container('glassfish-ci') {
           unstash 'build-bundles'
