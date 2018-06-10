@@ -40,11 +40,9 @@
 #
 
 test_run(){
-	export OPENDS_HOME=$OPENDS_HOME
 	# Workaround for JDK7 and OpenDS
 	cp $APS_HOME/devtests/security/ldap/opends/X500Signer.jar $OPENDS_HOME/lib
 	rm -rf $OPENDS_HOME/lib/set-java-home
-	export OPENDS_JAVA_HOME=${JAVA7_HOME}
 
 	# Configure and start OpenDS using the default ports
 	$OPENDS_HOME/setup -i -v -n -p 1389 --adminConnectorPort 4444 -x 1689 -w dmanager -b "dc=sfbay,dc=sun,dc=com" -Z 1636 --useJavaKeystore $S1AS_HOME/domains/domain1/config/keystore.jks -W changeit -N s1as
@@ -54,8 +52,8 @@ test_run(){
 	$S1AS_HOME/bin/asadmin start-domain
 	pushd $APS_HOME/devtests/security	
 	rm count.txt || true
-  PROXY_HOST=`echo ${http_proxy} | cut -d':' -f2 | ${SED} 's/\/\///g'`
-  PROXY_PORT=`echo ${http_proxy} | cut -d':' -f3 | ${SED} 's/\///g'`
+  PROXY_HOST=`echo www-proxy.us.oracle.com:80 | cut -d':' -f2 | ${SED} 's/\/\///g'`
+  PROXY_PORT=`echo www-proxy.us.oracle.com:80 | cut -d':' -f3 | ${SED} 's/\///g'`
   ANT_OPTS="${ANT_OPTS} \
   -Dhttp.proxyHost=${PROXY_HOST} \
   -Dhttp.proxyPort=${PROXY_PORT} \
@@ -100,7 +98,7 @@ run_test_id(){
 	test_init
 	get_test_target $1
 	test_run
-	merge_result_files
+	#merge_result_files
 	check_successful_run
     generate_junit_report $1
     change_junit_report_class_names

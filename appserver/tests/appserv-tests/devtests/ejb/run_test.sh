@@ -287,12 +287,9 @@ get_test_target(){
 run_test_id(){
 	source `dirname $0`/../../../common_test.sh
 	kill_process
-	delete_gf
 	if [[ $1 = "ejb_web_all" ]]; then
-		download_test_resources web.zip version-info.txt
 		unzip_test_resources $WORKSPACE/bundles/web.zip
 	else
-		download_test_resources glassfish.zip version-info.txt
 		unzip_test_resources $WORKSPACE/bundles/glassfish.zip
 	fi
 	dname=`pwd`
@@ -311,16 +308,8 @@ run_test_id(){
 	fi
 	check_successful_run
     generate_junit_report $1    
-    change_junit_report_class_names
+    #change_junit_report_class_names
 }
-
-post_test_run(){
-    copy_test_artifects
-    upload_test_results
-    delete_bundle
-    cd ${dname}
-}
-
 
 list_test_ids(){
 	echo ejb_all ejb_timer_cluster_all ejb_web_all ejb_group_1 ejb_group_2 ejb_group_3
@@ -333,6 +322,6 @@ case $OPT in
 	list_test_ids )
 		list_test_ids;;
 	run_test_id )
-		trap post_test_run EXIT
+		trap "copy_test_artifects ${TEST_ID}" EXIT
 		run_test_id $TEST_ID ;;
 esac
