@@ -113,7 +113,10 @@ upload_test_results(){
 unzip_test_resources(){
 	printf "\n%s \n\n" "===== UNZIP TEST RESOURCES ====="
 	for i in "$@"; do
-		unzip $i > /dev/null
+		if [[ $i == *.zip ]]; then
+			unzip $i > /dev/null
+		else
+			tar -xf $i	> /dev/null
 	done
 }
 

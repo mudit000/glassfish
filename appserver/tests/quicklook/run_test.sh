@@ -59,7 +59,7 @@ run_test_id(){
 		cd $WORKSPACE/appserver/tests/quicklook/
 		mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 -Dglassfish.home=${S1AS_HOME} -Dmaven.repo.local=${MAVEN_REPO_LOCAL} -Ptest_gd_security,report test | tee $TEST_RUN_LOG
 	elif [[ $1 = "ql_gf_nucleus_all" || $1 = "nucleus_admin_all" ]]; then
-		unzip_test_resources $WORKSPACE/bundles/nucleus-new.zip "$WORKSPACE/bundles/tests-maven-repo.zip -d $WORKSPACE/repository"
+		unzip_test_resources $WORKSPACE/bundles/nucleus-new.zip "$WORKSPACE/bundles/tests-maven-repo.zip -C $WORKSPACE/repository"
 		if [[ $1 = "ql_gf_nucleus_all" ]]; then
 			cd $WORKSPACE/nucleus/tests/quicklook
 		elif [[ $1 = "nucleus_admin_all"  ]]; then
@@ -72,7 +72,7 @@ run_test_id(){
 			merge_junit_xmls $WORKSPACE/nucleus/tests/admin/target/surefire-reports/junitreports
 		fi
 	elif [[ $1 = "ql_gf_web_profile_all" || $1 = "ql_gf_embedded_profile_all" ]]; then
-		unzip_test_resources $WORKSPACE/bundles/web.zip "$WORKSPACE/bundles/tests-maven-repo.zip -d $WORKSPACE/repository"
+		unzip_test_resources $WORKSPACE/bundles/web.zip "$WORKSPACE/bundles/tests-maven-repo.zip -C $WORKSPACE/repository"
 		cd $WORKSPACE/appserver/tests/quicklook/
 		if [[ $1 = "ql_gf_web_profile_all" ]]; then
 			mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 -Dglassfish.home=$WORKSPACE/glassfish5/glassfish -Dmaven.repo.local=$WORKSPACE/repository -Ptest_wd_security,report test | tee $TEST_RUN_LOG

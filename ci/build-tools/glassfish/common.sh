@@ -602,7 +602,7 @@ zip_tests_maven_repo(){
 
     # ideally this should be done
     # from a maven plugin...
-    zip -r ${WORKSPACE}/bundles/tests-maven-repo.zip \
+    tar -cvf ${WORKSPACE}/bundles/tests-maven-repo.tar.gz \
         org/glassfish/main/* \
         org/glassfish/hk2/hk2-config/* \
         org/glassfish/hk2/config-types/* \
