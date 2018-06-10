@@ -1,8 +1,8 @@
-<%--
+<!--
 
     DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
-    Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2018 Oracle and/or its affiliates. All rights reserved.
 
     The contents of this file are subject to the terms of either the GNU
     General Public License Version 2 only ("GPL") or the Common Development
@@ -38,39 +38,51 @@
     only if the new code is made subject to such option by the copyright
     holder.
 
---%>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.glassfish.main.jaxr-ra</groupId>
+		<artifactId>jaxr-ra-pom</artifactId>
+		<version>5.0.1-SNAPSHOT</version>
+	</parent>
 
-<%@page contentType="text/html"%>
-<%@page pageEncoding="UTF-8"%>
-<%@page import="a.*, javax.xml.bind.*"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+	<artifactId>jaxr-ra-rar</artifactId>
+	<packaging>rar</packaging>
+	<version>5.0.1-SNAPSHOT</version>
+	<name>JAXR-RA RAR package</name>
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
+	<dependencies>
+		<dependency>
+			<groupId>org.glassfish.main.jaxr-ra</groupId>
+			<artifactId>jaxr-ra</artifactId>
+			<version>5.0.1-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.xml.registry</groupId>
+					<artifactId>javax.xml.registry-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
 
-    <body>
-
-    <% out.println(); %>
-
-    <%
-       JAXBContext ctx = JAXBContext.newInstance(Address.class);
-       String className = ctx.getClass().getName();
-       out.println("jaxbimpl: " + className);
-/*       out.println("Context Impl: " + className);
-
-       Marshaller m  =ctx.createMarshaller();
-       Address a = new Address();
-
-       out.println("<pre>");
-       m.marshal(a, out);
-       out.println("</pre>");*/
-    %>
-
-    <% out.println(); %>
-
-    </body>
-</html>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-rar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<raXmlFile>ra.xml</raXmlFile>
+					<includeDependencies>true</includeDependencies>
+					<archive>
+						<addMavenDescriptor>true</addMavenDescriptor>
+					</archive>
+					<includeJar>false</includeJar>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
 
