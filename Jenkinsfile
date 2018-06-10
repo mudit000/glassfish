@@ -88,6 +88,66 @@ spec:
             }
           }
         }
+        stage('quicklook-embedded') {
+          agent {
+            kubernetes {
+              label 'mypod-A'
+            }
+          }
+          steps {
+            container('glassfish-ci') {
+              unstash 'build-bundles'
+              sh 'appserver/tests/gftest.sh run_test ql_gf_embedded_profile_all'
+              archiveArtifacts artifacts: 'ql_gf_embedded_profile_all-results.tar.gz'
+              junit 'results/junitreports/*.xml'
+            }
+          }
+        }
+        stage('quicklook-nucleus') {
+          agent {
+            kubernetes {
+              label 'mypod-A'
+            }
+          }
+          steps {
+            container('glassfish-ci') {
+              unstash 'build-bundles'
+              sh 'appserver/tests/gftest.sh run_test ql_gf_nucleus_all'
+              archiveArtifacts artifacts: 'gf_nucleus_all-results.tar.gz'
+              junit 'results/junitreports/*.xml'
+            }
+          }
+        }
+        stage('quicklook-nucleus-admin') {
+          agent {
+            kubernetes {
+              label 'mypod-A'
+            }
+          }
+          steps {
+            container('glassfish-ci') {
+              unstash 'build-bundles'
+              sh 'appserver/tests/gftest.sh run_test nucleus_admin_all'
+              archiveArtifacts artifacts: 'nucleus_admin_all-results.tar.gz'
+              junit 'results/junitreports/*.xml'
+            }
+          }
+        }
+        stage('deployment-cluster') {
+          agent {
+            kubernetes {
+              label 'mypod-A'
+            }
+          }
+          steps {
+            container('glassfish-ci') {
+              unstash 'build-bundles'
+              sh 'appserver/tests/gftest.sh run_test deployment_cluster_all'
+              archiveArtifacts artifacts: 'deployment_cluster_all-results.tar.gz'
+              junit 'results/junitreports/*.xml'
+            }
+          }
+        }
       }
     }
   }
