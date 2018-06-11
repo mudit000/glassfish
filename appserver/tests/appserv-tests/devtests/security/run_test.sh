@@ -52,8 +52,8 @@ test_run(){
 	$S1AS_HOME/bin/asadmin start-domain
 	pushd $APS_HOME/devtests/security	
 	rm count.txt || true
-  PROXY_HOST=`echo www-proxy.us.oracle.com:80 | cut -d':' -f2 | ${SED} 's/\/\///g'`
-  PROXY_PORT=`echo www-proxy.us.oracle.com:80 | cut -d':' -f3 | ${SED} 's/\///g'`
+  PROXY_HOST=`echo http://www-proxy.us.oracle.com:80 | cut -d':' -f2 | sed 's/\/\///g'`
+  PROXY_PORT=`echo http://www-proxy.us.oracle.com:80 | cut -d':' -f3 | sed 's/\///g'`
   ANT_OPTS="${ANT_OPTS} \
   -Dhttp.proxyHost=${PROXY_HOST} \
   -Dhttp.proxyPort=${PROXY_PORT} \
