@@ -37,7 +37,7 @@ spec:
           sh 'ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1'
           archiveArtifacts artifacts: 'bundles/glassfish.zip,bundles/nucleus-new.zip,bundles/web.zip'
           junit '**/surefire-reports/*.xml'
-          stash includes: 'bundles/*.zip', name: 'build-bundles'
+          stash includes: 'bundles/*', name: 'build-bundles'
         }
       }
     }
