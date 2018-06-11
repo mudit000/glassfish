@@ -285,7 +285,6 @@ get_test_target(){
 
 
 run_test_id(){
-	source `dirname $0`/../../../common_test.sh
 	kill_process
 	if [[ $1 = "ejb_web_all" ]]; then
 		unzip_test_resources $WORKSPACE/bundles/web.zip
@@ -317,6 +316,7 @@ list_test_ids(){
 
 OPT=$1
 TEST_ID=$2
+source `dirname $0`/../../../common_test.sh
 
 case $OPT in
 	list_test_ids )

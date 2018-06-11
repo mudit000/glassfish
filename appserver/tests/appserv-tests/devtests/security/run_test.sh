@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
@@ -100,12 +100,6 @@ run_test_id(){
     generate_junit_report $1
     change_junit_report_class_names
 }
-post_test_run(){
-    copy_test_artifects
-    upload_test_results
-    delete_bundle
-    cd -
-}
 
 list_test_ids(){
 	echo security_all
@@ -119,6 +113,6 @@ case $OPT in
 	list_test_ids )
 		list_test_ids;;
 	run_test_id )
-		trap post_test_run EXIT
+		trap "copy_test_artifects ${TEST_ID}" EXIT
 		run_test_id $TEST_ID ;;
 esac
