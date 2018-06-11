@@ -45,6 +45,7 @@ copy_ql_results(){
 		cp $WORKSPACE/glassfish5/glassfish/domains/domain1/logs/server.log* $WORKSPACE/results/
 	else
 		cp $WORKSPACE/nucleus/domains/domain1/logs/server.log* $WORKSPACE/results
+	fi
 	cp $TEST_RUN_LOG $WORKSPACE/results/
 	cp -r $WORKSPACE/appserver/tests/quicklook/test-output/* $WORKSPACE/results/
 	cp $WORKSPACE/appserver/tests/quicklook/test-output/TESTS-TestSuites.xml $WORKSPACE/results/junitreports/test_results_junit.xml

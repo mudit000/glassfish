@@ -117,6 +117,7 @@ unzip_test_resources(){
 			unzip $i > /dev/null
 		else
 			tar -xf $i	> /dev/null
+		fi
 	done
 }
 

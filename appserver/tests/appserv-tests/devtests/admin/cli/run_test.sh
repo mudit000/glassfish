@@ -55,7 +55,6 @@ test_run(){
 }
 
 run_test_id(){
-	source `dirname $0`/../../../../common_test.sh
 	kill_process
 	delete_gf
 	unzip_test_resources $WORKSPACE/bundles/glassfish.zip
@@ -93,6 +92,7 @@ list_test_ids(){
 
 OPT=$1
 TEST_ID=$2
+source `dirname $0`/../../../../common_test.sh
 
 case $OPT in
 	list_test_ids )
