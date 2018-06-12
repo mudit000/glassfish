@@ -581,7 +581,7 @@ zip_tests_workspace(){
 	appserver/admingui/devtests/ \
 	appserver/admingui/pom.xml \
     --exclude-vcs > /dev/null
-    cp -p  $GF_ROOT/appserver/tests/gftest.sh ${WORKSPACE}/bundles
+    cp appserver/tests/gftest.sh ${WORKSPACE}/bundles
     #cp -prf  $GF_ROOT/ci/ ${WORKSPACE}/bundles
 }
 
