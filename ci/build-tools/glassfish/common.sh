@@ -84,7 +84,7 @@ binary_init(){
 
 build_re_finalize(){
     archive_bundles
-    #zip_tests_workspace
+    zip_tests_workspace
     zip_tests_maven_repo
     #zip_gf_source
     #copy_bundle_to_nfs
@@ -549,10 +549,10 @@ create_version_info_for_binary(){
 
 archive_bundles(){
     printf "\n%s \n\n" "===== ARCHIVE BUNDLES ====="
-    mkdir bundles
-    cp appserver/distributions/glassfish/target/*.zip bundles/
-    cp appserver/distributions/web/target/*.zip bundles/
-    cp nucleus/distributions/nucleus/target/*.zip bundles/
+    mkdir ${WORKSPACE}/bundles
+    cp appserver/distributions/glassfish/target/*.zip ${WORKSPACE}/bundles
+    cp appserver/distributions/web/target/*.zip ${WORKSPACE}/bundles
+    cp nucleus/distributions/nucleus/target/*.zip ${WORKSPACE}/bundles
 }
 
 archive_binaries(){
@@ -573,7 +573,7 @@ clean_and_zip_workspace(){
 
 zip_tests_workspace(){
     printf "\n%s \n\n" "===== ZIP THE TESTS WORKSPACE ====="
-    zip -r ${WORKSPACE}/bundles/tests-workspace.zip \
+    tar -cvf ${WORKSPACE}/bundles/tests-workspace.tar.gz \
         nucleus/pom.xml \
         nucleus/tests/ \
         appserver/pom.xml \
@@ -582,7 +582,7 @@ zip_tests_workspace(){
 	appserver/admingui/pom.xml \
         -x *.git/* > /dev/null
     cp -p  $GF_ROOT/appserver/tests/gftest.sh ${WORKSPACE}/bundles
-    cp -prf  $GF_ROOT/ci/ ${WORKSPACE}/bundles
+    #cp -prf  $GF_ROOT/ci/ ${WORKSPACE}/bundles
 }
 
 zip_gf_source(){
@@ -1163,5 +1163,4 @@ cat >> $1/$INDEX_FILENAME << EOF
 </html>
 EOF
 }
-
 

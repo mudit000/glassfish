@@ -38,6 +38,10 @@
 # only if the new code is made subject to such option by the copyright
 # holder.
 #
+
+unzip_test_sources(){
+	unzip -d main/  $WORKSPACE/bundles/tests-workspace.zip > /dev/null
+}
 	
 ###########################
 #Start Script
@@ -45,6 +49,7 @@
 
 run_test(){
 	TEST_ID=$1
+        unzip_test_sources
 	found=false
 	for runtest in `find . -name run_test\.sh`; do
 		for testid in `$runtest list_test_ids`; do

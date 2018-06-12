@@ -163,4 +163,3 @@ case $OPT in
     trap "copy_test_artifects $TEST_ID" EXIT
     run_test_id $TEST_ID ;;
 esac
-
