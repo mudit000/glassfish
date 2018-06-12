@@ -40,7 +40,7 @@
 #
 
 unzip_test_sources(){
-	unzip -d main/  $WORKSPACE/bundles/tests-workspace.tar.gz > /dev/null
+	tar -xf $WORKSPACE/bundles/tests-workspace.tar.gz -C main/
 }
 	
 ###########################
