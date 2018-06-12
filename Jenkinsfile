@@ -8,12 +8,15 @@ def generateStage(job) {
     return {
         def label = "mypod-A"
         podTemplate(label: label) {
-            stage("${job}") {
-                container('glassfish-ci') {
-                  unstash 'build-bundles'
-                  sh "appserver/tests/gftest.sh run_test ${job}"
-                  archiveArtifacts artifacts: "${job}-results.tar.gz"
-                  junit 'results/junitreports/*.xml'
+            node(label) {
+                stage("${job}") {
+                    container('glassfish-ci') {
+                      checkout scm
+                      unstash 'build-bundles'
+                      sh "appserver/tests/gftest.sh run_test ${job}"
+                      archiveArtifacts artifacts: "${job}-results.tar.gz"
+                      junit 'results/junitreports/*.xml'
+                    }
                 }
             }
         }
