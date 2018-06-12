@@ -47,7 +47,7 @@ copy_ql_results(){
 		cp $WORKSPACE/main/appserver/tests/quicklook/test-output/TESTS-TestSuites.xml $WORKSPACE/results/junitreports/test_results_junit.xml
 		cp $WORKSPACE/main/appserver/tests/quicklook/quicklook_summary.txt $WORKSPACE/results
 	else
-		cp $WORKSPACE/nucleus/domains/domain1/logs/server.log* $WORKSPACE/results
+		cp $WORKSPACE/nucleus/domains/domain1/logs/server.log* $WORKSPACE/results || true
 	fi
 	cp $TEST_RUN_LOG $WORKSPACE/results/
 	tar -cvf $WORKSPACE/${1}-results.tar.gz $WORKSPACE/results
@@ -67,7 +67,7 @@ run_test_id(){
 		elif [[ $1 = "nucleus_admin_all"  ]]; then
 			cd $WORKSPACE/main/nucleus/tests/admin
 		fi
-		mvn -Dmaven.test.failure.ignore=true -Dnucleus.home=$WORKSPACE/nucleus -Dmaven.repo.local=$WORKSPACE/repository clean test | tee $TEST_RUN_LOG
+		mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 -Dmaven.test.failure.ignore=true -Dnucleus.home=$WORKSPACE/nucleus -Dmaven.repo.local=$WORKSPACE/repository clean test | tee $TEST_RUN_LOG
 		if [[ $1 = "ql_gf_nucleus_all" ]]; then
 			merge_junit_xmls $WORKSPACE/main/nucleus/tests/quicklook/target/surefire-reports/junitreports
 		elif [[ $1 = "nucleus_admin_all"  ]]; then
