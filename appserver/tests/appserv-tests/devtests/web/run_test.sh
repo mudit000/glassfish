@@ -138,7 +138,6 @@ get_test_target(){
 
 
 test_run(){
-    cat /etc/hosts
 	export WEBTIER_ADMIN_PORT=45707
 	export WEBTIER_JMS_PORT=45708
 	export WEBTIER_JMX_PORT=45709
