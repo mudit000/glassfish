@@ -8,14 +8,12 @@ def generateStage(job) {
     return {
         def label = "mypod-A"
         podTemplate(label: label) {
-            node(label) {
-                stage("${job}") {
-                    container('glassfish-ci') {
-                      unstash 'build-bundles'
-                      sh "appserver/tests/gftest.sh run_test ${job}"
-                      archiveArtifacts artifacts: "${job}-results.tar.gz"
-                      junit 'results/junitreports/*.xml'
-                    }
+            stage("${job}") {
+                container('glassfish-ci') {
+                  unstash 'build-bundles'
+                  sh "appserver/tests/gftest.sh run_test ${job}"
+                  archiveArtifacts artifacts: "${job}-results.tar.gz"
+                  junit 'results/junitreports/*.xml'
                 }
             }
         }
@@ -66,7 +64,7 @@ spec:
         }
       }
     }
-    stage('glassfish-functional-tests') {
+    stage('glassfish-tests') {
       steps {
         script {
           parallel parallelStagesMap
