@@ -45,16 +45,16 @@ copy_ql_results(){
 		cp $WORKSPACE/glassfish5/glassfish/domains/domain1/logs/server.log* $WORKSPACE/results/ || true
 		cp -r $WORKSPACE/main/appserver/tests/quicklook/test-output/* $WORKSPACE/results/
 		cp $WORKSPACE/main/appserver/tests/quicklook/test-output/TESTS-TestSuites.xml $WORKSPACE/results/junitreports/test_results_junit.xml
-		cp $WORKSPACE/main/appserver/tests/quicklook/quicklook_summary.txt $WORKSPACE/results
+		cp $WORKSPACE/main/appserver/tests/quicklook/quicklook_summary.txt $WORKSPACE/results || true
 	else
-		cp $WORKSPACE/nucleus/domains/domain1/logs/server.log* $WORKSPACE/results || true
+		cp $WORKSPACE/nucleus/domains/domain1/logs/server.log* $WORKSPACE/results 
 	fi
 	cp $TEST_RUN_LOG $WORKSPACE/results/
 	tar -cvf $WORKSPACE/${1}-results.tar.gz $WORKSPACE/results
+
 }
 
 run_test_id(){
-	source `dirname $0`/../common_test.sh
 	mkdir $WORKSPACE/repository
 	if [[ $1 = "ql_gf_full_profile_all" ]]; then
 		unzip_test_resources $WORKSPACE/bundles/glassfish.zip
@@ -104,6 +104,7 @@ list_test_ids(){
 
 OPT=$1
 TEST_ID=$2
+source `dirname $0`/../common_test.sh
 
 case $OPT in
 	list_test_ids )

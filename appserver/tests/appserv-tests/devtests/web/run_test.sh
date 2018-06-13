@@ -121,36 +121,36 @@ is_target(){
 }
 
 get_test_target(){
-	case $1 in
-		web_all )
-			TARGET=all
-			export TARGET;;
+    case $1 in
+        web_all )
+            TARGET=all
+            export TARGET;;
 
-		group-1 )
-			TARGET="init taglib el security http-connector comet misc clustering ha finish-report"
-			export TARGET;;
-		* )
-			TARGET="init $1 finish-report"
-			export TARGET;;
-	esac
+        group-1 )
+            TARGET="init taglib el security http-connector comet misc clustering ha finish-report"
+            export TARGET;;
+        * )
+            TARGET="init $1 finish-report"
+            export TARGET;;
+    esac
 
 }
 
 
 test_run(){
-	export WEBTIER_ADMIN_PORT=45707
-	export WEBTIER_JMS_PORT=45708
-	export WEBTIER_JMX_PORT=45709
-	export WEBTIER_ORB_PORT=45710
-	export WEBTIER_HTTP_PORT=45711
-	export WEBTIER_HTTPS_PORT=45712
-	export WEBTIER_ALTERNATE_PORT=45713
-	export WEBTIER_ORB_SSL_PORT=45714
-	export WEBTIER_ORB_SSL_MUTUALAUTH_PORT=45715
-	export WEBTIER_INSTANCE_PORT=45716
-	export WEBTIER_INSTANCE_PORT_2=45717
-	export WEBTIER_INSTANCE_PORT_3=45718
-	export WEBTIER_INSTANCE_HTTPS_PORT=45719
+    export WEBTIER_ADMIN_PORT=45707
+    export WEBTIER_JMS_PORT=45708
+    export WEBTIER_JMX_PORT=45709
+    export WEBTIER_ORB_PORT=45710
+    export WEBTIER_HTTP_PORT=45711
+    export WEBTIER_HTTPS_PORT=45712
+    export WEBTIER_ALTERNATE_PORT=45713
+    export WEBTIER_ORB_SSL_PORT=45714
+    export WEBTIER_ORB_SSL_MUTUALAUTH_PORT=45715
+    export WEBTIER_INSTANCE_PORT=45716
+    export WEBTIER_INSTANCE_PORT_2=45717
+    export WEBTIER_INSTANCE_PORT_3=45718
+    export WEBTIER_INSTANCE_HTTPS_PORT=45719
 
     while getopts u:s:d:t: flag; do
         case $flag in
@@ -195,7 +195,7 @@ test_run(){
     #Copy over the modified run.xml for dumping thread stack
     #cp ../../run.xml $PWD/appserv-tests/config
 
-	rm -rf $S1AS_HOME/domains/domain1
+    rm -rf $S1AS_HOME/domains/domain1
     cd $APS_HOME
 
     echo "AS_ADMIN_PASSWORD=" > temppwd
@@ -261,15 +261,15 @@ test_run(){
 }
 
 run_test_id(){
-	source `dirname $0`/../../../common_test.sh
-	unzip_test_resources $WORKSPACE/bundles/glassfish.zip
-	cd `dirname $0`
-	test_init
-    TARGET_FROM_INPUT=(`echo $1 | sed 's/web_//'`)
-	get_test_target $TARGET_FROM_INPUT
-	test_run -s webtier-dev-tests
-	check_successful_run
+    unzip_test_resources $WORKSPACE/bundles/glassfish.zip
+    cd `dirname $0`
+    test_init
+        TARGET_FROM_INPUT=(`echo $1 | sed 's/web_//'`)
+    get_test_target $TARGET_FROM_INPUT
+    test_run -s webtier-dev-tests
+    check_successful_run
     generate_junit_report $TARGET_FROM_INPUT
+    change_junit_report_class_names
 }
 
 list_test_ids(){
@@ -278,6 +278,7 @@ list_test_ids(){
 
 OPT=$1
 TEST_ID=$2
+source `dirname $0`/../../../common_test.sh
 
 case $OPT in
     list_test_ids )

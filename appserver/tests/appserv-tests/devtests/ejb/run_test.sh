@@ -285,7 +285,6 @@ get_test_target(){
 
 
 run_test_id(){
-	kill_process
 	if [[ $1 = "ejb_web_all" ]]; then
 		unzip_test_resources $WORKSPACE/bundles/web.zip
 	else
@@ -307,7 +306,7 @@ run_test_id(){
 	fi
 	check_successful_run
     generate_junit_report $1    
-    #change_junit_report_class_names
+    change_junit_report_class_names
 }
 
 list_test_ids(){
