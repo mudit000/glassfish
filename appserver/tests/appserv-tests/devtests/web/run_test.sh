@@ -261,6 +261,7 @@ test_run(){
 }
 
 run_test_id(){
+    cat /etc/hosts
     unzip_test_resources $WORKSPACE/bundles/glassfish.zip
     cd `dirname $0`
     test_init
