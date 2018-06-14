@@ -1,4 +1,4 @@
-def jobs = ["ql_gf_full_profile_all", "ql_gf_web_profile_all", "ql_gf_nucleus_all", "ql_gf_embedded_profile_all", "nucleus_admin_all", "ejb_all", "ejb_timer_cluster_all", "ejb_web_all", "web_all"]
+def jobs = ["ql_gf_full_profile_all", "ql_gf_web_profile_all", "ql_gf_nucleus_all", "ql_gf_embedded_profile_all", "nucleus_admin_all", "ejb_all", "ejb_timer_cluster_all", "ejb_web_all", "web_all", "deployment_all", "deployment_cluster_all"]
 
 def parallelStagesMap = jobs.collectEntries {
   ["${it}": generateStage(it)]
@@ -14,7 +14,7 @@ def generateStage(job) {
                       unstash 'build-bundles'
                       sh "$WORKSPACE/bundles/gftest.sh run_test ${job}"
                       archiveArtifacts artifacts: "${job}-results.tar.gz"
-                      junit 'results/junitreports/*.xml'
+                      junit testResults 'results/junitreports/*.xml', allowEmptyResults: true 
                     }
                 }
             }
@@ -41,6 +41,11 @@ spec:
     - cat
     tty: true
     imagePullPolicy: Always
+hostAliases:
+  - ip: "127.0.0.1"
+    hostnames:
+    - "localhost.localdomain"
+    - "localhost"   
 """
     }
   }
@@ -61,7 +66,7 @@ spec:
         container('glassfish-ci') {
           sh 'ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1'
           archiveArtifacts artifacts: 'bundles/*.zip'
-          junit '**/surefire-reports/*.xml'
+          junit testResults: '**/surefire-reports/*.xml'
           stash includes: 'bundles/*', name: 'build-bundles'
         }
       }

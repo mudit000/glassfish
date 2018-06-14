@@ -181,7 +181,6 @@ test_run_ejb_web(){
 	rm count.txt || true
 	ant $TARGET report-result -Ddb.port=${DB_PORT} -Ddb.port.2=${DB_PORT_2} |tee $TEST_RUN_LOG
 	cat $S1AS_HOME/databases/derby.log
-	egrep 'FAILED= *0' count.txt
 	egrep 'DID NOT RUN= *0' count.txt
 
 }

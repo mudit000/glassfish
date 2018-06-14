@@ -85,10 +85,11 @@ run_test_id(){
 		echo "Invalid Test Id"
 		exit 1
 	fi
-    #change_junit_report_class_names
+    change_junit_report_class_names
 }
 
 merge_junit_xmls(){
+  mkdir -p $WORKSPACE/results/junitreports
   JUD_DIR=$1
   JUD=$WORKSPACE/results/junitreports/test_results_junit.xml
   rm -f ${JUD} || true

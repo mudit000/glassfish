@@ -145,7 +145,7 @@ run_test_id(){
   test_run ${1}
   check_successful_run
   generate_junit_report_deployment $1
-  #change_junit_report_class_names
+  change_junit_report_class_names
 }
 
 list_test_ids(){
