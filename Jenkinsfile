@@ -14,7 +14,7 @@ def generateStage(job) {
                       unstash 'build-bundles'
                       sh "$WORKSPACE/bundles/gftest.sh run_test ${job}"
                       archiveArtifacts artifacts: "${job}-results.tar.gz"
-                      junit testResults 'results/junitreports/*.xml', allowEmptyResults: "true"
+                      junit testResults: 'results/junitreports/*.xml', allowEmptyResults: true
                     }
                 }
             }
