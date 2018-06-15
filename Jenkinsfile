@@ -34,6 +34,10 @@ metadata:
   labels:
     some-label: some-label-value
 spec:
+  hostAliases:
+  - ip: "127.0.0.1"
+    hostnames:
+    - "localhost.localdomain"
   containers:
   - name: glassfish-ci
     image: arindamb/glassfish-ci
@@ -41,11 +45,6 @@ spec:
     - cat
     tty: true
     imagePullPolicy: Always
-hostAliases:
-  - ip: "127.0.0.1"
-    hostnames:
-    - "localhost.localdomain"
-    - "localhost"   
 """
     }
   }

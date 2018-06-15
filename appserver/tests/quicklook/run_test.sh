@@ -50,6 +50,7 @@ copy_ql_results(){
 		cp $WORKSPACE/nucleus/domains/domain1/logs/server.log* $WORKSPACE/results 
 	fi
 	cp $TEST_RUN_LOG $WORKSPACE/results/
+	change_junit_report_class_names
 	tar -cvf $WORKSPACE/${1}-results.tar.gz $WORKSPACE/results
 
 }
@@ -85,11 +86,9 @@ run_test_id(){
 		echo "Invalid Test Id"
 		exit 1
 	fi
-    change_junit_report_class_names
 }
 
 merge_junit_xmls(){
-  mkdir -p $WORKSPACE/results/junitreports
   JUD_DIR=$1
   JUD=$WORKSPACE/results/junitreports/test_results_junit.xml
   rm -f ${JUD} || true
