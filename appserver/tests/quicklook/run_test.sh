@@ -46,11 +46,11 @@ copy_ql_results(){
 		cp -r $WORKSPACE/main/appserver/tests/quicklook/test-output/* $WORKSPACE/results/
 		cp $WORKSPACE/main/appserver/tests/quicklook/test-output/TESTS-TestSuites.xml $WORKSPACE/results/junitreports/test_results_junit.xml
 		cp $WORKSPACE/main/appserver/tests/quicklook/quicklook_summary.txt $WORKSPACE/results || true
+		change_junit_report_class_names
 	else
 		cp $WORKSPACE/nucleus/domains/domain1/logs/server.log* $WORKSPACE/results 
 	fi
 	cp $TEST_RUN_LOG $WORKSPACE/results/
-	change_junit_report_class_names
 	tar -cvf $WORKSPACE/${1}-results.tar.gz $WORKSPACE/results
 
 }

@@ -93,7 +93,7 @@ build_re_finalize(){
 build_re_dev(){
     #build_init
     dev_build
-    #merge_junits
+    merge_junits
     build_re_finalize
 }
 
