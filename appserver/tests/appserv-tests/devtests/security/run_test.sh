@@ -89,13 +89,12 @@ merge_result_files(){
 }
 
 run_test_id(){
-	kill_process
 	unzip_test_resources $WORKSPACE/bundles/glassfish.zip
 	cd `dirname $0`
 	test_init
 	get_test_target $1
 	test_run
-	#merge_result_files
+	merge_result_files
 	check_successful_run
     generate_junit_report $1
     change_junit_report_class_names

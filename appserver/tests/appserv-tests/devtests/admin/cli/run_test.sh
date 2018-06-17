@@ -55,8 +55,6 @@ test_run(){
 }
 
 run_test_id(){
-	kill_process
-	delete_gf
 	unzip_test_resources $WORKSPACE/bundles/glassfish.zip
 	cd `dirname $0`
 	test_init
@@ -64,15 +62,9 @@ run_test_id(){
 	test_run
 	check_successful_run
     generate_junit_report $1
-    #change_junit_report_class_names
+    change_junit_report_class_names
 }
 
-post_test_run(){
-    copy_test_artifects
-    upload_test_results
-    delete_bundle
-    cd -
-}
 
 get_test_target(){
 	case $1 in

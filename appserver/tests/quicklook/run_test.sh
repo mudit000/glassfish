@@ -40,7 +40,6 @@
 #
 
 copy_ql_results(){
-	mkdir -p $WORKSPACE/results/junitreports
 	if [[ $1 = "ql_gf_web_profile_all" || $1 = "ql_gf_full_profile_all" || "ql_gf_embedded_profile_all" = $1 ]]; then
 		cp $WORKSPACE/glassfish5/glassfish/domains/domain1/logs/server.log* $WORKSPACE/results/ || true
 		cp -r $WORKSPACE/main/appserver/tests/quicklook/test-output/* $WORKSPACE/results/
@@ -105,6 +104,7 @@ list_test_ids(){
 OPT=$1
 TEST_ID=$2
 source `dirname $0`/../common_test.sh
+mkdir -p $WORKSPACE/results/junitreports
 
 case $OPT in
 	list_test_ids )

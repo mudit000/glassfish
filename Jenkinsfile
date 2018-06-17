@@ -1,4 +1,4 @@
-def jobs = ["ql_gf_full_profile_all", "ql_gf_web_profile_all", "ql_gf_nucleus_all", "ql_gf_embedded_profile_all", "nucleus_admin_all", "ejb_all", "ejb_timer_cluster_all", "ejb_web_all", "web_all", "deployment_all", "deployment_cluster_all"]
+def jobs = ["ql_gf_full_profile_all", "ql_gf_web_profile_all", "ql_gf_nucleus_all", "ql_gf_embedded_profile_all", "nucleus_admin_all", "ejb_all", "ejb_timer_cluster_all", "ejb_web_all", "web_all", "security_all", "admin_cli_all"]
 
 def parallelStagesMap = jobs.collectEntries {
   ["${it}": generateStage(it)]
@@ -65,7 +65,7 @@ spec:
         container('glassfish-ci') {
           sh 'ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1'
           archiveArtifacts artifacts: 'bundles/*.zip'
-          junit testResults: '**/surefire-reports/*.xml'
+          junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
           stash includes: 'bundles/*', name: 'build-bundles'
         }
       }
