@@ -40,7 +40,7 @@
 #
 
 test_run(){
-	# Workaround for JDK7 and OpenDS
+	echo "Maven Home is $M2_HOME"
 	cp $APS_HOME/devtests/security/ldap/opends/X500Signer.jar $OPENDS_HOME/lib
 	rm -rf $OPENDS_HOME/lib/set-java-home
 

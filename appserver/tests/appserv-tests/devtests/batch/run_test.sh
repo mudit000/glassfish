@@ -63,11 +63,6 @@ test_run(){
 }
 
 run_test_id(){
-  #a common util script located at main/appserver/tests/common_test.sh
-  source `dirname $0`/../../../common_test.sh
-  kill_process
-  delete_gf
-  download_test_resources glassfish.zip version-info.txt
   unzip_test_resources $WORKSPACE/bundles/glassfish.zip
   cd `dirname $0`
   test_init
@@ -76,13 +71,6 @@ run_test_id(){
   test_run
   generate_junit_report $1
   change_junit_report_class_names
-}
-
-post_test_run(){
-  copy_test_artifects
-  upload_test_results
-  delete_bundle
-  cd -
 }
 
 get_test_target(){
@@ -96,10 +84,11 @@ get_test_target(){
 
 OPT=$1
 TEST_ID=$2
+source `dirname $0`/../../../common_test.sh
 case $OPT in
   list_test_ids )
     list_test_ids;;
   run_test_id )
-    trap post_test_run EXIT
+    trap "copy_test_artifects ${TEST_ID}" EXIT
     run_test_id $TEST_ID ;;
 esac

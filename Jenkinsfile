@@ -1,4 +1,4 @@
-def jobs = ["ql_gf_full_profile_all", "ql_gf_web_profile_all", "ql_gf_nucleus_all", "ql_gf_embedded_profile_all", "nucleus_admin_all", "ejb_all", "ejb_timer_cluster_all", "ejb_web_all", "web_all", "security_all", "admin_cli_all"]
+def jobs = ["ql_gf_full_profile_all", "ql_gf_web_profile_all", "ql_gf_nucleus_all", "ql_gf_embedded_profile_all", "nucleus_admin_all", "batch_all", "ejb_timer_cluster_all", "ejb_web_all", "web_all", "security_all", "cdi_all","connector_all"]
 
 def parallelStagesMap = jobs.collectEntries {
   ["${it}": generateStage(it)]
