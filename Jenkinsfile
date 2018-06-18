@@ -31,8 +31,6 @@ pipeline {
 apiVersion: v1
 kind: Pod
 metadata:
-  labels:
-    some-label: some-label-value
 spec:
   hostAliases:
   - ip: "127.0.0.1"
