@@ -12,6 +12,7 @@ def generateStage(job) {
             node(label) {
                 stage("${job}") {
                     container('glassfish-ci') {
+                      checkout scm
                       unstash 'build-bundles'
                       sh "$WORKSPACE/appserver/tests/gftest.sh run_test ${job}"
                       archiveArtifacts artifacts: "${job}-results.tar.gz"
@@ -36,6 +37,10 @@ apiVersion: v1
 kind: Pod
 metadata:
 spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+       claimName: maven-repo
   hostAliases:
   - ip: "127.0.0.1"
     hostnames:
