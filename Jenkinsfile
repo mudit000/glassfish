@@ -52,6 +52,9 @@ spec:
     - cat
     tty: true
     imagePullPolicy: Always
+    volumeMounts:
+        - mountPath: "/root/.m2/repository"
+          name: maven-repo
 """
     }
   }
