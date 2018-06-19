@@ -13,7 +13,7 @@ def generateStage(job) {
                 stage("${job}") {
                     container('glassfish-ci') {
                       unstash 'build-bundles'
-                      sh "$WORKSPACE/bundles/gftest.sh run_test ${job}"
+                      sh "$WORKSPACE/appserver/tests/gftest.sh run_test ${job}"
                       archiveArtifacts artifacts: "${job}-results.tar.gz"
                       junit testResults: 'results/junitreports/*.xml', allowEmptyResults: true
                     }

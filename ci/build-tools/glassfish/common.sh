@@ -53,6 +53,7 @@
 #NOTIFICATION_FROM
 #GPG_PASSPHRASE
 HUDSON_JOB_NAME=gf-master-continous-check
+
 # OS-specific section
 if [ `uname | grep -i "sunos" | wc -l | awk '{print $1}'` -eq 1 ] ; then
   GREP="ggrep"
@@ -84,7 +85,7 @@ binary_init(){
 
 build_re_finalize(){
     archive_bundles
-    zip_tests_workspace
+    #zip_tests_workspace
     zip_tests_maven_repo
     #zip_gf_source
     #copy_bundle_to_nfs
@@ -441,11 +442,12 @@ dev_build(){
 
     MAVEN_REPO="-Dmaven.repo.local=repository"
     MAVEN_ARGS="${MAVEN_REPO} -C -nsu -B"
-    #delete me 
-    wget http://slc09cap.us.oracle.com/occs/repository.tar.gz
-    tar -xvf repository.tar.gz
-    #end delete me 
-    mvn -DproxySet=true -DproxyHost=www-proxy.us.oracle.com -DproxyPort=80 ${MAVEN_ARGS} -f pom.xml clean install \
+    mvn \
+        -DproxySet=true \
+        -DproxyHost=www-proxy.us.oracle.com \
+        -DproxyPort=80 ${MAVEN_ARGS} \
+        -f pom.xml \
+        clean install \
         -Dmaven.test.failure.ignore=true
 }
 

@@ -40,17 +40,17 @@
 #
 
 run_test(){
-	local TEST_ID=${1}
-	found=false
+	local testid=${1}
+	local found=false
 	for runtest in `find . -name run_test\.sh`; do
-		for testid in `${runtest} list_test_ids`; do
-			if [[ "${testid}" = "${TEST_ID}" ]]; then
+		for id in `${runtest} list_test_ids`; do
+			if [[ "${id}" = "${testid}" ]]; then
 				found=true
 				break
 			fi
 		done
 		if [[ "${found}" = true ]]; then
-			${runtest} run_test_id ${TEST_ID}
+			${runtest} run_test_id ${testid}
 			break
 		fi
 	done
