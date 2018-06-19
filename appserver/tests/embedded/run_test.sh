@@ -79,19 +79,11 @@ merge_junits(){
 }
 
 run_test_id(){
-	source `dirname $0`/../common_test.sh
-	kill_process
-	rm main.zip rm version-info.txt || true
-	download_test_resources main.zip version-info.txt
-	rm -rf main || true
 	unzip_test_resources "$WORKSPACE/bundles/main.zip -d main/"
   case ${TEST_ID} in
     embedded_all)
    	  test_run_embedded;;
   esac
-  upload_test_results
-  delete_bundle
-
 }
 
 
@@ -101,10 +93,12 @@ list_test_ids(){
 
 OPT=$1
 TEST_ID=$2
+source `dirname $0`/../common_test.sh
 
 case $OPT in
 	list_test_ids )
 		list_test_ids;;
 	run_test_id )
-		run_test_id $TEST_ID ;;
+		trap "copy_test_artifects ${TEST_ID}" EXIT
+    run_test_id $TEST_ID ;;
 esac
