@@ -14,7 +14,7 @@ def generateStage(job) {
                     container('glassfish-ci') {
                       checkout scm
                       unstash 'build-bundles'
-                      sh "$WORKSPACE/appserver/tests/gftest.sh run_test ${job}"
+                      sh "${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}"
                       archiveArtifacts artifacts: "${job}-results.tar.gz"
                       junit testResults: 'results/junitreports/*.xml', allowEmptyResults: true
                     }
@@ -59,10 +59,10 @@ spec:
     }
   }
   environment {
-    S1AS_HOME = "$WORKSPACE/glassfish5/glassfish"
-    APS_HOME = "$WORKSPACE/main/appserver/tests/appserv-tests"
-    TEST_RUN_LOG = "$WORKSPACE/tests-run.log"
-    MAVEN_REPO_LOCAL = "$WORKSPACE/repository"
+    S1AS_HOME = "${WORKSPACE}/glassfish5/glassfish"
+    APS_HOME = "${WORKSPACE}/main/appserver/tests/appserv-tests"
+    TEST_RUN_LOG = "${WORKSPACE}/tests-run.log"
+    MAVEN_REPO_LOCAL = "/root/.m2/repository"
   }
   stages {
     stage('glassfish-build') {
