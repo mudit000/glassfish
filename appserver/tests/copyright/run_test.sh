@@ -48,12 +48,11 @@ copyright_run(){
   PATH=${M2_HOME}/bin:$JAVA_HOME/bin:$PATH; export PATH
   mvn -version
   echo ${WORKSPACE}
-  rm -f ${WORKSPACE}/main/copyright-files.txt || true
+  rm -f ${WORKSPACE}/copyright-files.txt || true
   rm -f ${WORKSPACE}/copyright-files-temp*.txt || true
-  rm -rf ${WORKSPACE}/main/tmp-users || true
-  cd ${WORKSPACE}/main
+  rm -rf ${WORKSPACE}/tmp-users || true
+  cd ${WORKSPACE}
 
-  # TODO move the copyright module in main and main's default reactor in a profile, in order to not trigger the default reactor.
   mvn -e \
     -s ${MAVEN_SETTINGS} \
     -Dmaven.repo.local=${MAVEN_REPO} \
