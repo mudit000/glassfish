@@ -73,10 +73,6 @@ test_run_cts_smoke(){
   rm -rf /tmp/JTwork
   rm -rf /disk1/java_re/.javatest
 
-  # XXX Trying this as a test - touch all the files in the glassfish distribution
-  # find glassfish5 -exec touch {} \;
-  # XXX End test
-
   wget ${CTS_SMOKE}/${CTS_SMOKE_BUNDLE}
   unzip -q ${CTS_SMOKE_BUNDLE}
   cd ${TS_HOME}/bin
@@ -84,32 +80,50 @@ test_run_cts_smoke(){
   cp ts.jte ts.jte.orig
 
   #mv ts.jte ts.jte.orig
-  # 08/31/2012 [jill] This ${SED} command includes the addition of javax.jms-api.jar (to support new JMS 2.0 jar) in front of old javax.jms.jar.
-  ${SED} -e "s@javaee.home=@javaee\.home=${S1AS_HOME}@g" -e "s@javaee.home.ri=@javaee\.home\.ri=${S1AS_HOME}@g" -e "s/^orb\.host=/orb\.host=localhost/g"  -e "s/^mailHost=/mailHost=localhost/g" -e "s/^mailuser1=/mailuser1=java_re@sun\.com/g" -e "s/^mailFrom=.*/mailFrom=java_re@sun\.com/g" -e "s/orb.host.ri=/orb.host.ri=localhost/g" -e "s/^work\.dir=\/files/work\.dir=\/tmp/g" -e "s/^report\.dir=\/files/report\.dir=\/tmp/g" -e "s/^tz=.*/tz=US\/Pacific/g" -e "s/modules\/gf-client.jar/lib\/gf-client.jar/g" -e "s/\${pathsep}\${ri\.modules}\/javax\.jms\.jar/\${pathsep}\${ri\.modules}\/javax\.jms-api\.jar\${pathsep}\$\{ri\.modules}\/javax\.jms\.jar/g" -e "s/\${pathsep}\${s1as\.modules}\/javax\.jms\.jar/\${pathsep}\${s1as\.modules}\/javax\.jms-api\.jar\${pathsep}\$\{s1as\.modules}\/javax\.jms\.jar/g" ts.jte > ts.jte.new
+  # 08/31/2012 [jlsato] This ${SED} command includes the addition of javax.jms-api.jar (to support new JMS 2.0 jar) in front of old javax.jms.jar.
+  ${SED} \
+    -e "s@javaee.home=@javaee\.home=${S1AS_HOME}@g" \
+    -e "s@javaee.home.ri=@javaee\.home\.ri=${S1AS_HOME}@g" \
+    -e "s/^orb\.host=/orb\.host=localhost/g" \
+    -e "s/^mailHost=/mailHost=localhost/g" \
+    -e "s/^mailuser1=/mailuser1=java_re@sun\.com/g" \
+    -e "s/^mailFrom=.*/mailFrom=java_re@sun\.com/g" \
+    -e "s/orb.host.ri=/orb.host.ri=localhost/g" \
+    -e "s/^work\.dir=\/files/work\.dir=\/tmp/g" \
+    -e "s/^report\.dir=\/files/report\.dir=\/tmp/g" \
+    -e "s/^tz=.*/tz=US\/Pacific/g" \
+    -e "s/modules\/gf-client.jar/lib\/gf-client.jar/g" \
+    -e "s/\${pathsep}\${ri\.modules}\/javax\.jms\.jar/\${pathsep}\${ri\.modules}\/javax\.jms-api\.jar\${pathsep}\$\{ri\.modules}\/javax\.jms\.jar/g" \
+    -e "s/\${pathsep}\${s1as\.modules}\/javax\.jms\.jar/\${pathsep}\${s1as\.modules}\/javax\.jms-api\.jar\${pathsep}\$\{s1as\.modules}\/javax\.jms\.jar/g" \
+    ts.jte > ts.jte.new
   mv ts.jte.new ts.jte
-
 
   # Temp fix for weld [06/06/2014 jlsato]
-  ${SED} -e "s/implementation\.classes\.ri=/implementation\.classes\.ri=\${ri\.modules}\/cdi-api\.jar\${pathsep}\${ri\.modules}\/cdi-api-fragment\.jar\${pathsep}/g" ts.jte > ts.jte.new
+  ${SED} \
+    -e "s/implementation\.classes\.ri=/implementation\.classes\.ri=\${ri\.modules}\/cdi-api\.jar\${pathsep}\${ri\.modules}\/cdi-api-fragment\.jar\${pathsep}/g" \
+    ts.jte > ts.jte.new
   mv ts.jte.new ts.jte
-  ${SED} -e "s/implementation\.classes=/implementation\.classes=\${s1as\.modules}\/cdi-api\.jar\${pathsep}\${s1as\.modules}\/cdi-api-fragment\.jar\${pathsep}/g" ts.jte > ts.jte.new
+
+  ${SED} \
+    -e "s/implementation\.classes=/implementation\.classes=\${s1as\.modules}\/cdi-api\.jar\${pathsep}\${s1as\.modules}\/cdi-api-fragment\.jar\${pathsep}/g" \
+    ts.jte > ts.jte.new
   mv ts.jte.new ts.jte
   # End temp fix for weld
 
-  # Temp fix for Pavel   [10/31/2013 jlsato]
-  #${SED} -e "s/implementation\.classes\.ri=/implementation\.classes\.ri=\${ri\.modules}\/tyrus-container-grizzly-client\.jar\${pathsep}/g" ts.jte > ts.jte.new
-  #mv ts.jte.new ts.jte
-  #${SED} -e "s/implementation\.classes=/implementation\.classes=\${s1as\.modules}\/tyrus-container-grizzly-client\.jar\${pathsep}/g" ts.jte > ts.jte.new
-  #mv ts.jte.new ts.jte
   # Fix the 02_Dec smoketest bundle [12/03/2013 jlsato]
-  ${SED} -e "s/tyrus-container-grizzly\.jar/tyrus-container-grizzly-client\.jar/g" ts.jte > ts.jte.new
+  ${SED} \
+    -e "s/tyrus-container-grizzly\.jar/tyrus-container-grizzly-client\.jar/g" \
+    ts.jte > ts.jte.new
   mv ts.jte.new ts.jte
   # End temp fix for Pavel
 
   # Temp fix to set javamail password [12/03/2013 jlsato]
-  ${SED} -e "s/javamail\.password=/javamail\.password\=cts1/g" ts.jte > ts.jte.new
+  ${SED} \
+    -e "s/javamail\.password=/javamail\.password\=cts1/g" \
+    ts.jte > ts.jte.new
   mv ts.jte.new ts.jte
   # End temp fix for javamail password
+
   cd ${TS_HOME}/bin/xml
   export ANT_HOME=${TS_HOME}/tools/ant
   export PATH=${ANT_HOME}/bin:${PATH}
@@ -119,11 +133,27 @@ test_run_cts_smoke(){
   ${S1AS_HOME}/bin/asadmin create-jvm-options "-Djava.security.manager"
   ${S1AS_HOME}/bin/asadmin stop-domain
   if [[ -n ${1} ]]; then
-    ${TS_HOME}/tools/ant/bin/ant  -Dgroups.count=5 -Dgroup.id=${1} -Dgroups.work.dir=/tmp -f ${TS_HOME}/bin/xml/impl/glassfish/smoke-groups.xml smoke.split.groups
+    ${TS_HOME}/tools/ant/bin/ant \
+      -Dgroups.count=5 \
+      -Dgroup.id=${1} \
+      -Dgroups.work.dir=/tmp \
+      -f ${TS_HOME}/bin/xml/impl/glassfish/smoke-groups.xml \
+      smoke.split.groups
+
     cat /tmp/javaee-smoke-group${1}.properties
-    ${TS_HOME}/tools/ant/bin/ant -Dreport.dir=${WORKSPACE}/$BUILD_NUMBER/JTReport -Dwork.dir=${WORKSPACE}/${BUILD_NUMBER}/JTWork -propertyfile /tmp/javaee-smoke-group${1}.properties -f smoke.xml smoke
+
+    ${TS_HOME}/tools/ant/bin/ant \
+      -Dreport.dir=${WORKSPACE}/$BUILD_NUMBER/JTReport \
+      -Dwork.dir=${WORKSPACE}/${BUILD_NUMBER}/JTWork \
+      -propertyfile /tmp/javaee-smoke-group${1}.properties \
+      -f smoke.xml \
+      smoke
   else
-    ${TS_HOME}/tools/ant/bin/ant -Dreport.dir=${WORKSPACE}/$BUILD_NUMBER/JTReport -Dwork.dir=${WORKSPACE}/${BUILD_NUMBER}/JTWork -f smoke.xml smoke
+    ${TS_HOME}/tools/ant/bin/ant \
+      -Dreport.dir=${WORKSPACE}/$BUILD_NUMBER/JTReport \
+      -Dwork.dir=${WORKSPACE}/${BUILD_NUMBER}/JTWork \
+      -f smoke.xml \
+      smoke
   fi
 
   #POST CLEANUPS
@@ -152,17 +182,17 @@ test_run_servlet_tck(){
   wget ${SERVELT_TCK}/servlettck-4.0_Latest.zip -O servlettck.zip
 
   unzip -q servlettck.zip
-        if [[ -n ${1} ]]; then
+  if [[ -n ${1} ]]; then
     TESTDIR=${WORKSPACE}/servlettck/src/com/sun/ts/tests
     for i in `ls ${TESTDIR}`
-      do
-        if [[ (-d ${TESTDIR}/$i)  && ( ${i} != "jsp" &&  ${i} != "common" && ${i} != "signaturetest") ]]; then
-          if [[ -z $(grep ${i} `dirname ${0}`/test_dir.properties) ]]; then
-            echo "A new folder ${i} is added in the test source which has no entry in the properties file"
-            exit 1
-          fi
+    do
+      if [[ (-d ${TESTDIR}/$i)  && ( ${i} != "jsp" &&  ${i} != "common" && ${i} != "signaturetest") ]]; then
+        if [[ -z $(grep ${i} `dirname ${0}`/test_dir.properties) ]]; then
+          echo "A new folder ${i} is added in the test source which has no entry in the properties file"
+          exit 1
         fi
-      done
+      fi
+    done
   fi
 
   cd ${TS_HOME}/bin

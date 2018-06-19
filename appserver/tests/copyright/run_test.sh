@@ -39,7 +39,6 @@
 # holder.
 #
 
-
 copyright_run(){
   M2_HOME=/net/gf-hudson/scratch/gf-hudson/export2/hudson/tools/apache-maven-3.0.3
   MAVEN_OPTS="-Xmx512m -Xms256m -XX:MaxPermSize=512m"; export MAVEN_OPTS
@@ -85,7 +84,7 @@ run_test_id(){
 }
 
 post_test_run(){
-  if [[ $? -ne 0 ]]; then
+  if [[ ${?} -ne 0 ]]; then
     generate_copyright_results
   fi
   upload_test_results
