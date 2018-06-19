@@ -2,7 +2,7 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
-# Copyright (c) 2017 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2018 Oracle and/or its affiliates. All rights reserved.
 #
 # The contents of this file are subject to the terms of either the GNU
 # General Public License Version 2 only ("GPL") or the Common Development
@@ -88,193 +88,198 @@
 #     Send e-mail for every unstable build
 
 kill_processes() {
-    uname=`uname | awk '{print $1}'`
-    case "$uname" in
-        CYGWIN*) KILL="taskkill /F /T /PID";;
-        *) KILL="kill -9";;
-    esac
+  uname=`uname | awk '{print $1}'`
+  case "${uname}" in
+      CYGWIN*) KILL="taskkill /F /T /PID";;
+      *) KILL="kill -9";;
+  esac
 
-    (ps -aef | grep java | grep ASMain | grep -v grep | awk '{print $2}' | xargs $KILL > /dev/null 2>&1) || true
-    (jps | grep Main | grep -v grep | awk '{print $1}' | xargs $KILL > /dev/null 2>&1) || true
-    (ps -aef | grep derby | grep -v grep | awk '{print $2}' | xargs $KILL > /dev/null 2>&1) || true
+  (ps -aef | grep java | grep ASMain | grep -v grep | awk '{print $2}' | xargs ${KILL} > /dev/null 2>&1) || true
+  (jps | grep Main | grep -v grep | awk '{print $1}' | xargs ${KILL} > /dev/null 2>&1) || true
+  (ps -aef | grep derby | grep -v grep | awk '{print $2}' | xargs ${KILL} > /dev/null 2>&1) || true
 }
 
 is_target(){
-    case "$1" in
-        "jsp" | \
-        "taglib" | \
-        "el" | \
-        "servlet" | \
-        "web-container" | \
-        "security" | \
-        "http-connector" | \
-        "comet" | \
-        "misc" | \
-        "weblogicDD" | \
-        "clustering" | \
-        "ha" | \
-        "embedded-all" | \
-        "group-1" | \
-        "all") echo 1;;
-        *) echo 0;;
-    esac
+  case "${1}" in
+    "jsp" | \
+    "taglib" | \
+    "el" | \
+    "servlet" | \
+    "web-container" | \
+    "security" | \
+    "http-connector" | \
+    "comet" | \
+    "misc" | \
+    "weblogicDD" | \
+    "clustering" | \
+    "ha" | \
+    "embedded-all" | \
+    "group-1" | \
+    "all") echo 1;;
+    *) echo 0;;
+  esac
 }
 
 get_test_target(){
-    case $1 in
-        web_all )
-            TARGET=all
-            export TARGET;;
-
-        group-1 )
-            TARGET="init taglib el security http-connector comet misc clustering ha finish-report"
-            export TARGET;;
-        * )
-            TARGET="init $1 finish-report"
-            export TARGET;;
-    esac
-
+  case ${1} in
+    web_all )
+      TARGET=all
+      export TARGET;;
+    group-1 )
+      TARGET="init taglib el security http-connector comet misc clustering ha finish-report"
+      export TARGET;;
+    * )
+      TARGET="init $1 finish-report"
+      export TARGET;;
+  esac
 }
 
 
 test_run(){
-    export WEBTIER_ADMIN_PORT=45707
-    export WEBTIER_JMS_PORT=45708
-    export WEBTIER_JMX_PORT=45709
-    export WEBTIER_ORB_PORT=45710
-    export WEBTIER_HTTP_PORT=45711
-    export WEBTIER_HTTPS_PORT=45712
-    export WEBTIER_ALTERNATE_PORT=45713
-    export WEBTIER_ORB_SSL_PORT=45714
-    export WEBTIER_ORB_SSL_MUTUALAUTH_PORT=45715
-    export WEBTIER_INSTANCE_PORT=45716
-    export WEBTIER_INSTANCE_PORT_2=45717
-    export WEBTIER_INSTANCE_PORT_3=45718
-    export WEBTIER_INSTANCE_HTTPS_PORT=45719
+  export WEBTIER_ADMIN_PORT=45707
+  export WEBTIER_JMS_PORT=45708
+  export WEBTIER_JMX_PORT=45709
+  export WEBTIER_ORB_PORT=45710
+  export WEBTIER_HTTP_PORT=45711
+  export WEBTIER_HTTPS_PORT=45712
+  export WEBTIER_ALTERNATE_PORT=45713
+  export WEBTIER_ORB_SSL_PORT=45714
+  export WEBTIER_ORB_SSL_MUTUALAUTH_PORT=45715
+  export WEBTIER_INSTANCE_PORT=45716
+  export WEBTIER_INSTANCE_PORT_2=45717
+  export WEBTIER_INSTANCE_PORT_3=45718
+  export WEBTIER_INSTANCE_HTTPS_PORT=45719
 
-    while getopts u:s:d:t: flag; do
-        case $flag in
-            u)
-                download=1;
-                if [ "x$OPTARG" != "x" ]; then
-                    GLASSFISH_DOWNLOAD_URL=$OPTARG;
-                fi
-                ;;
-            s)
-                SKIP_NAME=$OPTARG;
-                ;;
-            d) 
-                DOWNLOAD_DIR=$OPTARG
-                ;;
-            t)
-                TARGET=$OPTARG
-                if [ `is_target $TARGET` -eq 0 ] ;  then
-                   echo "Unknown target" 
-                   exit
-                elif [ "$TARGET" != "all" ] ; then
-                    TARGET="$TARGET finish-report"
-                fi
-                ;;
-            \?)
-                echo "Illegal options"
-                exit
-                ;;
-        esac
-    done
-    shift $(( OPTIND - 1 ));
+  while getopts u:s:d:t: flag; do
+    case ${flag} in
+      u)
+        download=1;
+        if [ "x${OPTARG}" != "x" ]; then
+            GLASSFISH_DOWNLOAD_URL=${OPTARG};
+        fi
+        ;;
+      s)
+        SKIP_NAME=${OPTARG};
+        ;;
+      d)
+        DOWNLOAD_DIR=${OPTARG}
+        ;;
+      t)
+        TARGET=${OPTARG}
+        if [ `is_target ${TARGET}` -eq 0 ] ;  then
+           echo "Unknown target"
+           exit
+        elif [ "${TARGET}" != "all" ] ; then
+            TARGET="${TARGET} finish-report"
+        fi
+        ;;
+      \?)
+        echo "Illegal options"
+        exit
+        ;;
+    esac
+  done
+  shift $(( OPTIND - 1 ));
 
 
-    if [ "x$download" = "x1" ]; then
-        cd $DOWNLOAD_DIR
-        curl -O glassfish.zip $GLASSFISH_DOWNLOAD_URL
-    fi
+  if [ "x${download}" = "x1" ]; then
+      cd ${DOWNLOAD_DIR}
+      curl -O glassfish.zip ${GLASSFISH_DOWNLOAD_URL}
+  fi
 
-    export AS_LOGFILE=$S1AS_HOME/cli.log 
-    #export AS_DEBUG=true 
+  export AS_LOGFILE=${S1AS_HOME}/cli.log
+  #export AS_DEBUG=true
 
-    #Copy over the modified run.xml for dumping thread stack
-    #cp ../../run.xml $PWD/appserv-tests/config
+  #Copy over the modified run.xml for dumping thread stack
+  #cp ../../run.xml $PWD/appserv-tests/config
 
-    rm -rf $S1AS_HOME/domains/domain1
-    cd $APS_HOME
+  rm -rf ${S1AS_HOME}/domains/domain1
+  cd ${APS_HOME}
 
-    echo "AS_ADMIN_PASSWORD=" > temppwd
-    $S1AS_HOME/bin/asadmin --user admin --passwordfile $APS_HOME/config/adminpassword.txt create-domain --adminport ${WEBTIER_ADMIN_PORT} --domainproperties jms.port=${WEBTIER_JMS_PORT}:domain.jmxPort=${WEBTIER_JMX_PORT}:orb.listener.port=${WEBTIER_ORB_PORT}:http.ssl.port=${WEBTIER_HTTPS_PORT}:orb.ssl.port=${WEBTIER_ORB_SSL_PORT}:orb.mutualauth.port=${WEBTIER_ORB_SSL_MUTUALAUTH_PORT} --instanceport ${WEBTIER_HTTP_PORT} domain1
+  echo "AS_ADMIN_PASSWORD=" > temppwd
+  ${S1AS_HOME}/bin/asadmin \
+    --user admin \
+    --passwordfile ${APS_HOME}/config/adminpassword.txt \
+    create-domain \
+      --adminport ${WEBTIER_ADMIN_PORT} \
+      --domainproperties jms.port=${WEBTIER_JMS_PORT}:domain.jmxPort=${WEBTIER_JMX_PORT}:orb.listener.port=${WEBTIER_ORB_PORT}:http.ssl.port=${WEBTIER_HTTPS_PORT}:orb.ssl.port=${WEBTIER_ORB_SSL_PORT}:orb.mutualauth.port=${WEBTIER_ORB_SSL_MUTUALAUTH_PORT} \
+      --instanceport ${WEBTIER_HTTP_PORT} \
+      domain1
 
-    if [ `uname | grep -n  'Linux' | wc -l` -eq 1 ] ; then
-        HOST="localhost.localdomain"
-    else
-        HOST="localhost"
-    fi
+  if [ `uname | grep -n  'Linux' | wc -l` -eq 1 ] ; then
+      HOST="localhost.localdomain"
+  else
+      HOST="localhost"
+  fi
 
-    #Create 
-    echo "admin.domain=domain1
-    admin.domain.dir=\${env.S1AS_HOME}/domains
-    admin.port=${WEBTIER_ADMIN_PORT}
-    admin.user=admin
-    admin.host=$HOST
-    http.port=${WEBTIER_HTTP_PORT}
-    https.port=${WEBTIER_HTTPS_PORT}
-    http.host=$HOST
-    http.address=127.0.0.1
-    http.alternate.port=${WEBTIER_ALTERNATE_PORT}
-    orb.port=${WEBTIER_ORB_PORT}
-    admin.password=
-    ssl.password=changeit
-    master.password=changeit
-    admin.password.file=\${env.APS_HOME}/config/adminpassword.txt
-    appserver.instance.name=server
-    config.dottedname.prefix=server
-    resources.dottedname.prefix=domain.resources
-    results.mailhost=$HOST
-    results.mailer=QLTestsForPEInstallOrDASInEEInstall@sun.com
-    results.mailee=yourname@sun.com
-    autodeploy.dir=\${env.S1AS_HOME}/domains/\${admin.domain}/autodeploy
-    precompilejsp=true
-    jvm.maxpermsize=192m
-    ENABLE_REPLICATION=false
-    appserver.instance.dir=\${admin.domain.dir}/\${admin.domain}
-    cluster.name=clusterA
-    instance.name=inst1
-    instance.name.2=inst2
-    instance.name.3=inst3
-    instance.http.port=${WEBTIER_INSTANCE_PORT}
-    instance.https.port=${WEBTIER_INSTANCE_HTTPS_PORT}
-    instance.http.port.2=${WEBTIER_INSTANCE_PORT_2}
-    instance.http.port.3=${WEBTIER_INSTANCE_PORT_3}
-    nodeagent.name=localhost-domain1
-    " > config.properties
+  # Create
+  echo "admin.domain=domain1
+  admin.domain.dir=\${env.S1AS_HOME}/domains
+  admin.port=${WEBTIER_ADMIN_PORT}
+  admin.user=admin
+  admin.host=${HOST}
+  http.port=${WEBTIER_HTTP_PORT}
+  https.port=${WEBTIER_HTTPS_PORT}
+  http.host=${HOST}
+  http.address=127.0.0.1
+  http.alternate.port=${WEBTIER_ALTERNATE_PORT}
+  orb.port=${WEBTIER_ORB_PORT}
+  admin.password=
+  ssl.password=changeit
+  master.password=changeit
+  admin.password.file=\${env.APS_HOME}/config/adminpassword.txt
+  appserver.instance.name=server
+  config.dottedname.prefix=server
+  resources.dottedname.prefix=domain.resources
+  results.mailhost=${HOST}
+  results.mailer=QLTestsForPEInstallOrDASInEEInstall@sun.com
+  results.mailee=yourname@sun.com
+  autodeploy.dir=\${env.S1AS_HOME}/domains/\${admin.domain}/autodeploy
+  precompilejsp=true
+  jvm.maxpermsize=192m
+  ENABLE_REPLICATION=false
+  appserver.instance.dir=\${admin.domain.dir}/\${admin.domain}
+  cluster.name=clusterA
+  instance.name=inst1
+  instance.name.2=inst2
+  instance.name.3=inst3
+  instance.http.port=${WEBTIER_INSTANCE_PORT}
+  instance.https.port=${WEBTIER_INSTANCE_HTTPS_PORT}
+  instance.http.port.2=${WEBTIER_INSTANCE_PORT_2}
+  instance.http.port.3=${WEBTIER_INSTANCE_PORT_3}
+  nodeagent.name=localhost-domain1
+  " > config.properties
 
-    kill_processes
+  kill_processes
 
-    cd $APS_HOME/devtests/web
-    cp build.xml build.xml.orig
-    ./exclude-jobs.sh $SKIP_NAME
+  cd ${APS_HOME}/devtests/web
+  cp build.xml build.xml.orig
+  ./exclude-jobs.sh ${SKIP_NAME}
 
-    ant $TARGET |tee $TEST_RUN_LOG
+  ant ${TARGET} |tee ${TEST_RUN_LOG}
 
-    #restore original build.xml 
-    mv build.xml.orig build.xml
+  # restore original build.xml
+  mv build.xml.orig build.xml
 
-    kill_processes
-    (cat web.output | grep FAIL | grep -v "Total FAIL") || true
+  kill_processes
+  (cat web.output | grep FAIL | grep -v "Total FAIL") || true
 }
 
 run_test_id(){
-    cat /etc/hosts
-    unzip_test_resources $WORKSPACE/bundles/glassfish.zip
-    cd `dirname $0`
-    test_init
-        TARGET_FROM_INPUT=(`echo $1 | sed 's/web_//'`)
-    get_test_target $TARGET_FROM_INPUT
-    test_run -s webtier-dev-tests
-    check_successful_run
-    generate_junit_report $TARGET_FROM_INPUT
-    change_junit_report_class_names
+  cat /etc/hosts
+  unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip
+  cd `dirname ${0}`
+  test_init
+  TARGET_FROM_INPUT=(`echo $1 | sed 's/web_//'`)
+  get_test_target ${TARGET_FROM_INPUT}
+  test_run -s webtier-dev-tests
+  check_successful_run
+  generate_junit_report ${TARGET_FROM_INPUT}
+  change_junit_report_class_names
 }
 
 list_test_ids(){
-    echo web_all web_jsp web_servlet web_web-container web_group-1
+  echo web_all web_jsp web_servlet web_web-container web_group-1
 }
 
 OPT=$1
@@ -282,9 +287,9 @@ TEST_ID=$2
 source `dirname $0`/../../../common_test.sh
 
 case $OPT in
-    list_test_ids )
-        list_test_ids;;
-    run_test_id )
-        trap "copy_test_artifects ${TEST_ID}" EXIT
-        run_test_id $TEST_ID ;;
+  list_test_ids )
+    list_test_ids;;
+  run_test_id )
+    trap "copy_test_artifacts ${TEST_ID}" EXIT
+    run_test_id $TEST_ID ;;
 esac

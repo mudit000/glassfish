@@ -2,7 +2,7 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
-# Copyright (c) 2017 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2018 Oracle and/or its affiliates. All rights reserved.
 #
 # The contents of this file are subject to the terms of either the GNU
 # General Public License Version 2 only ("GPL") or the Common Development
@@ -58,13 +58,20 @@ test_run(){
 	export ADMIN_PORT JMS_PORT JMX_PORT ORB_PORT SSL_PORT INSTANCE_PORT INSTANCE_HTTPS_PORT INSTANCE_PORT_2 INSTANCE_PORT INSTANCE_PORT_3 ALTERNATE_PORT ORB_SSL_PORT ORB_SSL_MUTUALAUTH_PORT DB_PORT DB_PORT_2
 
 	rm -rf $S1AS_HOME/domains/domain1
-	cd $APS_HOME
+	cd ${APS_HOME}
 
 	echo "AS_ADMIN_PASSWORD=" > temppwd
-	cat $APS_HOME/temppwd
-	$S1AS_HOME/bin/asadmin --user anonymous --passwordfile $APS_HOME/temppwd create-domain --adminport ${ADMIN_PORT} --domainproperties jms.port=${JMS_PORT}:domain.jmxPort=${JMX_PORT}:orb.listener.port=${ORB_PORT}:http.ssl.port=${SSL_PORT}:orb.ssl.port=${ORB_SSL_PORT}:orb.mutualauth.port=${ORB_SSL_MUTUALAUTH_PORT} --instanceport ${INSTANCE_PORT} domain1
+	cat ${APS_HOME}/temppwd
+	${S1AS_HOME}/bin/asadmin \
+		--user anonymous \
+		--passwordfile $APS_HOME/temppwd \
+		create-domain \
+			--adminport ${ADMIN_PORT} \
+			--domainproperties jms.port=${JMS_PORT}:domain.jmxPort=${JMX_PORT}:orb.listener.port=${ORB_PORT}:http.ssl.port=${SSL_PORT}:orb.ssl.port=${ORB_SSL_PORT}:orb.mutualauth.port=${ORB_SSL_MUTUALAUTH_PORT} \
+			--instanceport ${INSTANCE_PORT} \
+			domain1
 
-	#Create 
+	# Create
 	echo "admin.domain=domain1
 	admin.domain.dir=\${env.S1AS_HOME}/domains
 	admin.port=${ADMIN_PORT}
@@ -93,28 +100,26 @@ test_run(){
 
 	(jps |grep Main |cut -f1 -d" " | xargs kill -9  > /dev/null 2>&1) || true
 
-	cd $S1AS_HOME/domains/domain1/config/
+	cd ${S1AS_HOME}/domains/domain1/config/
 	sed "s/1527/${DB_PORT}/g" domain.xml > domain.xml.replaced
 	mv domain.xml.replaced domain.xml
 	grep PortNumber domain.xml
 
-	cd $APS_HOME/config
+	cd ${APS_HOME}/config
 	(rm derby.properties.replaced  > /dev/null 2>&1) || true
 	sed "s/1527/${DB_PORT}/g" derby.properties > derby.properties.replaced
 	rm derby.properties
 	sed "s/1528/${DB_PORT_2}/g" derby.properties.replaced > derby.properties
 	cat derby.properties
 
-	cd $APS_HOME/devtests/transaction/ee
+	cd ${APS_HOME}/devtests/transaction/ee
 
-	ant -Dsave.logs=true $TARGET | tee $TEST_RUN_LOG
-
-
+	ant -Dsave.logs=true ${TARGET} | tee ${TEST_RUN_LOG}
 	ant dev-report
 }
 
 list_test_ids(){
-    echo transaction_ee_all transaction-ee-1 transaction-ee-2 transaction-ee-3 transaction-ee-4
+  echo transaction_ee_all transaction-ee-1 transaction-ee-2 transaction-ee-3 transaction-ee-4
 }
 
 get_test_target(){
@@ -122,37 +127,31 @@ get_test_target(){
 		transaction_ee_all )
 			TARGET=all
 			export TARGET;;
-                * )
-                        TARGET=$1
-                        export TARGET;;
+    * )
+      TARGET=$1
+      export TARGET;;
 	esac
-
 }
 
 run_test_id(){
-	unzip_test_resources $WORKSPACE/bundles/glassfish.zip
-	cd `dirname $0`
+	unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip
+	cd `dirname ${0}`
 	test_init
 	get_test_target ${1}
 	test_run
 	check_successful_run
-    generate_junit_report ${1}
-    change_junit_report_class_names
+  generate_junit_report ${1}
+  change_junit_report_class_names
 }
 
-OPT=$1
-TEST_ID=$2
-source `dirname $0`/../../../../common_test.sh
+OPT=${1}
+TEST_ID=${2}
+source `dirname ${0}`/../../../../common_test.sh
 
-case $OPT in
+case ${OPT} in
 	list_test_ids )
 		list_test_ids;;
 	run_test_id )
-    trap "copy_test_artifects ${TEST_ID}" EXIT
-    run_test_id $TEST_ID ;;
+    trap "copy_test_artifacts ${TEST_ID}" EXIT
+    run_test_id ${TEST_ID} ;;
 esac
- 
-
-
-
-

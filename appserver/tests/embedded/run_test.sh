@@ -2,7 +2,7 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
-# Copyright (c) 2017 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2018 Oracle and/or its affiliates. All rights reserved.
 #
 # The contents of this file are subject to the terms of either the GNU
 # General Public License Version 2 only ("GPL") or the Common Development
@@ -41,24 +41,24 @@
 
 test_run_embedded(){
 	MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=384m"; export MAVEN_OPTS
-	MAVEN_REPO=$WORKSPACE/repository
-	PATH=$JAVA_HOME/bin:$PATH; export PATH
-	echo $WORKSPACE
-  cd $WORKSPACE/main
-  mvn -Dmaven.repo.local=$WORKSPACE/repository -DskipTests=true clean install
-  EMBEDDED_WORKSPACE=$WORKSPACE/main/appserver/extras/embedded
+	MAVEN_REPO=${WORKSPACE}/repository
+	PATH=${JAVA_HOME}/bin:${PATH}; export PATH
+	echo ${WORKSPACE}
+  cd ${WORKSPACE}/main
+  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean install
+  EMBEDDED_WORKSPACE=${WORKSPACE}/main/appserver/extras/embedded
   cd $EMBEDDED_WORKSPACE/all
-  mvn -Dmaven.repo.local=$WORKSPACE/repository -DskipTests=true clean install
+  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean install
   cd $EMBEDDED_WORKSPACE/nucleus
-  mvn -Dmaven.repo.local=$WORKSPACE/repository -DskipTests=true clean install
+  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean install
   cd $EMBEDDED_WORKSPACE/web
-  mvn -Dmaven.repo.local=$WORKSPACE/repository -DskipTests=true clean install
-  cd $WORKSPACE/main/appserver/tests/embedded/maven-plugin/remoteejbs
-  mvn -Dmaven.repo.local=$WORKSPACE/repository -DskipTests=true clean verify
-  cd $WORKSPACE/main/appserver/tests/embedded/maven-plugin/mdb
-  mvn -Dmaven.repo.local=$WORKSPACE/repository -DskipTests=true clean verify
-  cd $WORKSPACE/main/appserver/tests/embedded
-  mvn -Dbuild=snapshot  -Dmaven.repo.local=$WORKSPACE/repository -Dmaven.test.failure.ignore=true clean verify
+  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean install
+  cd ${WORKSPACE}/main/appserver/tests/embedded/maven-plugin/remoteejbs
+  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean verify
+  cd ${WORKSPACE}/main/appserver/tests/embedded/maven-plugin/mdb
+  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean verify
+  cd ${WORKSPACE}/main/appserver/tests/embedded
+  mvn -Dbuild=snapshot  -Dmaven.repo.local=${WORKSPACE}/repository -Dmaven.test.failure.ignore=true clean verify
   merge_junits
 }
 
@@ -79,26 +79,25 @@ merge_junits(){
 }
 
 run_test_id(){
-	unzip_test_resources "$WORKSPACE/bundles/main.zip -d main/"
   case ${TEST_ID} in
     embedded_all)
+      unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip
    	  test_run_embedded;;
   esac
 }
-
 
 list_test_ids(){
 	echo embedded_all
 }
 
-OPT=$1
-TEST_ID=$2
-source `dirname $0`/../common_test.sh
+OPT=${1}
+TEST_ID=${2}
+source `dirname ${0}`/../common_test.sh
 
-case $OPT in
+case ${OPT} in
 	list_test_ids )
 		list_test_ids;;
 	run_test_id )
-		trap "copy_test_artifects ${TEST_ID}" EXIT
-    run_test_id $TEST_ID ;;
+		trap "copy_test_artifacts ${TEST_ID}" EXIT
+    run_test_id ${TEST_ID} ;;
 esac
