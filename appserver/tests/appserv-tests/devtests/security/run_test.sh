@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
