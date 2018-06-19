@@ -53,7 +53,6 @@ run_test_id(){
   source `dirname ${0}`/../../../common_test.sh
   kill_process
   delete_gf
-  download_test_resources glassfish.zip version-info.txt
   unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip
   cd `dirname ${0}`
   test_init

@@ -68,7 +68,7 @@ kill_process(){
 
 test_init(){
   printf "\n%s \n\n" "===== V2 DEVTESTS INIT ====="
-  #workaround for OSGI timestamp issue
+  # workaround for OSGI timestamp issue
   find ${S1AS_HOME} -type f | xargs touch > /dev/null
   echo S1AS_HOME is ${S1AS_HOME}
   echo ANT_HOME is ${ANT_HOME}
@@ -76,14 +76,6 @@ test_init(){
   java -version
   ant -version
   mkdir -p ${WORKSPACE}/results/junitreports
-}
-
-download_test_resources(){
-  printf "\n%s \n\n" "===== DOWNLOAD TEST RESOURCES ====="
-  for i in "${@}"; do
-    echo downloading $i
-    cp ${NFS_PATH}/${PARENT_ID}/bundles/${i} bundles
-  done
 }
 
 zip_test_results(){
