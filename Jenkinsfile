@@ -1,3 +1,4 @@
+// list of test ids
 def jobs = ["embedded_all", "jdbc_all", "jms_all", "ql_gf_embedded_profile_all", "nucleus_admin_all", "naming_all", "ejb_timer_cluster_all", "persistence_all", "web_all", "security_all", "transaction_ee_all","connector_all"]
 
 def parallelStagesMap = jobs.collectEntries {
@@ -31,8 +32,6 @@ pipeline {
 apiVersion: v1
 kind: Pod
 metadata:
-  labels:
-    some-label: some-label-value
 spec:
   hostAliases:
   - ip: "127.0.0.1"
