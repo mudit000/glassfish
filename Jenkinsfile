@@ -1,5 +1,5 @@
 // list of test ids
-def jobs = ["embedded_all", "jdbc_all", "", "ql_gf_embedded_profile_all", "nucleus_admin_all", "naming_all", "ejb_timer_cluster_all", "", "web_all", "security_all", "","connector_all"]
+def jobs = ["embedded_all", "jdbc_all", "webservice_all", "ql_gf_embedded_profile_all", "nucleus_admin_all", "naming_all", "ejb_timer_cluster_all", "web_all", "security_all","connector_all"]
 
 def parallelStagesMap = jobs.collectEntries {
   ["${it}": generateStage(it)]
