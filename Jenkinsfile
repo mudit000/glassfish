@@ -54,7 +54,7 @@ spec:
     imagePullPolicy: Always
     volumeMounts:
         - mountPath: "/root/.m2/repository"
-          name: maven-repo
+          name: task-pv-storage
 """
     }
   }
