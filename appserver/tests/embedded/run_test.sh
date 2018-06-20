@@ -43,22 +43,21 @@ test_run_embedded(){
 	MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=384m"; export MAVEN_OPTS
 	MAVEN_REPO=${WORKSPACE}/repository
 	PATH=${JAVA_HOME}/bin:${PATH}; export PATH
-	echo ${WORKSPACE}
   cd ${WORKSPACE}
-  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean install
+  mvn -DskipTests=true clean install
   EMBEDDED_WORKSPACE=${WORKSPACE}/appserver/extras/embedded
-  cd $EMBEDDED_WORKSPACE/all
-  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean install
-  cd $EMBEDDED_WORKSPACE/nucleus
-  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean install
-  cd $EMBEDDED_WORKSPACE/web
-  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean install
+  cd ${EMBEDDED_WORKSPACE}/all
+  mvn -DskipTests=true clean install
+  cd ${EMBEDDED_WORKSPACE}/nucleus
+  mvn -DskipTests=true clean install
+  cd ${EMBEDDED_WORKSPACE}/web
+  mvn -DskipTests=true clean install
   cd ${WORKSPACE}/appserver/tests/embedded/maven-plugin/remoteejbs
-  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean verify
+  mvn -DskipTests=true clean verify
   cd ${WORKSPACE}/appserver/tests/embedded/maven-plugin/mdb
-  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DskipTests=true clean verify
+  mvn -DskipTests=true clean verify
   cd ${WORKSPACE}/appserver/tests/embedded
-  mvn -Dbuild=snapshot  -Dmaven.repo.local=${WORKSPACE}/repository -Dmaven.test.failure.ignore=true clean verify
+  mvn -Dbuild=snapshot -Dmaven.test.failure.ignore=true clean verify
   merge_junits
 }
 

@@ -38,6 +38,7 @@
 # only if the new code is made subject to such option by the copyright
 # holder.
 #
+
 list_test_ids(){
   echo jdbc_all
 }
@@ -50,7 +51,6 @@ test_run(){
   ${S1AS_HOME}/bin/asadmin stop-domain domain1
   ${S1AS_HOME}/bin/asadmin stop-database
 }
- 
 
 run_test_id(){
   unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip
