@@ -47,7 +47,7 @@ spec:
     - "localhost.localdomain"
   containers:
   - name: glassfish-ci
-    image: maven:3.5-jdk-8
+    image: arindamb/glassfish-ci
     command:
     - cat
     tty: true
