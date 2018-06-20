@@ -55,6 +55,10 @@ spec:
     volumeMounts:
         - mountPath: "/root/.m2/repository"
           name: maven-repo-storage
+    resources:
+      limits:
+        memory: "8Gi"
+        cpu: "2"
 """
     }
   }
