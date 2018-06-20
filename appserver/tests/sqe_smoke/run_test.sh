@@ -191,7 +191,6 @@ post_test_run(){
   if [[ $? -ne 0 ]]; then
     archive_artifacts
   fi
-  upload_test_results
   delete_bundle
   cd -
 }

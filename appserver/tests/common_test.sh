@@ -83,12 +83,6 @@ zip_test_results(){
   zip -r ${WORKSPACE}/results.zip ${WORKSPACE}/results > /dev/nul
 }
 
-upload_test_results(){
-  printf "\n%s \n\n" "===== UPLOAD THE TESTS RESULTS ====="
-  mkdir -p ${NFS_PATH}/${PARENT_ID}/test-results/$TEST_ID
-  cp -r ${WORKSPACE}/results/ ${NFS_PATH}/${PARENT_ID}/test-results/$TEST_ID/
-}
-
 unzip_test_resources(){
   printf "\n%s \n\n" "===== UNZIP TEST RESOURCES ====="
   for i in "${@}"; do

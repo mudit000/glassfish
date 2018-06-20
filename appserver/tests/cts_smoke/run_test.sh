@@ -282,7 +282,6 @@ post_test_run(){
       archive_servlet_tck || true
     fi
   fi
-  upload_test_results
   delete_bundle
   cd -
 }

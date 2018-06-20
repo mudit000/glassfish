@@ -58,14 +58,12 @@ test_run(){
 }
 
 run_test_id(){
-  #a common util script located at main/appserver/tests/common_test.sh
   unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip
   cd `dirname ${0}`
   test_init
   get_test_target ${1}
   export ROOT=`pwd`
   export TEST_RUN_LOG=${ROOT}/tests-run.log
-  #run the actual test function
   test_run
   check_successful_run
   generate_junit_report ${1}

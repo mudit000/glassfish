@@ -82,7 +82,6 @@ run_test_id(){
   unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip "${WORKSPACE}/bundles/tests-maven-repo.zip -d ${WORKSPACE}/repository"
   cd `dirname ${0}`
   test_init
-  # run the actual test function
   test_run
   merge_junit_xmls ${WORKSPACE}/appserver/admingui/devtests/target/surefire-reports
   change_junit_report_class_names
@@ -93,7 +92,6 @@ post_test_run(){
   cp $TEST_RUN_LOG ${WORKSPACE}/results/ || true
   cp ${WORKSPACE}/glassfish5/glassfish/domains/domain1/logs/server.log* ${WORKSPACE}/results/ || true
   cp ${WORKSPACE}/appserver/admingui/devtests/target/surefire-reports/*.png ${WORKSPACE}/results/ || true
-  upload_test_results
   delete_bundle
 }
 

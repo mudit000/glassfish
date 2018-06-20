@@ -57,7 +57,6 @@ run_test_id(){
   cd `dirname ${0}`
   test_init
   get_test_target ${1}
-  # run the actual test function
   test_run
   check_successful_run
   generate_junit_report ${1}
@@ -66,7 +65,6 @@ run_test_id(){
 
 post_test_run(){
   copy_test_artifacts
-  upload_test_results
   delete_bundle
   cd -
 }

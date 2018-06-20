@@ -87,7 +87,6 @@ post_test_run(){
   if [[ ${?} -ne 0 ]]; then
     generate_copyright_results
   fi
-  upload_test_results
   delete_bundle
 }
 
