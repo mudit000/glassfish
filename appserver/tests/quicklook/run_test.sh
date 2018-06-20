@@ -58,7 +58,7 @@ run_test_id(){
 	if [[ ${1} = "ql_gf_full_profile_all" ]]; then
 		unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip
 		cd ${WORKSPACE}/appserver/tests/quicklook/
-		mvn -Dglassfish.home=${S1AS_HOME} -Dmaven.repo.local=${MAVEN_REPO_LOCAL} -Ptest_gd_security,report test | tee ${TEST_RUN_LOG}
+		mvn -Dglassfish.home=${S1AS_HOME} -Ptest_gd_security,report test | tee ${TEST_RUN_LOG}
 	elif [[ ${1} = "ql_gf_nucleus_all" || ${1} = "nucleus_admin_all" ]]; then
 		unzip_test_resources ${WORKSPACE}/bundles/nucleus-new.zip
 		if [[ ${1} = "ql_gf_nucleus_all" ]]; then

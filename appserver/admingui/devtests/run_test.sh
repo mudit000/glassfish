@@ -69,7 +69,7 @@ test_run(){
   ${S1AS_HOME}/bin/asadmin restart-domain
   cd ${APS_HOME}/../../admingui/devtests/
   export DISPLAY=127.0.0.1:1	
-  mvn -Dmaven.repo.local=${WORKSPACE}/repository -DsecureAdmin=true -Dpasswordfile=${APS_HOME}/password.txt test | tee ${TEST_RUN_LOG}
+  mvn -DsecureAdmin=true -Dpasswordfile=${APS_HOME}/password.txt test | tee ${TEST_RUN_LOG}
   ${S1AS_HOME}/bin/asadmin stop-domain
   rm -rf ${APS_HOME}/password.txt
 }
@@ -78,7 +78,6 @@ run_test_id(){
   source `dirname ${0}`/../../tests/common_test.sh
   kill_process
   delete_gf
-  export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=384m"
   unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip "${WORKSPACE}/bundles/tests-maven-repo.zip -d ${WORKSPACE}/repository"
   cd `dirname ${0}`
   test_init

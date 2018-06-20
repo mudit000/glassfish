@@ -40,22 +40,12 @@
 #
 
 copyright_run(){
-  M2_HOME=/net/gf-hudson/scratch/gf-hudson/export2/hudson/tools/apache-maven-3.0.3
-  MAVEN_OPTS="-Xmx512m -Xms256m -XX:MaxPermSize=512m"; export MAVEN_OPTS
-  MAVEN_REPO=${WORKSPACE}/repository
-  MAVEN_SETTINGS=${M2_HOME}/settings-nexus.xml
-  PATH=${M2_HOME}/bin:$JAVA_HOME/bin:$PATH; export PATH
-  mvn -version
-  echo ${WORKSPACE}
   rm -f ${WORKSPACE}/copyright-files.txt || true
   rm -f ${WORKSPACE}/copyright-files-temp*.txt || true
   rm -rf ${WORKSPACE}/tmp-users || true
   cd ${WORKSPACE}
 
-  mvn -e \
-    -s ${MAVEN_SETTINGS} \
-    -Dmaven.repo.local=${MAVEN_REPO} \
-    --quiet \
+  mvn -e -q \
     -Dcopyright.normalize=true \
     org.glassfish.copyright:glassfish-copyright-maven-plugin:copyright \
     > ${WORKSPACE}/copyright-files-temp-open.txt

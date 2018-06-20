@@ -40,40 +40,17 @@
 #
 
 findbugs_run(){
-  M2_HOME=/net/gf-hudson/scratch/gf-hudson/export2/hudson/tools/apache-maven-3.3.3
-  MAVEN_OPTS="-Xmx512m -Xms256m -XX:MaxPermSize=1024m"; export MAVEN_OPTS
-  MAVEN_REPO=${WORKSPACE}/repository
-  MAVEN_SETTINGS=/net/gf-hudson/scratch/gf-hudson/export2/hudson/tools/apache-maven-3.0.3/settings-nexus.xml
-
   CLASSPATH=${WORKSPACE}/findbugstotext; export CLASSPATH
-  PATH=${M2_HOME}/bin:${JAVA_HOME}/bin:${PATH}; export PATH
-  mvn -version
-  echo ${WORKSPACE}
-
-  # Run findbugs on open source ws.
-  echo "Running findbugs on ws"
   cd ${WORKSPACE}
-  mvn -e -s ${MAVEN_SETTINGS} -Dmaven.repo.local=${WORKSPACE}/repository -Pfindbugs clean install
-  mvn -e -s ${MAVEN_SETTINGS} -Dmaven.repo.local=${WORKSPACE}/repository -Pfindbugs findbugs:findbugs
+  mvn -e -Pfindbugs clean install
+  mvn -e -Pfindbugs findbugs:findbugs
 
 }
 
 findbugs_low_priority_all_run(){
-  M2_HOME=/net/gf-hudson/scratch/gf-hudson/export2/hudson/tools/apache-maven-3.3.3
-  MAVEN_OPTS="-Xmx512m -Xms256m -XX:MaxPermSize=1024m"; export MAVEN_OPTS
-  MAVEN_REPO=${WORKSPACE}/repository
-  MAVEN_SETTINGS=/net/gf-hudson/scratch/gf-hudson/export2/hudson/tools/apache-maven-3.0.3/settings-nexus.xml
-
-  CLASSPATH=${WORKSPACE}/findbugstotext; export CLASSPATH
-  PATH=${M2_HOME}/bin:$JAVA_HOME/bin:$PATH; export PATH
-  mvn -version
-  echo ${WORKSPACE}
-
-  # Run findbugs on open source ws.
-  echo "Running findbugs on ws"
   cd ${WORKSPACE}
-  mvn -e -s ${MAVEN_SETTINGS} -Dmaven.repo.local=${WORKSPACE}/repository -Pfindbugs clean install
-  mvn -e -s ${MAVEN_SETTINGS} -Dmaven.repo.local=${WORKSPACE}/repository -B -Pfindbugs -Dfindbugs.threshold=Low findbugs:findbugs
+  mvn -e -Pfindbugs clean install
+  mvn -e -B -Pfindbugs -Dfindbugs.threshold=Low findbugs:findbugs
 }
 
 generate_findbugs_result(){

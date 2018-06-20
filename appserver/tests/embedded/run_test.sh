@@ -40,9 +40,6 @@
 #
 
 test_run_embedded(){
-	MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=384m"; export MAVEN_OPTS
-	MAVEN_REPO=${WORKSPACE}/repository
-	PATH=${JAVA_HOME}/bin:${PATH}; export PATH
   cd ${WORKSPACE}
   mvn -DskipTests=true clean install
   EMBEDDED_WORKSPACE=${WORKSPACE}/appserver/extras/embedded
