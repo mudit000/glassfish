@@ -14,7 +14,7 @@ def generateStage(job) {
                     container('glassfish-ci') {
                       checkout scm
                       unstash 'build-bundles'
-                      sh "appserver/tests/gftest.sh run_test ${job}"
+                      sh "${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}"
                       archiveArtifacts artifacts: "${job}-results.tar.gz"
                       junit testResults: 'results/junitreports/*.xml', allowEmptyResults: true
                     }
@@ -78,7 +78,7 @@ spec:
       }
       steps {
         container('glassfish-ci') {
-          sh 'gfbuild.sh'
+          sh '${WORKSPACE}/gfbuild.sh'
           archiveArtifacts artifacts: 'bundles/*.zip'
           junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
           stash includes: 'bundles/*', name: 'build-bundles'
