@@ -64,7 +64,6 @@ test_run_sqe_smoke(){
 run_test_id(){
   source `dirname ${0}`/../common_test.sh
   kill_process
-  delete_workspace
   unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip
   test_init
   if [[ ${1} = "sqe_smoke_all" ]]; then
@@ -171,16 +170,6 @@ generate_junit_report_sqe(){
 
 list_test_ids(){
   echo sqe_smoke_all
-}
-
-delete_workspace(){
-  printf "\n%s \n\n" "===== DELETE WORKSPACE ====="
-  rm -rf ${WORKSPACE}/glassfish5 > /dev/null || true
-  rm -rf ${WORKSPACE}/appserver-sqe > /dev/null  || true
-  rm -rf ${WORKSPACE}/sqe-smoke.zip > /dev/null || true
-  for f in `find ${WORKSPACE} -type f`; do
-    rm ${f} > /dev/null
-  done
 }
 
 kill_clean(){
