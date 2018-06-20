@@ -14,7 +14,7 @@ def generateStage(job) {
                     container('glassfish-ci') {
                       checkout scm
                       unstash 'build-bundles'
-                      sh "${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}"
+                      sh "appserver/tests/gftest.sh run_test ${job}"
                       archiveArtifacts artifacts: "${job}-results.tar.gz"
                       junit testResults: 'results/junitreports/*.xml', allowEmptyResults: true
                     }
@@ -38,7 +38,7 @@ kind: Pod
 metadata:
 spec:
   volumes:
-    - name: task-pv-storage
+    - name: maven-repo-storage
       persistentVolumeClaim:
        claimName: maven-repo
   hostAliases:
@@ -47,14 +47,14 @@ spec:
     - "localhost.localdomain"
   containers:
   - name: glassfish-ci
-    image: arindamb/glassfish-ci
+    image: maven:3.5-jdk-8
     command:
     - cat
     tty: true
     imagePullPolicy: Always
     volumeMounts:
         - mountPath: "/root/.m2/repository"
-          name: task-pv-storage
+          name: maven-repo-storage
 """
     }
   }
@@ -62,7 +62,12 @@ spec:
     S1AS_HOME = "${WORKSPACE}/glassfish5/glassfish"
     APS_HOME = "${WORKSPACE}/main/appserver/tests/appserv-tests"
     TEST_RUN_LOG = "${WORKSPACE}/tests-run.log"
-    MAVEN_REPO_LOCAL = "/root/.m2/repository"
+    MAVEN_OPTS = "-Xmx1024M \
+                  -Dhttp.proxyHost=www-proxy-hqdc.us.oracle.com \
+                  -Dhttp.proxyPort=80 \
+                  -Dhttps.proxyHost=www-proxy-hqdc.us.oracle.com \
+                  -Dhttps.proxyPort=80 \
+                  -Dmaven.repo.local=/root/.m2/repository"
   }
   stages {
     stage('glassfish-build') {
@@ -73,7 +78,7 @@ spec:
       }
       steps {
         container('glassfish-ci') {
-          sh 'ci/build-tools/glassfish/gfbuild.sh build_re_dev 2>&1'
+          sh 'gfbuild.sh'
           archiveArtifacts artifacts: 'bundles/*.zip'
           junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
           stash includes: 'bundles/*', name: 'build-bundles'
