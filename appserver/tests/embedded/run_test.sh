@@ -44,17 +44,17 @@ test_run_embedded(){
   mvn -DskipTests=true clean install
   EMBEDDED_WORKSPACE=${WORKSPACE}/appserver/extras/embedded
   cd ${EMBEDDED_WORKSPACE}/all
-  mvn -DskipTests=true clean install
+  mvn -DskipTests=true clean install | tee ${TEST_RUN_LOG}
   cd ${EMBEDDED_WORKSPACE}/nucleus
-  mvn -DskipTests=true clean install
+  mvn -DskipTests=true clean install | tee -a ${TEST_RUN_LOG}
   cd ${EMBEDDED_WORKSPACE}/web
-  mvn -DskipTests=true clean install
+  mvn -DskipTests=true clean install | tee -a ${TEST_RUN_LOG}
   cd ${WORKSPACE}/appserver/tests/embedded/maven-plugin/remoteejbs
-  mvn -DskipTests=true clean verify
+  mvn -DskipTests=true clean verify | tee -a ${TEST_RUN_LOG}
   cd ${WORKSPACE}/appserver/tests/embedded/maven-plugin/mdb
-  mvn -DskipTests=true clean verify
+  mvn -DskipTests=true clean verify | tee -a ${TEST_RUN_LOG}
   cd ${WORKSPACE}/appserver/tests/embedded
-  mvn -Dbuild=snapshot -Dmaven.test.failure.ignore=true clean verify
+  mvn -Dbuild=snapshot -Dmaven.test.failure.ignore=true clean verify | tee -a ${TEST_RUN_LOG}
   merge_junits
 }
 
