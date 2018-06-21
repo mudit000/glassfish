@@ -79,6 +79,9 @@ archive_bundles(){
   cp appserver/distributions/glassfish/target/*.zip ${WORKSPACE}/bundles
   cp appserver/distributions/web/target/*.zip ${WORKSPACE}/bundles
   cp nucleus/distributions/nucleus/target/*.zip ${WORKSPACE}/bundles
+  cd ${HOME}/.m2/repository
+  tar -cvf ${WORKSPACE}/bundles/maven-repo.tar.gz org/glassfish/main/*
+  cd -
 }
 
 dev_build(){

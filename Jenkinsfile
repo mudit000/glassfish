@@ -64,15 +64,14 @@ def generateStage(job) {
             node(label) {
                 stage("${job}") {
                     container('glassfish-ci') {
-                      //checkout scm
+                      checkout scm
                       unstash 'build-bundles'
                       sh '''
-                        tar -xvf ${WORKSPACE}/bundles/tests-maven-repo.tar.gz -C /root/.m2/repository
-                        ls -l /root/.m2/repository/org/glassfish/main/test
+                        tar -xvf ${WORKSPACE}/bundles/maven-repo.tar.gz -C /root/.m2/repository'
+                        ${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}
                       '''
-                      //sh "${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}"
-                      //archiveArtifacts artifacts: "${job}-results.tar.gz"
-                      //junit testResults: 'results/junitreports/*.xml', allowEmptyResults: true
+                      archiveArtifacts artifacts: "${job}-results.tar.gz"
+                      junit testResults: 'results/junitreports/*.xml', allowEmptyResults: true
                     }
                 }
             }
@@ -144,21 +143,9 @@ spec:
       }
       steps {
         container('glassfish-ci') {
-          // sh '${WORKSPACE}/gfbuild.sh build_re_dev'
-          sh '''
-            mount
-            df -h
-            ls -ld /root/.m2/repository/org/glassfish/main/
-            ls -l /root/.m2/repository/org/glassfish/main/
-            mkdir /root/.m2/repository/org/glassfish/main/test
-            touch /root/.m2/repository/org/glassfish/main/test/SUCCESS
-            cd /root/.m2/repository
-            mkdir ${WORKSPACE}/bundles
-            tar -cvf ${WORKSPACE}/bundles/tests-maven-repo.tar.gz org/glassfish/main/*
-            cd -
-          '''
-          //archiveArtifacts artifacts: 'bundles/*.zip'
-          //junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
+          sh '${WORKSPACE}/gfbuild.sh build_re_dev'
+          archiveArtifacts artifacts: 'bundles/*.zip'
+          junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
           stash includes: 'bundles/*', name: 'build-bundles'
         }
       }
