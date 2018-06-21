@@ -153,6 +153,7 @@ spec:
             mkdir /root/.m2/repository/org/glassfish/main/test
             touch /root/.m2/repository/org/glassfish/main/test/SUCCESS
             cd /root/.m2/repository
+            mkdir ${WORKSPACE}/bundles
             tar -cvf ${WORKSPACE}/bundles/tests-maven-repo.tar.gz org/glassfish/main/*
             cd -
           '''
