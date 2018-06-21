@@ -145,7 +145,7 @@ spec:
           archiveArtifacts artifacts: 'bundles/*.zip'
           junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
           stash includes: 'bundles/*', name: 'build-bundles'
-          stash includes: '/root/.m2/org/glassfish/main/**/*', name: 'maven-repo'
+          stash includes: '/root/.m2/repository/org/glassfish/main/**/*', name: 'maven-repo'
         }
       }
     }
