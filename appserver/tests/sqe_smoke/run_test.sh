@@ -89,7 +89,7 @@ archive_artifacts(){
   cp ${SPS_HOME}/test_resultsValid.xml ${WORKSPACE}/results
   cp ${TEST_RUN_LOG} ${WORKSPACE}/results/
   find ${SPS_HOME}/reports -name security-gtest-results-valid.xml -exec cp '{}' ${WORKSPACE}/results \; > /dev/null || true
-  tar -cvf ${WORKSPACE}/${1}-results.tar.gz ${WORKSPACE}/results
+  tar -cvf ${WORKSPACE}/${TEST_ID}-results.tar.gz ${WORKSPACE}/results
 }
 
 merge_junit_xmls(){
