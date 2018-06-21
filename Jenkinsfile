@@ -64,12 +64,13 @@ def generateStage(job) {
             node(label) {
                 stage("${job}") {
                     container('glassfish-ci') {
-                      checkout scm
-                      unstash 'build-bundles'
+                      //checkout scm
+                      //unstash 'build-bundles'
                       unstash 'maven-repo'
-                      sh "${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}"
-                      archiveArtifacts artifacts: "${job}-results.tar.gz"
-                      junit testResults: 'results/junitreports/*.xml', allowEmptyResults: true
+                      sh 'ls -l /root/.m2/repository/org/glassfish/main/'
+                      //sh "${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}"
+                      //archiveArtifacts artifacts: "${job}-results.tar.gz"
+                      //junit testResults: 'results/junitreports/*.xml', allowEmptyResults: true
                     }
                 }
             }
@@ -149,9 +150,9 @@ spec:
             ls -l /root/.m2/repository/org/glassfish/main/
             touch /root/.m2/repository/org/glassfish/main/TEST
           '''
-          archiveArtifacts artifacts: 'bundles/*.zip'
-          junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
-          stash includes: 'bundles/*', name: 'build-bundles'
+          //archiveArtifacts artifacts: 'bundles/*.zip'
+          //junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
+          //stash includes: 'bundles/*', name: 'build-bundles'
           stash includes: '/root/.m2/repository/org/glassfish/main/**/*', name: 'maven-repo'
         }
       }
