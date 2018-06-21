@@ -39,20 +39,6 @@
 # holder.
 #
 
-if [ `uname | grep -i "sunos" | wc -l | awk '{print $1}'` -eq 1 ] ; then
-  GREP="ggrep"
-  AWK="gawk"
-  SED="gsed"
-  BC="gbc"
-else
-  GREP="grep"
-  AWK="awk"
-  SED="sed"
-  BC="bc"
-fi
-
-export GREP AWK SED BC
-
 if [ -z "${WORKSPACE}" ] ; then
   export WORKSPACE=`dirname ${0}`
 fi
@@ -66,11 +52,11 @@ merge_junits(){
   echo "<testsuites>" >> ${JUD}
   for i in `find . -type d -name "surefire-reports"`
   do    
-    ls -d -1 ${i}/*.xml | xargs cat | ${SED} 's/<?xml version=\"1.0\" encoding=\"UTF-8\" *?>//g' >> ${JUD}
+    ls -d -1 ${i}/*.xml | xargs cat | sed 's/<?xml version=\"1.0\" encoding=\"UTF-8\" *?>//g' >> ${JUD}
   done
   echo "</testsuites>" >> ${JUD}
-  ${SED} -i 's/\([a-zA-Z-]\w*\)\./\1-/g' ${JUD}
-  ${SED} -i "s/\bclassname=\"/classname=\"${TEST_ID}./g" ${JUD}
+  sed -i 's/\([a-zA-Z-]\w*\)\./\1-/g' ${JUD}
+  sed -i "s/\bclassname=\"/classname=\"${TEST_ID}./g" ${JUD}
 }
 
 archive_bundles(){
@@ -79,9 +65,6 @@ archive_bundles(){
   cp appserver/distributions/glassfish/target/*.zip ${WORKSPACE}/bundles
   cp appserver/distributions/web/target/*.zip ${WORKSPACE}/bundles
   cp nucleus/distributions/nucleus/target/*.zip ${WORKSPACE}/bundles
-  cd ${HOME}/.m2/repository
-  tar -cvf ${WORKSPACE}/bundles/maven-repo.tar.gz org/glassfish/main/*
-  cd -
 }
 
 dev_build(){
