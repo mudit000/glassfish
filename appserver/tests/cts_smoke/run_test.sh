@@ -295,7 +295,7 @@ cts_to_junit(){
   cd ${WORKSPACE}/results
   rm -rf ${2}
   cat ${1} | ${GREP} -a "\[javatest.batch\] Finished Test" >  results.txt
-  tail $((`${GREP} -n "Completed running" results.txt | ${AWK} '{print ${1}}' | cut -d ':' -f1`-`cat results.txt | wc -l`)) results.txt > summary.txt
+  tail $((`${GREP} -n "Completed running" results.txt | ${AWK} '{print $1}' | cut -d ':' -f1`-`cat results.txt | wc -l`)) results.txt > summary.txt
 
   echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" >> ${2}
   echo "<testsuites>" >> ${2}
@@ -303,7 +303,7 @@ cts_to_junit(){
   for i in `${GREP} "\.\.\.\.\.\.\.\." summary.txt | ${AWK} '{print $4}'`
   do
     line=`echo ${i} | ${SED} s@"\.\.\.\.\.\.\.\."@" "@g`
-    status=`echo ${line} | ${AWK} '{print ${1}}'`
+    status=`echo ${line} | ${AWK} '{print $1}'`
     id=`echo ${line} | ${AWK} '{print $2}'`
     classname=`echo ${id} | cut -d '#' -f1 | ${SED} s@"\/"@"_"@g | ${SED} s@".java"@@g`
     name=`echo ${id} | cut -d '#' -f2`

@@ -57,7 +57,7 @@ generate_copyright_results(){
   rm -rf ${WORKSPACE}/results || true
   mkdir -p ${WORKSPACE}/results/copyright_results
 
-  num=`wc -l copyright-files.txt | awk '{print ${1}}'`
+  num=`wc -l copyright-files.txt | awk '{print $1}'`
   if [ ${num} -gt 0 ]; then
     echo "UNSTABLE" > ${WORKSPACE}/results/copyright_results/copyrightcheck.log
   else
