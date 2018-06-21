@@ -74,6 +74,7 @@ test_run_cts_smoke(){
 
   wget ${CTS_SMOKE_URL}/${CTS_SMOKE_BUNDLE}
   unzip -q ${CTS_SMOKE_BUNDLE}
+
   cd ${TS_HOME}/bin
   #cp $CTS_SMOKE/$CTS_EXCLUDE_LIST .
   cp ts.jte ts.jte.orig
@@ -171,16 +172,24 @@ archive_servlet_tck(){
 
 test_run_servlet_tck(){
   export TS_HOME=${WORKSPACE}/servlettck
-  java -version
-  # Java EE 8 servlet tck.
-  if [[ -z ${SERVELT_TCK_URL} ]]; then
-    SERVELT_TCK=${JENKINS_URL}job/gf-cts-promotion/lastStableBuild/artifact/
-  else
-    SERVELT_TCK=${SERVELT_TCK_URL}
+  if [[ -z ${CTS_SMOKE_URL} ]]; then
+    echo "error: CTS_SMOKE_URL is not set"
+    exit 1
   fi
-  wget ${SERVELT_TCK}/servlettck-4.0_Latest.zip -O servlettck.zip
 
+  # MACHINE CONFIGURATION
+  pwd
+  uname -a
+  java -version
+
+  # some clean up
+  rm -rf /tmp/JTreport
+  rm -rf /tmp/JTwork
+  rm -rf /disk1/java_re/.javatest
+
+  wget ${CTS_SMOKE_URL}/servlettck-4.0_Latest.zip -O servlettck.zip
   unzip -q servlettck.zip
+
   if [[ -n ${1} ]]; then
     TESTDIR=${WORKSPACE}/servlettck/src/com/sun/ts/tests
     for i in `ls ${TESTDIR}`

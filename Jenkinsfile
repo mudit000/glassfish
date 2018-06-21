@@ -131,7 +131,7 @@ spec:
                 -Dhttps.proxyHost=www-proxy-hqdc.us.oracle.com \
                 -Dhttps.proxyPort=80"
     MAVEN_OPTS = "${ANT_OPTS} -Dmaven.repo.local=/root/.m2/repository"
-    CTS_SMOKE_URL = "http://sca00kou:8080/job/gf-cts-promotion/153/artifact/javaee-smoke-8.0_latest.zip"
+    CTS_SMOKE_URL = "http://sca00kou:8080/job/gf-cts-promotion/lastStableBuild/artifact"
     INTERNAL_RELEASE_REPO = "http://gf-maven.us.oracle.com/nexus/content/repositories/gf-internal-release"
   }
   stages {
