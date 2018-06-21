@@ -67,7 +67,7 @@ def generateStage(job) {
                       checkout scm
                       unstash 'build-bundles'
                       sh '''
-                        tar -xvf ${WORKSPACE}/bundles/maven-repo.tar.gz -C /root/.m2/repository'
+                        tar -xvf ${WORKSPACE}/bundles/maven-repo.tar.gz -C /root/.m2/repository
                         ${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}
                       '''
                       archiveArtifacts artifacts: "${job}-results.tar.gz"
