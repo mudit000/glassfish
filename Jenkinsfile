@@ -67,7 +67,7 @@ def generateStage(job) {
                       //checkout scm
                       //unstash 'build-bundles'
                       unstash 'maven-repo'
-                      sh 'ls -l /root/.m2/repository/org/glassfish/main/'
+                      sh 'ls -l /root/.m2/repository/org/glassfish/main/test'
                       //sh "${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}"
                       //archiveArtifacts artifacts: "${job}-results.tar.gz"
                       //junit testResults: 'results/junitreports/*.xml', allowEmptyResults: true
@@ -148,7 +148,8 @@ spec:
             df -h
             ls -ld /root/.m2/repository/org/glassfish/main/
             ls -l /root/.m2/repository/org/glassfish/main/
-            touch /root/.m2/repository/org/glassfish/main/TEST
+            mkdir /root/.m2/repository/org/glassfish/main/test
+            touch /root/.m2/repository/org/glassfish/main/test/SUCCESS
           '''
           //archiveArtifacts artifacts: 'bundles/*.zip'
           //junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
