@@ -40,8 +40,10 @@
 #
 
 test_run_sqe_smoke(){
-  GF_MAVEN=gf-maven.us.oracle.com
-  INTERNAL_RELEASE_REPO=http://${GF_MAVEN}/nexus/content/repositories/gf-internal-release
+  if [[ -z ${INTERNAL_RELEASE_REPO} ]]; then
+    echo "error: INTERNAL_RELEASE_REPO is not set"
+    exit 1
+  fi
   SPS_HOME=${WORKSPACE}/appserver-sqe; export SPS_HOME
   # MACHINE CONFIGURATION
   pwd
@@ -53,7 +55,7 @@ test_run_sqe_smoke(){
   kill_clean `jps |grep Main |grep -v grep |cut -f1 -d" "`
   kill_clean `ps -ef | grep ${WORKSPACE}/glassfish5/glassfish|grep -v grep`
 
-  curl --noproxy ${GF_MAVEN} ${INTERNAL_RELEASE_REPO}/com/oracle/glassfish/sqe-smoke/1.0/sqe-smoke-1.0.zip > bundles/sqe-smoke.zip
+  curl --noproxy '*' ${INTERNAL_RELEASE_REPO}/com/oracle/glassfish/sqe-smoke/1.0/sqe-smoke-1.0.zip > bundles/sqe-smoke.zip
   unzip bundles/sqe-smoke.zip
 
   cd ${SPS_HOME}
@@ -67,7 +69,7 @@ run_test_id(){
   unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip
   test_init
   if [[ ${1} = "sqe_smoke_all" ]]; then
-    test_run_sqe_smoke
+    test_run_sqe_smoke | tee ${TEST_RUN_LOG}
     result=${WORKSPACE}/results/test_resultsValid.xml
     resultGtest=${WORKSPACE}/results/security-gtest-results-valid.xml
   else
@@ -81,12 +83,13 @@ run_test_id(){
 }
 
 archive_artifacts(){
-  # Archiving
   cp ${S1AS_HOME}/domains/domain1/logs/server.log* ${WORKSPACE}/results
   cp ${SPS_HOME}/summaryreport-v3smoke.html ${WORKSPACE}/results/ST-GP-report.html
   cp ${SPS_HOME}/count.txt ${WORKSPACE}/results
   cp ${SPS_HOME}/test_resultsValid.xml ${WORKSPACE}/results
+  cp ${TEST_RUN_LOG} ${WORKSPACE}/results/
   find ${SPS_HOME}/reports -name security-gtest-results-valid.xml -exec cp '{}' ${WORKSPACE}/results \; > /dev/null || true
+  tar -cvf ${WORKSPACE}/${1}-results.tar.gz ${WORKSPACE}/results
 }
 
 merge_junit_xmls(){

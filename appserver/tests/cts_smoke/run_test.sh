@@ -56,9 +56,8 @@ archive_cts(){
 test_run_cts_smoke(){
   TS_HOME=${WORKSPACE}/javaee-smoke
   if [[ -z ${CTS_SMOKE_URL} ]]; then
-    CTS_SMOKE=${JENKINS_URL}job/gf-cts-promotion/lastStableBuild/artifact
-  else
-    CTS_SMOKE=${CTS_SMOKE_URL}
+    echo "error: CTS_SMOKE_URL is not set"
+    exit 1
   fi
   CTS_SMOKE_BUNDLE=javaee-smoke-8.0_latest.zip
   CTS_EXCLUDE_LIST=ts.jtx
@@ -73,7 +72,7 @@ test_run_cts_smoke(){
   rm -rf /tmp/JTwork
   rm -rf /disk1/java_re/.javatest
 
-  wget ${CTS_SMOKE}/${CTS_SMOKE_BUNDLE}
+  wget ${CTS_SMOKE_URL}/${CTS_SMOKE_BUNDLE}
   unzip -q ${CTS_SMOKE_BUNDLE}
   cd ${TS_HOME}/bin
   #cp $CTS_SMOKE/$CTS_EXCLUDE_LIST .
