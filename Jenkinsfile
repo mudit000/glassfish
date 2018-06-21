@@ -141,7 +141,14 @@ spec:
       }
       steps {
         container('glassfish-ci') {
-          sh '${WORKSPACE}/gfbuild.sh build_re_dev'
+          // sh '${WORKSPACE}/gfbuild.sh build_re_dev'
+          sh '''
+            mount
+            df -h
+            ls -ld /root/.m2/repository/org/glassfish/main/
+            ls -l /root/.m2/repository/org/glassfish/main/
+            touch /root/.m2/repository/org/glassfish/main/TEST
+          '''
           archiveArtifacts artifacts: 'bundles/*.zip'
           junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
           stash includes: 'bundles/*', name: 'build-bundles'
