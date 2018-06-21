@@ -152,9 +152,9 @@ spec:
             ls -l /root/.m2/repository/org/glassfish/main/
             mkdir /root/.m2/repository/org/glassfish/main/test
             touch /root/.m2/repository/org/glassfish/main/test/SUCCESS
-            pushd /root/.m2/repository
+            cd /root/.m2/repository
             tar -cvf ${WORKSPACE}/bundles/tests-maven-repo.tar.gz org/glassfish/main/*
-            pop
+            cd -
           '''
           //archiveArtifacts artifacts: 'bundles/*.zip'
           //junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
