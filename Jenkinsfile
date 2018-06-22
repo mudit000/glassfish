@@ -67,7 +67,7 @@ def generateStage(job) {
                       checkout scm
                       unstash 'build-bundles'
                       sh """
-                        tar -xvf ${WORKSPACE}/bundles/maven-repo.tar.gz -C /root/.m2/repository
+                        cat ${WORKSPACE}/bundles/_maven-repo* | tar -xvz -f - -C /root/.m2/repository
                         ${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}
                       """
                       archiveArtifacts artifacts: "${job}-results.tar.gz"
@@ -147,7 +147,7 @@ spec:
         container('glassfish-ci') {
           sh """
             ${WORKSPACE}/gfbuild.sh build_re_dev
-            tar -cz -f ${WORKSPACE}/bundles/maven-repo.tar.gz -C /root/.m2/repository org/glassfish/main
+            tar -cz -f - -C /root/.m2/repository org/glassfish | split -b 1m - ${WORKSPACE}/bundles/_maven-repo
           """
           archiveArtifacts artifacts: 'bundles/*.zip'
           junit testResults: 'test-results/build-unit-tests/results/junitreports/test_results_junit.xml'
