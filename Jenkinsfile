@@ -126,8 +126,10 @@ spec:
     APS_HOME = "${WORKSPACE}/appserver/tests/appserv-tests"
     TEST_RUN_LOG = "${WORKSPACE}/tests-run.log"
     ANT_OPTS = "-Xmx1024M \
+                -Dhttp.nonProxyHosts=localhost.localdomain|localhost|127.0.0.1 \
                 -Dhttp.proxyHost=www-proxy-hqdc.us.oracle.com \
                 -Dhttp.proxyPort=80 \
+                -Dhttps.nonProxyHosts=localhost.localdomain|localhost|127.0.0.1 \
                 -Dhttps.proxyHost=www-proxy-hqdc.us.oracle.com \
                 -Dhttps.proxyPort=80"
     MAVEN_OPTS = "${ANT_OPTS} -Dmaven.repo.local=/root/.m2/repository"
