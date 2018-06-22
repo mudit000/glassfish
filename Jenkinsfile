@@ -67,6 +67,7 @@ def generateStage(job) {
                       checkout scm
                       unstash 'build-bundles'
                       sh """
+                        env
                         cat ${WORKSPACE}/bundles/_maven-repo* | tar -xvz -f - -C /root/.m2/repository
                         ${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}
                       """
@@ -126,10 +127,10 @@ spec:
     APS_HOME = "${WORKSPACE}/appserver/tests/appserv-tests"
     TEST_RUN_LOG = "${WORKSPACE}/tests-run.log"
     ANT_OPTS = "-Xmx1024M \
-                -Dhttp.nonProxyHosts=localhost.localdomain|localhost|127.0.0.1 \
+                -Dhttp.nonProxyHosts='localhost.localdomain|localhost|127.0.0.1' \
                 -Dhttp.proxyHost=www-proxy-hqdc.us.oracle.com \
                 -Dhttp.proxyPort=80 \
-                -Dhttps.nonProxyHosts=localhost.localdomain|localhost|127.0.0.1 \
+                -Dhttps.nonProxyHosts='localhost.localdomain|localhost|127.0.0.1' \
                 -Dhttps.proxyHost=www-proxy-hqdc.us.oracle.com \
                 -Dhttps.proxyPort=80"
     MAVEN_OPTS = "${ANT_OPTS} -Dmaven.repo.local=/root/.m2/repository"
@@ -146,6 +147,7 @@ spec:
       steps {
         container('glassfish-ci') {
           sh """
+            env
             ${WORKSPACE}/gfbuild.sh build_re_dev
             tar -cz -f - -C /root/.m2/repository org/glassfish | split -b 1m - ${WORKSPACE}/bundles/_maven-repo
           """
