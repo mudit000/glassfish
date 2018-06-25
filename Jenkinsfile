@@ -119,7 +119,7 @@ spec:
     resources:
       limits:
         memory: "8Gi"
-        cpu: "2"
+        cpu: "1.75"
 """
     }
   }
