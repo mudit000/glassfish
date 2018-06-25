@@ -97,7 +97,7 @@ spec:
   volumes:
     - name: maven-repo-shared-storage
       persistentVolumeClaim:
-       claimName: maven-repo
+       claimName: glassfish-maven-repo-storage
     - name: maven-repo-local-storage
       emptyDir: {}
   hostAliases:
