@@ -60,7 +60,7 @@ def parallelStagesMap = jobs.collectEntries {
 
 def generateStage(job) {
     return {
-        def label = "mypod-${job}"
+        def label = "mypod-A"
         podTemplate(label: label) {
             node(label) {
                 stage("${job}") {
