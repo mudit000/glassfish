@@ -87,7 +87,7 @@ pipeline {
   }
   agent {
     kubernetes {
-      label 'mypod'
+      label 'glassfish-ci-pod'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
