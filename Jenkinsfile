@@ -60,7 +60,7 @@ def parallelStagesMap = jobs.collectEntries {
 
 def generateStage(job) {
     return {
-        def label = "mypod-${job}"
+        def label = "glassfish-ci-pod"
         podTemplate(label: label) {
             node(label) {
                 stage("${job}") {
@@ -142,7 +142,7 @@ spec:
     stage('glassfish-build') {
       agent {
         kubernetes {
-          label 'mypod-A'
+          label 'glassfish-ci-pod'
         }
       }
       steps {
