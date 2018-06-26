@@ -87,7 +87,6 @@ run_test_id(){
 }
 
 post_test_run(){
-  cp ${WORKSPACE}/bundles/version-info.txt ${WORKSPACE}/results/ || true
   cp $TEST_RUN_LOG ${WORKSPACE}/results/ || true
   cp ${WORKSPACE}/glassfish5/glassfish/domains/domain1/logs/server.log* ${WORKSPACE}/results/ || true
   cp ${WORKSPACE}/appserver/admingui/devtests/target/surefire-reports/*.png ${WORKSPACE}/results/ || true

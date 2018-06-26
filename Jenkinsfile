@@ -69,7 +69,7 @@ def generateStage(job) {
                       unstash 'build-bundles'
                       sh """
                         env
-                        cat ${WORKSPACE}/bundles/_maven-repo* | tar -xvz -f - -C /root/.m2/repository
+                        cat ${WORKSPACE}/bundles/_maven-repo* | tar -xvz -f - --overwrite -C /root/.m2/repository
                         ${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}
                       """
                       archiveArtifacts artifacts: "${job}-results.tar.gz"

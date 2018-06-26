@@ -40,7 +40,6 @@
 #
 
 archive_cts(){
-  cp ${WORKSPACE}/bundles/version-info.txt ${WORKSPACE}/results/
   cp ${TS_HOME}/bin/xml/config_vi.log ${WORKSPACE}/results
   cp ${TS_HOME}/bin/xml/smoke.log ${WORKSPACE}/results
   cp ${S1AS_HOME}/domains/domain1/logs/server.log* ${WORKSPACE}/results
@@ -164,7 +163,6 @@ test_run_cts_smoke(){
 }
 
 archive_servlet_tck(){
-  cp ${WORKSPACE}/bundles/version-info.txt ${WORKSPACE}/results/
   cp ${S1AS_HOME}/domains/domain1/logs/server.log* ${WORKSPACE}/results
   cp ${WORKSPACE}/tests.log ${WORKSPACE}/results
   cp -r ${TS_HOME}/report/ ${WORKSPACE}/results
@@ -282,14 +280,6 @@ run_test_id(){
 }
 
 post_test_run(){
-  if [[ ${?} -ne 0 ]]; then
-    if [[ ${TEST_ID} = "cts_smoke_all" || ${TEST_ID} = "cts_smoke_group-"* ]]; then
-      archive_cts || true
-    fi
-    if [[ ${TEST_ID} = "servlet_tck_"* ]]; then
-      archive_servlet_tck || true
-    fi
-  fi
   delete_bundle
   cd -
 }
