@@ -95,6 +95,7 @@ generate_findbugs_low_priority_all_result(){
   do
      cp ${i} ${WORKSPACE}/results/findbugs_low_priority_all_results/`echo $i | sed s@"${WORKSPACE}"@@g | sed s@"/"@"_"@g`
   done
+  tar -cvf ${WORKSPACE}/${TEST_ID}-results.tar.gz ${WORKSPACE}/results
 }
 
 run_test_id(){
