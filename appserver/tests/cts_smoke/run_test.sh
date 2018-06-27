@@ -50,6 +50,7 @@ archive_cts(){
   ${GREP} "Number of Tests with Errors" ${WORKSPACE}/results/smoke.log >> ${WORKSPACE}/results/count.txt
   cat count.txt | ${SED} -e 's/\[javatest.batch\] Number/Number/g' > ${WORKSPACE}/results/CTS-GP-count.txt
   rm ${WORKSPACE}/results/count.txt
+  tar -cvf ${WORKSPACE}/${TEST_ID}-results.tar.gz ${WORKSPACE}/results
 }
 
 test_run_cts_smoke(){
@@ -166,6 +167,7 @@ archive_servlet_tck(){
   cp ${S1AS_HOME}/domains/domain1/logs/server.log* ${WORKSPACE}/results
   cp ${WORKSPACE}/tests.log ${WORKSPACE}/results
   cp -r ${TS_HOME}/report/ ${WORKSPACE}/results
+  tar -cvf ${WORKSPACE}/${TEST_ID}-results.tar.gz ${WORKSPACE}/results
 }
 
 test_run_servlet_tck(){

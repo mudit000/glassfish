@@ -72,6 +72,7 @@ generate_findbugs_result(){
   do
      cp ${i} ${WORKSPACE}/results/findbugs_results/`echo $i | sed s@"${WORKSPACE}"@@g | sed s@"/"@"_"@g`
   done
+  tar -cvf ${WORKSPACE}/${TEST_ID}-results.tar.gz ${WORKSPACE}/results
 }
 
 generate_findbugs_low_priority_all_result(){

@@ -64,6 +64,7 @@ generate_copyright_results(){
     echo "SUCCESS" > ${WORKSPACE}/results/copyright_results/copyrightcheck.log
   fi
   cp copyright-files.txt ${WORKSPACE}/results/copyright_results/copyright-files.txt
+  tar -cvf ${WORKSPACE}/${TEST_ID}-results.tar.gz ${WORKSPACE}/results
 }
 
 run_test_id(){
