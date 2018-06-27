@@ -1,10 +1,10 @@
 
 // list of test ids
 def jobs = [
-  "web_jsp",
+//  "web_jsp",
   "web_servlet",
   "web_web-container",
-  "web_group-1",
+/*  "web_group-1",
   "sqe_smoke_all",
   "security_all",
   "admin-cli-group-1",
@@ -28,7 +28,7 @@ def jobs = [
   "ql_gf_nucleus_all",
   "ql_gf_web_profile_all",
   "ql_gf_embedded_profile_all",
-  "nucleus_admin_all",
+  "nucleus_admin_all", */
   "cts_smoke_group-1",
   "cts_smoke_group-2",
   "cts_smoke_group-3",
@@ -38,10 +38,10 @@ def jobs = [
   "servlet_tck_servlet-api-servlet-http",
   "servlet_tck_servlet-compat",
   "servlet_tck_servlet-pluggability",
-  "servlet_tck_servlet-spec",
+  "servlet_tck_servlet-spec", */
   //"findbugs_all",
   //"findbugs_low_priority_all",
-  "jdbc_all",
+  /*"jdbc_all",
   "jms_all",
   "copyright",
   "batch_all",
@@ -51,7 +51,7 @@ def jobs = [
   "connector_group_1",
   "connector_group_2",
   "connector_group_3",
-  "connector_group_4"
+  "connector_group_4"*/
 ]
 
 def parallelStagesMap = jobs.collectEntries {
