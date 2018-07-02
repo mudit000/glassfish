@@ -109,6 +109,27 @@ public class WebTest {
             }
         }
 
+        if(line != null){
+            String status = bis.readLine();
+            System.out.println("status: " + status);
+            if(status != null && "404".equals(status)){
+
+                String requestURI = bis.readLine();
+                System.out.println("requestURI: " + requestURI);
+
+                if(requestURI != null
+                    && requestURI.equals(contextRoot + "/404handler.jsp")){
+
+                    String requestURL = bis.readLine();
+                    System.out.println("requestURL: " + requestURL);
+
+                    if(line.equals("http://" + host + ":" + port + contextRoot + "/404handler.jsp")
+                        || line.equals("http://" +  InetAddress.getLocalHost().getHostName() +  ":" + port + contextRoot + "/404handler.jsp")){
+                        stat.addStatus(TEST_NAME, stat.PASS);
+                    }
+                }
+            }
+        }
                if (line != null
                 && ((line = bis.readLine()) != null)
                 && line.equals("404")
