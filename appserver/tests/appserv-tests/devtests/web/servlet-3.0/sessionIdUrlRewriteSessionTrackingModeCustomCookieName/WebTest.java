@@ -126,11 +126,7 @@ public class WebTest {
                 "Missing http address in Location response header");
         }
 
-        String redirectTo = redirectLine.substring(index);
-        if (redirectTo.indexOf(".") != -1){
-            redirectTo = redirectTo.replace("localhost.localdomain",
-                "localhost");
-        }   
+        String redirectTo = redirectLine.substring(index);  
         System.out.println("Redirect to: " + redirectTo);
         URL url = new URL(redirectTo);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

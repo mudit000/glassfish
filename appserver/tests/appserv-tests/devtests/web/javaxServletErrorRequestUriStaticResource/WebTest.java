@@ -96,10 +96,6 @@ public class WebTest {
     }
 
     public void doTest() throws Exception {
-     
-        System.out.println("javaxServletErrorRequestUriStaticResource - " 
-            + String.format("host=%s, port=%s, contextRoot=%s, InetAddress.getLocalHost().getHostName()=%s", host, port, contextRoot, InetAddress.getLocalHost().getHostName()));
-
 
         sock = new Socket(host, new Integer(port).intValue());
         OutputStream os = sock.getOutputStream();

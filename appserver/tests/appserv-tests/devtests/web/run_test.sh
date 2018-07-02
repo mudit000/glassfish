@@ -206,11 +206,7 @@ test_run(){
       --instanceport ${WEBTIER_HTTP_PORT} \
       domain1
 
-  if [ `uname | grep -n  'Linux' | wc -l` -eq 1 ] ; then
-      HOST="localhost.localdomain"
-  else
-      HOST="localhost"
-  fi
+  HOST="localhost"
 
   # Create
   echo "admin.domain=domain1

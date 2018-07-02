@@ -86,10 +86,6 @@ public class WebTest {
 
     public void doTest() throws Exception {
  
-        System.out.println("javaxServletErrorRequestUriDynamicResource - " 
-            + String.format("host=%s, port=%s, contextRoot=%s, InetAddress.getLocalHost().getHostName()=%s", host, port, contextRoot, InetAddress.getLocalHost().getHostName()));
-
- 
         Socket sock = new Socket(host, new Integer(port).intValue());
         OutputStream os = sock.getOutputStream();
         String get = "GET " + contextRoot + "/junk.jsp HTTP/1.0\n";
