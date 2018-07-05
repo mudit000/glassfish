@@ -39,64 +39,10 @@
 # holder.
 #
 
-#u
-# Usage: appserv-tests/devtests/web/hudson.sh [-d <url for download glassfish>]
-#     [-d <directory for storing glassfish.zip>] [ -s <job name for skip file>]
-#
-# Hudson setup:
-#
-# Source Code Management: Subversion Modules
-# Repository URL: https://svn.java.net/svn/glassfish~svn/trunk/v2/appserv-tests/devtests/web
-# Local module directory: appserv-tests/devtests/web
-# Repository URL: https://svn.java.net/svn/glassfish~svn/trunk/v2/appserv-tests/lib
-# Local module directory: appserv-tests/lib
-# Repository URL: https://svn.java.net/svn/glassfish~svn/trunk/v2/appserv-tests/config
-# Local module directory: appserv-tests/config
-# Repository URL: https://svn.java.net/svn/glassfish~svn/trunk/v2/appserv-tests/util
-# Local module directory: appserv-tests/util
-#
-# Build after other projects are build: mirror-glassfish-repository
-#
-# The following TCP ports are assigned by Hudson to avoid collision
-#   WEBTIER_ADMIN_PORT 
-#   WEBTIER_JMS_PORT
-#   WEBTIER_JMX_PORT 
-#   WEBTIER_ORB_PORT
-#   WEBTIER_HTTP_PORT
-#   WEBTIER_HTTPS_PORT
-#   WEBTIER_ALTERNATE_PORT
-#   WEBTIER_ORB_SSL_PORT
-#   WEBTIER_ORB_SSL_MUTUALAUTH_PORT
-#   WEBTIER_INSTANCE_PORT
-#   WEBTIER_INSTANCE_PORT_2
-#   WEBTIER_INSTANCE_PORT_3
-#   WEBTIER_INSTANCE_HTTPS_PORT
-#
-# If the script is used locally, WORKSPACE need to be defined as the parent of appserv-tests.
-# And GlassFish will be installed in $WORKSPACE.
-#
-# Record finderprints of files to track usage: glassfish-v3-image/glassfish.zip
-#     Fingerprint all archived artifacts
-#
-# Archive the artifacts: appserv-tests/test_results*.*,glassfish-v3-image/glassfish5/glassfish/domains/domain1/logs/*
-#
-# Publish SQE test result report
-#     SQE report XMLs: appserv-tests/test_resultsValid.xml
-#
-# E-mail Notification
-#     Recipients: <....>@oracle.com
-#     Send e-mail for every unstable build
-
 kill_processes() {
-  uname=`uname | awk '{print $1}'`
-  case "${uname}" in
-      CYGWIN*) KILL="taskkill /F /T /PID";;
-      *) KILL="kill -9";;
-  esac
-
-  (ps -aef | grep java | grep ASMain | grep -v grep | awk '{print $2}' | xargs ${KILL} > /dev/null 2>&1) || true
-  (jps | grep Main | grep -v grep | awk '{print $1}' | xargs ${KILL} > /dev/null 2>&1) || true
-  (ps -aef | grep derby | grep -v grep | awk '{print $2}' | xargs ${KILL} > /dev/null 2>&1) || true
+  (ps -aef | grep java | grep ASMain | grep -v grep | awk '{print $2}' | xargs kill -9 > /dev/null 2>&1) || true
+  (jps | grep Main | grep -v grep | awk '{print $1}' | xargs kill -9 > /dev/null 2>&1) || true
+  (ps -aef | grep derby | grep -v grep | awk '{print $2}' | xargs kill -9 > /dev/null 2>&1) || true
 }
 
 is_target(){
@@ -149,43 +95,6 @@ test_run(){
   export WEBTIER_INSTANCE_PORT_2=45717
   export WEBTIER_INSTANCE_PORT_3=45718
   export WEBTIER_INSTANCE_HTTPS_PORT=45719
-
-  while getopts u:s:d:t: flag; do
-    case ${flag} in
-      u)
-        download=1;
-        if [ "x${OPTARG}" != "x" ]; then
-            GLASSFISH_DOWNLOAD_URL=${OPTARG};
-        fi
-        ;;
-      s)
-        SKIP_NAME=${OPTARG};
-        ;;
-      d)
-        DOWNLOAD_DIR=${OPTARG}
-        ;;
-      t)
-        TARGET=${OPTARG}
-        if [ `is_target ${TARGET}` -eq 0 ] ;  then
-           echo "Unknown target"
-           exit
-        elif [ "${TARGET}" != "all" ] ; then
-            TARGET="${TARGET} finish-report"
-        fi
-        ;;
-      \?)
-        echo "Illegal options"
-        exit
-        ;;
-    esac
-  done
-  shift $(( OPTIND - 1 ));
-
-
-  if [ "x${download}" = "x1" ]; then
-      cd ${DOWNLOAD_DIR}
-      curl -O glassfish.zip ${GLASSFISH_DOWNLOAD_URL}
-  fi
 
   export AS_LOGFILE=${S1AS_HOME}/cli.log
   #export AS_DEBUG=true
@@ -249,9 +158,6 @@ test_run(){
   kill_processes
 
   cd ${APS_HOME}/devtests/web
-  cp build.xml build.xml.orig
-  ./exclude-jobs.sh ${SKIP_NAME}
-
   ant ${TARGET} |tee ${TEST_RUN_LOG}
 
   # restore original build.xml
@@ -268,7 +174,7 @@ run_test_id(){
   test_init
   TARGET_FROM_INPUT=(`echo $1 | sed 's/web_//'`)
   get_test_target ${TARGET_FROM_INPUT}
-  test_run -s webtier-dev-tests
+  test_run
   check_successful_run
   generate_junit_report ${TARGET_FROM_INPUT}
   change_junit_report_class_names
