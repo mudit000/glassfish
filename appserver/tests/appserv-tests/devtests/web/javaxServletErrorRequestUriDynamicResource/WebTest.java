@@ -119,8 +119,8 @@ public class WebTest {
                     String requestURL = bis.readLine();
                     System.out.println("requestURL: " + requestURL);
 
-                    if(line.equals("http://" + host + ":" + port + contextRoot + "/404handler.jsp")
-                        || line.equals("http://" +  InetAddress.getLocalHost().getHostName() +  ":" + port + contextRoot + "/404handler.jsp")){
+                    if(requestURL.equals("http://" + host + ":" + port + contextRoot + "/404handler.jsp")
+                        || requestURL.equals("http://" +  InetAddress.getLocalHost().getHostName() +  ":" + port + contextRoot + "/404handler.jsp")){
                         stat.addStatus(TEST_NAME, stat.PASS);
                         return;
                     }
