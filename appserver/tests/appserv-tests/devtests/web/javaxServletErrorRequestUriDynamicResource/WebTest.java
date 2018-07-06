@@ -81,7 +81,7 @@ public class WebTest {
             stat.addStatus(TEST_NAME, stat.FAIL);
             ex.printStackTrace();
         }
-	stat.printSummary();
+	    stat.printSummary();
     }
 
     public void doTest() throws Exception {
@@ -122,27 +122,11 @@ public class WebTest {
                     if(line.equals("http://" + host + ":" + port + contextRoot + "/404handler.jsp")
                         || line.equals("http://" +  InetAddress.getLocalHost().getHostName() +  ":" + port + contextRoot + "/404handler.jsp")){
                         stat.addStatus(TEST_NAME, stat.PASS);
+                        return;
                     }
                 }
             }
         }
-               if (line != null
-                && ((line = bis.readLine()) != null)
-                && line.equals("404")
-                && ((line = bis.readLine()) != null)
-                && line.equals(contextRoot + "/404handler.jsp")
-                && ((line = bis.readLine()) != null)
-                && (
-                    line.equals("http://" + host + ":" + port
-                               + contextRoot + "/404handler.jsp") ||
-                    line.equals("http://" + 
-                                InetAddress.getLocalHost().getHostName() + 
-                                ":" + port + contextRoot + "/404handler.jsp") 
-                               )) {
-            stat.addStatus(TEST_NAME, stat.PASS);
-        } else {
-            stat.addStatus(TEST_NAME, stat.FAIL);
-        }
+        stat.addStatus(TEST_NAME, stat.FAIL);
     }
-
 }
