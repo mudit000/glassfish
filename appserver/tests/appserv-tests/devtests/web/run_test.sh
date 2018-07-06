@@ -160,9 +160,6 @@ test_run(){
   cd ${APS_HOME}/devtests/web
   ant ${TARGET} |tee ${TEST_RUN_LOG}
 
-  # restore original build.xml
-  mv build.xml.orig build.xml
-
   kill_processes
   (cat web.output | grep FAIL | grep -v "Total FAIL") || true
 }
