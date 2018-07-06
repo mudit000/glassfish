@@ -100,10 +100,6 @@ spec:
        claimName: glassfish-maven-repo-storage
     - name: maven-repo-local-storage
       emptyDir: {}
-  hostAliases:
-  - ip: "127.0.0.1"
-    hostnames:
-    - "localhost.localdomain"
   containers:
   - name: glassfish-ci
     image: arindamb/glassfish-ci
