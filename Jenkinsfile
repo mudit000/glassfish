@@ -135,7 +135,7 @@ spec:
     INTERNAL_RELEASE_REPO = "http://gf-maven.us.oracle.com/nexus/content/repositories/gf-internal-release"
   }
   stages {
-    stage('glassfish-build') {
+    stage('build') {
       agent {
         kubernetes {
           label 'glassfish-ci-pod'
@@ -154,7 +154,7 @@ spec:
         }
       }
     }
-    stage('glassfish-tests') {
+    stage('tests') {
       steps {
         script {
           parallel parallelStagesMap
