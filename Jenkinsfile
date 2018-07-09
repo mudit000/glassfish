@@ -69,7 +69,6 @@ def generateStage(job) {
                       checkout scm
                       unstash 'build-bundles'
                       sh """
-                        env
                         cat ${WORKSPACE}/bundles/_maven-repo* | tar -xvz -f - --overwrite -C /root/.m2/repository
                         ${WORKSPACE}/appserver/tests/gftest.sh run_test ${job}
                       """
