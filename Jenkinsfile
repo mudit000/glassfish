@@ -54,7 +54,7 @@ def jobs = [
 //"connector_group_4"
 ]
 
-def label = "glassfish-ci-pod-${UUID.randomUUID().toString()}"
+env.label = "glassfish-ci-pod-${UUID.randomUUID().toString()}"
 
 def parallelStagesMap = jobs.collectEntries {
   ["${it}": generateStage(it)]
@@ -88,7 +88,7 @@ pipeline {
   }
   agent {
     kubernetes {
-      label "${label}"
+      label "${env}"
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
@@ -139,7 +139,7 @@ spec:
     stage('build') {
       agent {
         kubernetes {
-          label "${label}"
+          label "null"
         }
       }
       steps {
