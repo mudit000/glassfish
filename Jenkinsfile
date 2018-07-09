@@ -88,7 +88,7 @@ pipeline {
   }
   agent {
     kubernetes {
-      label: label
+      label label
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
@@ -139,7 +139,7 @@ spec:
     stage('build') {
       agent {
         kubernetes {
-          label: label
+          label label
         }
       }
       steps {
