@@ -88,7 +88,7 @@ pipeline {
   }
   agent {
     kubernetes {
-      label "${env}"
+      label "${env.label}"
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
