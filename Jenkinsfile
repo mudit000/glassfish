@@ -145,7 +145,6 @@ spec:
       steps {
         container('glassfish-ci') {
           sh """
-            env
             ${WORKSPACE}/gfbuild.sh build_re_dev
             tar -cz -f - -C /root/.m2/repository org/glassfish | split -b 1m - ${WORKSPACE}/bundles/_maven-repo
           """
