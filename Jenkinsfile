@@ -3,7 +3,7 @@
 def jobs = [
   "web_jsp",
   "web_servlet",
-  "web_web-container"
+  "web_web-container",
   "web_group-1",
   "sqe_smoke_all",
   "security_all",
