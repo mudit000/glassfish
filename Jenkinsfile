@@ -102,7 +102,7 @@ spec:
       emptyDir: {}
   containers:
   - name: glassfish-ci
-    image: arindamb/glassfish-ci
+    image: rgrecour/glassfish-ci
     command:
     - cat
     tty: true

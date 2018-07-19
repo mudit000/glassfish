@@ -50,7 +50,7 @@ archive_cts(){
   ${GREP} "Number of Tests with Errors" ${WORKSPACE}/results/smoke.log >> ${WORKSPACE}/results/count.txt
   cat count.txt | ${SED} -e 's/\[javatest.batch\] Number/Number/g' > ${WORKSPACE}/results/CTS-GP-count.txt
   rm ${WORKSPACE}/results/count.txt
-  tar -cvf ${WORKSPACE}/${TEST_ID}-results.tar.gz ${WORKSPACE}/results
+  tar -cvf ${WORKSPACE}/${TEST_ID}-results.tar.gz -C ${WORKSPACE}/results
 }
 
 test_run_cts_smoke(){
@@ -62,15 +62,11 @@ test_run_cts_smoke(){
   CTS_SMOKE_BUNDLE=javaee-smoke-8.0_latest.zip
   CTS_EXCLUDE_LIST=ts.jtx
 
-  # MACHINE CONFIGURATION
   pwd
   uname -a
   java -version
 
-  # some clean up
-  rm -rf /tmp/JTreport
-  rm -rf /tmp/JTwork
-  rm -rf /disk1/java_re/.javatest
+  rm -rf /tmp/JTreport /tmp/JTwork /disk1/java_re/.javatest || true
 
   wget ${CTS_SMOKE_URL}/${CTS_SMOKE_BUNDLE}
   unzip -q ${CTS_SMOKE_BUNDLE}
@@ -79,15 +75,13 @@ test_run_cts_smoke(){
   #cp $CTS_SMOKE/$CTS_EXCLUDE_LIST .
   cp ts.jte ts.jte.orig
 
-  #mv ts.jte ts.jte.orig
-  # 08/31/2012 [jlsato] This ${SED} command includes the addition of javax.jms-api.jar (to support new JMS 2.0 jar) in front of old javax.jms.jar.
   ${SED} \
     -e "s@javaee.home=@javaee\.home=${S1AS_HOME}@g" \
     -e "s@javaee.home.ri=@javaee\.home\.ri=${S1AS_HOME}@g" \
     -e "s/^orb\.host=/orb\.host=localhost/g" \
     -e "s/^mailHost=/mailHost=localhost/g" \
-    -e "s/^mailuser1=/mailuser1=java_re@sun\.com/g" \
-    -e "s/^mailFrom=.*/mailFrom=java_re@sun\.com/g" \
+    -e "s/^mailuser1=/mailuser1=${USER}@localhost/g" \
+    -e "s/^mailFrom=.*/mailFrom=${USER}@localhost/g" \
     -e "s/orb.host.ri=/orb.host.ri=localhost/g" \
     -e "s/^work\.dir=\/files/work\.dir=\/tmp/g" \
     -e "s/^report\.dir=\/files/report\.dir=\/tmp/g" \
@@ -95,34 +89,12 @@ test_run_cts_smoke(){
     -e "s/modules\/gf-client.jar/lib\/gf-client.jar/g" \
     -e "s/\${pathsep}\${ri\.modules}\/javax\.jms\.jar/\${pathsep}\${ri\.modules}\/javax\.jms-api\.jar\${pathsep}\$\{ri\.modules}\/javax\.jms\.jar/g" \
     -e "s/\${pathsep}\${s1as\.modules}\/javax\.jms\.jar/\${pathsep}\${s1as\.modules}\/javax\.jms-api\.jar\${pathsep}\$\{s1as\.modules}\/javax\.jms\.jar/g" \
-    ts.jte > ts.jte.new
-  mv ts.jte.new ts.jte
-
-  # Temp fix for weld [06/06/2014 jlsato]
-  ${SED} \
     -e "s/implementation\.classes\.ri=/implementation\.classes\.ri=\${ri\.modules}\/cdi-api\.jar\${pathsep}\${ri\.modules}\/cdi-api-fragment\.jar\${pathsep}/g" \
-    ts.jte > ts.jte.new
-  mv ts.jte.new ts.jte
-
-  ${SED} \
     -e "s/implementation\.classes=/implementation\.classes=\${s1as\.modules}\/cdi-api\.jar\${pathsep}\${s1as\.modules}\/cdi-api-fragment\.jar\${pathsep}/g" \
-    ts.jte > ts.jte.new
-  mv ts.jte.new ts.jte
-  # End temp fix for weld
-
-  # Fix the 02_Dec smoketest bundle [12/03/2013 jlsato]
-  ${SED} \
     -e "s/tyrus-container-grizzly\.jar/tyrus-container-grizzly-client\.jar/g" \
-    ts.jte > ts.jte.new
-  mv ts.jte.new ts.jte
-  # End temp fix for Pavel
-
-  # Temp fix to set javamail password [12/03/2013 jlsato]
-  ${SED} \
     -e "s/javamail\.password=/javamail\.password\=cts1/g" \
     ts.jte > ts.jte.new
   mv ts.jte.new ts.jte
-  # End temp fix for javamail password
 
   cd ${TS_HOME}/bin/xml
   export ANT_HOME=${TS_HOME}/tools/ant
@@ -156,10 +128,7 @@ test_run_cts_smoke(){
       smoke
   fi
 
-  #POST CLEANUPS
   kill_process
-
-  #ARCHIVING
   archive_cts
 }
 
@@ -177,15 +146,11 @@ test_run_servlet_tck(){
     exit 1
   fi
 
-  # MACHINE CONFIGURATION
   pwd
   uname -a
   java -version
 
-  # some clean up
-  rm -rf /tmp/JTreport
-  rm -rf /tmp/JTwork
-  rm -rf /disk1/java_re/.javatest
+  rm -rf /tmp/JTreport /tmp/JTwork /disk1/java_re/.javatest || true
 
   wget ${CTS_SMOKE_URL}/servlettck-4.0_Latest.zip -O servlettck.zip
   unzip -q servlettck.zip
@@ -212,8 +177,11 @@ test_run_servlet_tck(){
   -e "s@securedWebServicePort=@securedWebServicePort=8181@g" \
   -e "s@web.home=@web\.home=${S1AS_HOME}@g" \
   -e "s@javaee\.home\.ri=@javaee\.home\.ri=${S1AS_HOME}@g" \
-  -e "s/^orb\.host=/orb\.host=localhost/g"  -e "s/^mailHost=/mailHost=localhost/g" -e "s/^mailuser1=/mailuser1=java_re/g" \
-  -e "s/^mailFrom=.*/mailFrom=javaee-re_ww@oracle\.com/g" -e "s/orb.host.ri=/orb.host.ri=localhost/g" \
+  -e "s/^orb\.host=/orb\.host=localhost/g" \
+  -e "s/^mailHost=/mailHost=localhost/g" \
+  -e "s/^mailuser1=/mailuser1=${USER}@localhost/g" \
+  -e "s/^mailFrom=.*/mailFrom=${USER}@localhost/g" \
+  -e "s/orb.host.ri=/orb.host.ri=localhost/g" \
   -e "s/^work\.dir=\/files/work\.dir=\/tmp/g" -e "s/^report\.dir=\/files/report\.dir=\/tmp/g" \
   -e "s/^tz=.*/tz=US\/Pacific/g" -e "s/modules\/gf-client.jar/lib\/gf-client.jar/g" \
   -e "s/\${pathsep}\${ri\.modules}\/javax\.jms\.jar/\${pathsep}\${ri\.modules}\/javax\.jms-api\.jar\${pathsep}\$\{ri\.modules}\/javax\.jms\.jar/g" \
@@ -248,10 +216,7 @@ test_run_servlet_tck(){
   cd ${S1AS_HOME}
   bin/asadmin stop-domain
 
-  #POST CLEANUPS
   kill_process
-
-  #ARCHIVING
   archive_servlet_tck
 }
 
