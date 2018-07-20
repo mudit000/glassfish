@@ -6,4 +6,4 @@ RUN apt-get install -y apt-utils ant unzip tar wget zip sendmail
 COPY ./entrypoint.sh /etc/entrypoint.sh
 RUN chmod +x /etc/entrypoint.sh
 
-ENTRYPOINT ["/scripts/entrypoint.sh"]
+ENTRYPOINT ["/etc/entrypoint.sh"]

@@ -103,7 +103,7 @@ spec:
   containers:
   - name: glassfish-ci
     image: rgrecour/glassfish-ci
-    command:
+    args:
     - cat
     tty: true
     imagePullPolicy: Always

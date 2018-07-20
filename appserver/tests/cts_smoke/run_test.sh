@@ -80,8 +80,8 @@ test_run_cts_smoke(){
     -e "s@javaee.home.ri=@javaee\.home\.ri=${S1AS_HOME}@g" \
     -e "s/^orb\.host=/orb\.host=localhost/g" \
     -e "s/^mailHost=/mailHost=localhost/g" \
-    -e "s/^mailuser1=/mailuser1=${USER}@localhost/g" \
-    -e "s/^mailFrom=.*/mailFrom=${USER}@localhost/g" \
+    -e "s/^mailuser1=/mailuser1=${USER:-root}@localhost/g" \
+    -e "s/^mailFrom=.*/mailFrom=${USER:-root}@localhost/g" \
     -e "s/orb.host.ri=/orb.host.ri=localhost/g" \
     -e "s/^work\.dir=\/files/work\.dir=\/tmp/g" \
     -e "s/^report\.dir=\/files/report\.dir=\/tmp/g" \
@@ -179,8 +179,8 @@ test_run_servlet_tck(){
   -e "s@javaee\.home\.ri=@javaee\.home\.ri=${S1AS_HOME}@g" \
   -e "s/^orb\.host=/orb\.host=localhost/g" \
   -e "s/^mailHost=/mailHost=localhost/g" \
-  -e "s/^mailuser1=/mailuser1=${USER}@localhost/g" \
-  -e "s/^mailFrom=.*/mailFrom=${USER}@localhost/g" \
+  -e "s/^mailuser1=/mailuser1=${USER:-root}@localhost/g" \
+  -e "s/^mailFrom=.*/mailFrom=${USER:-root}@localhost/g" \
   -e "s/orb.host.ri=/orb.host.ri=localhost/g" \
   -e "s/^work\.dir=\/files/work\.dir=\/tmp/g" -e "s/^report\.dir=\/files/report\.dir=\/tmp/g" \
   -e "s/^tz=.*/tz=US\/Pacific/g" -e "s/modules\/gf-client.jar/lib\/gf-client.jar/g" \
