@@ -48,9 +48,9 @@ archive_cts(){
   ${GREP} "Number of Tests Passed" ${WORKSPACE}/results/smoke.log >> ${WORKSPACE}/results/count.txt
   ${GREP} "Number of Tests Failed" ${WORKSPACE}/results/smoke.log >> ${WORKSPACE}/results/count.txt
   ${GREP} "Number of Tests with Errors" ${WORKSPACE}/results/smoke.log >> ${WORKSPACE}/results/count.txt
-  cat count.txt | ${SED} -e 's/\[javatest.batch\] Number/Number/g' > ${WORKSPACE}/results/CTS-GP-count.txt
+  cat ${WORKSPACE}/results/count.txt | ${SED} -e 's/\[javatest.batch\] Number/Number/g' > ${WORKSPACE}/results/CTS-GP-count.txt
   rm ${WORKSPACE}/results/count.txt
-  tar -cvf ${WORKSPACE}/${TEST_ID}-results.tar.gz -C ${WORKSPACE}/results
+  tar -cvf ${WORKSPACE}/${TEST_ID}-results.tar.gz -C ${WORKSPACE}/results .
 }
 
 test_run_cts_smoke(){
@@ -99,7 +99,7 @@ test_run_cts_smoke(){
   cd ${TS_HOME}/bin/xml
   export ANT_HOME=${TS_HOME}/tools/ant
   export PATH=${ANT_HOME}/bin:${PATH}
-        
+
   # SECURITY MANAGER ON
   ${S1AS_HOME}/bin/asadmin start-domain
   ${S1AS_HOME}/bin/asadmin create-jvm-options "-Djava.security.manager"
