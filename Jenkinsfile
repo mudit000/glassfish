@@ -84,6 +84,7 @@ def generateStage(job) {
 pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
+    preserveStashes(5)
   }
   agent {
     kubernetes {
