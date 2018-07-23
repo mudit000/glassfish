@@ -158,7 +158,7 @@ test_run(){
   kill_processes
 
   cd ${APS_HOME}/devtests/web
-  ant ${TARGET} |tee ${TEST_RUN_LOG}
+  ant ${TARGET} | tee ${TEST_RUN_LOG}
 
   kill_processes
   (cat web.output | grep FAIL | grep -v "Total FAIL") || true

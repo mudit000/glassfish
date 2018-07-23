@@ -62,8 +62,6 @@ run_test_id(){
   cd `dirname ${0}`
   test_init
   get_test_target ${1}
-  export ROOT=`pwd`
-  export TEST_RUN_LOG=${ROOT}/tests-run.log
   test_run
   check_successful_run
   generate_junit_report ${1}

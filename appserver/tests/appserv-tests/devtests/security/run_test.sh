@@ -40,8 +40,7 @@
 #
 
 test_run(){
-	cp ${APS_HOME}/devtests/security/ldap/opends/X500Signer.jar ${OPENDS_HOME}/lib
-	rm -rf ${OPENDS_HOME}/lib/set-java-home
+	cp -f ${APS_HOME}/devtests/security/ldap/opends/X500Signer.jar ${OPENDS_HOME}/lib
 
 	# Configure and start OpenDS using the default ports
 	${OPENDS_HOME}/setup \
@@ -60,21 +59,9 @@ test_run(){
 
 	${S1AS_HOME}/bin/asadmin start-database
 	${S1AS_HOME}/bin/asadmin start-domain
-	pushd ${APS_HOME}/devtests/security
-	rm count.txt || true
-  PROXY_HOST=`echo http://www-proxy.us.oracle.com:80 | cut -d':' -f2 | sed 's/\/\///g'`
-  PROXY_PORT=`echo http://www-proxy.us.oracle.com:80 | cut -d':' -f3 | sed 's/\///g'`
-  ANT_OPTS="${ANT_OPTS} \
-  -Dhttp.proxyHost=${PROXY_HOST} \
-  -Dhttp.proxyPort=${PROXY_PORT} \
-  -Dhttp.noProxyHosts='127.0.0.1|localhost|*.oracle.com' \
-  -Dhttps.proxyHost=${PROXY_HOST} \
-  -Dhttps.proxyPort=${PROXY_PORT} \
-  -Dhttps.noProxyHosts='127.0.0.1|localhost|*.oracle.com'"
-  export ANT_OPTS
-  echo "ANT_OPTS=${ANT_OPTS}"
-	ant ${TARGET} |tee ${TEST_RUN_LOG}
-  unset ANT_OPTS
+	cd ${APS_HOME}/devtests/security
+
+	ant ${TARGET} | tee ${TEST_RUN_LOG}
 
 	${S1AS_HOME}/bin/asadmin stop-domain
 	${S1AS_HOME}/bin/asadmin stop-database
@@ -85,9 +72,9 @@ test_run(){
     -P ${OPENDS_HOME}/config/admin-truststore \
     -U ${OPENDS_HOME}/config/admin-keystore.pin
 
-	egrep 'FAILED= *0' count.txt
-	egrep 'DID NOT RUN= *0' count.txt
-	popd
+	egrep 'FAILED= *0' ${TEST_RUN_LOG}
+	egrep 'DID NOT RUN= *0' ${TEST_RUN_LOG}
+	cd -
 }
 
 get_test_target(){
@@ -104,6 +91,11 @@ merge_result_files(){
 }
 
 run_test_id(){
+  # setup opendj (fork of opends)
+  wget https://github.com/OpenIdentityPlatform/OpenDJ/releases/download/4.1.10/opendj-4.1.10.zip
+  unzip opendj-4.1.10.zip
+  export OPENDS_HOME=${PWD}/opendj
+
 	unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip
 	cd `dirname ${0}`
 	test_init
