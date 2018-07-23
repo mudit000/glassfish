@@ -56,9 +56,9 @@ copyright_run(){
 generate_copyright_results(){
   rm -rf ${WORKSPACE}/results || true
   mkdir -p ${WORKSPACE}/results/copyright_results
-
-  num=`wc -l copyright-files.txt | awk '{print $1}'`
-  if [ ${num} -gt 0 ]; then
+  if [ ! -f copyright-files.txt ] ; then
+    echo "FAILED" > ${WORKSPACE}/results/copyright_results/copyrightcheck.log
+  elif [ `wc -l copyright-files.txt | awk '{print $1}'` -gt 0 ]; then
     echo "UNSTABLE" > ${WORKSPACE}/results/copyright_results/copyrightcheck.log
   else
     echo "SUCCESS" > ${WORKSPACE}/results/copyright_results/copyrightcheck.log
