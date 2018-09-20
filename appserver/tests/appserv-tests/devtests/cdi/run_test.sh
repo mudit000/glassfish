@@ -2,7 +2,7 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
-# Copyright (c) 2017 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2017-2018 Oracle and/or its affiliates. All rights reserved.
 #
 # The contents of this file are subject to the terms of either the GNU
 # General Public License Version 2 only ("GPL") or the Common Development
@@ -43,62 +43,50 @@ test_run(){
 	#Fix for false positive
 	echo "<property name=\"libraries\" value=\"' '\"/>" >> smoke-tests/simple-wab-with-cdi/build.properties
 	find . -name "RepRunConf.txt" | xargs rm -f
-	rm 	-rf *.output alltests.res $APS_HOME/test_results*
+	rm 	-rf *.output alltests.res ${APS_HOME}/test_results*
 	# Run the tests
 	set +e
 	ant clean
-	$S1AS_HOME/bin/asadmin start-domain
-	$S1AS_HOME/bin/asadmin start-database
-	ant $TARGET | tee $TEST_RUN_LOG
-	$S1AS_HOME/bin/asadmin stop-domain
-	$S1AS_HOME/bin/asadmin stop-database
+	${S1AS_HOME}/bin/asadmin start-domain
+	${S1AS_HOME}/bin/asadmin start-database
+	ant ${TARGET} | tee ${TEST_RUN_LOG}
+	${S1AS_HOME}/bin/asadmin stop-domain
+	${S1AS_HOME}/bin/asadmin stop-database
 	set -e
 }
 
 get_test_target(){
-	case $1 in
+	case ${1} in
 		cdi_all )
 			TARGET=all
 			export TARGET;;
 	esac
-
 }
 
 
 run_test_id(){
-	source `dirname $0`/../../../common_test.sh
-	kill_process
-	delete_gf
-	download_test_resources glassfish.zip version-info.txt
-	unzip_test_resources $WORKSPACE/bundles/glassfish.zip
-	cd `dirname $0`
+	unzip_test_resources ${WORKSPACE}/bundles/glassfish.zip
+	cd `dirname ${0}`
 	test_init
-	get_test_target $1
+	get_test_target ${1}
 	test_run
 	check_successful_run
-    generate_junit_report $1
-    change_junit_report_class_names
+  generate_junit_report ${1}
+  change_junit_report_class_names
 }
-
-post_test_run(){
-    copy_test_artifects
-    upload_test_results
-    delete_bundle
-    cd -
-}
-
 
 list_test_ids(){
 	echo cdi_all
 }
 
-OPT=$1
-TEST_ID=$2
+OPT=${1}
+TEST_ID=${2}
+source `dirname ${0}`/../../../common_test.sh
 
-case $OPT in
+case ${OPT} in
 	list_test_ids )
 		list_test_ids;;
 	run_test_id )
-		trap post_test_run EXIT
-		run_test_id $TEST_ID ;;
+		trap "copy_test_artifacts ${TEST_ID}" EXIT
+		run_test_id ${TEST_ID} ;;
 esac

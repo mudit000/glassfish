@@ -3,7 +3,7 @@
 
     DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
-    Copyright (c) 2017 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2017-2018 Oracle and/or its affiliates. All rights reserved.
 
     The contents of this file are subject to the terms of either the GNU
     General Public License Version 2 only ("GPL") or the Common Development
@@ -65,7 +65,7 @@
   </binding>
   <service name="OneWayService">
     <port name="OneWayPort" binding="tns:OneWayPortBinding">
-      <soap:address location="http://localhost.localdomain:8080/calc-web-client/webservice/OneWayService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"/>
+      <soap:address location="http://localhost:8080/calc-web-client/webservice/OneWayService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"/>
     </port>
   </service>
 </definitions>

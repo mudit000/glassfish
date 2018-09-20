@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash -e
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
-# Copyright (c) 2010-2017 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2018 Oracle and/or its affiliates. All rights reserved.
 #
 # The contents of this file are subject to the terms of either the GNU
 # General Public License Version 2 only ("GPL") or the Common Development
@@ -39,41 +39,43 @@
 # holder.
 #
 
+if [ -z "${WORKSPACE}" ] ; then
+  export WORKSPACE=`dirname ${0}`
+fi
 
-skip() {
-    FILE=$1
-    echo Parsing ${FILE}
-    cat ${FILE} | while read LINE
-    do
-        NAME=`echo $LINE | sed -e 's/[# ].*//'`
-        if [ -d "${NAME}" ]
-        then
-            echo excluding \"${NAME}\"
-            sed -e "s@^ *<ant dir=\"${NAME}\" target=\"all\"/>@<!--&-->@" build.xml > build.xml.sed
-            mv build.xml.sed build.xml
-        else
-            if [ ! -z "${NAME}" ]
-            then
-                echo "***** ${NAME} is not a valid test directory *****"
-            fi
-        fi
-    done
+merge_junits(){
+  TEST_ID="build-unit-tests"
+  rm -rf ${WORKSPACE}/test-results
+  mkdir -p ${WORKSPACE}/test-results/${TEST_ID}/results/junitreports
+  JUD="${WORKSPACE}/test-results/${TEST_ID}/results/junitreports/test_results_junit.xml"
+  echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > ${JUD}
+  echo "<testsuites>" >> ${JUD}
+  for i in `find . -type d -name "surefire-reports"`
+  do    
+    ls -d -1 ${i}/*.xml | xargs cat | sed 's/<?xml version=\"1.0\" encoding=\"UTF-8\" *?>//g' >> ${JUD}
+  done
+  echo "</testsuites>" >> ${JUD}
+  sed -i 's/\([a-zA-Z-]\w*\)\./\1-/g' ${JUD}
+  sed -i "s/\bclassname=\"/classname=\"${TEST_ID}./g" ${JUD}
 }
 
-echo start
-if [ "x$1" = "x" ]; then
-    SKIP_NAME=${JOB_NAME}
-else
-    SKIP_NAME=$1
-fi
+archive_bundles(){
+  printf "\n%s \n\n" "===== ARCHIVE BUNDLES ====="
+  mkdir ${WORKSPACE}/bundles
+  cp appserver/distributions/glassfish/target/*.zip ${WORKSPACE}/bundles
+  cp appserver/distributions/web/target/*.zip ${WORKSPACE}/bundles
+  cp nucleus/distributions/nucleus/target/*.zip ${WORKSPACE}/bundles
+}
 
-if [ -z "${SKIP_NAME}" -o "$SKIP_NAME" = "webtier-dev-tests-v3-source" ]
-then
-    SKIP_NAME=webtier-dev-tests-v3
-fi
+dev_build(){
+  printf "\n%s \n\n" "===== DO THE BUILD! ====="
+  mvn clean install -Dmaven.test.failure.ignore=true
+}
 
-if [ -f "${SKIP_NAME}.skip" ]
-then
-    skip ${SKIP_NAME}.skip
-fi
+build_re_dev(){
+  dev_build
+  archive_bundles
+  merge_junits
+}
 
+"$@"
