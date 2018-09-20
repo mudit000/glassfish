@@ -40,6 +40,7 @@
 #
 
 test_run(){
+
 	cp -f ${APS_HOME}/devtests/security/ldap/opends/X500Signer.jar ${OPENDS_HOME}/lib
 
 	# Configure and start OpenDS using the default ports

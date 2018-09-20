@@ -115,14 +115,14 @@ test_run_cts_smoke(){
     cat /tmp/javaee-smoke-group${1}.properties
 
     ${TS_HOME}/tools/ant/bin/ant \
-      -Dreport.dir=${WORKSPACE}/$BUILD_NUMBER/JTReport \
+      -Dreport.dir=${WORKSPACE}/${BUILD_NUMBER}/JTReport \
       -Dwork.dir=${WORKSPACE}/${BUILD_NUMBER}/JTWork \
       -propertyfile /tmp/javaee-smoke-group${1}.properties \
       -f smoke.xml \
       smoke
   else
     ${TS_HOME}/tools/ant/bin/ant \
-      -Dreport.dir=${WORKSPACE}/$BUILD_NUMBER/JTReport \
+      -Dreport.dir=${WORKSPACE}/${BUILD_NUMBER}/JTReport \
       -Dwork.dir=${WORKSPACE}/${BUILD_NUMBER}/JTWork \
       -f smoke.xml \
       smoke
